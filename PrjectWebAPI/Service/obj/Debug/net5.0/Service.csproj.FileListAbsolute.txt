@@ -1,0 +1,17 @@
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Service.deps.json
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Service.dll
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Service.pdb
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Common.dll
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Repository.dll
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Common.pdb
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\bin\Debug\net5.0\Repository.pdb
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.csproj.AssemblyReference.cache
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.GeneratedMSBuildEditorConfig.editorconfig
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.AssemblyInfoInputs.cache
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.AssemblyInfo.cs
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.csproj.CoreCompileInputs.cache
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.csproj.CopyComplete
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.dll
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\refint\Service.dll
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\Service.pdb
+D:\Hoctap\HK3\CongNgheLapTrinhHienDai\DoAn\WebProgramming21HCB\PrjectWebAPI\Service\obj\Debug\net5.0\ref\Service.dll
