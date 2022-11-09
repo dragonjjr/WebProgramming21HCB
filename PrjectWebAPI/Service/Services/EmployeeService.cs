@@ -23,6 +23,11 @@ namespace Service.Services
             return _IemployeeRepository.RegisterAccount(accountViewModel);
         }
 
+        public bool Recharge(RechargeInput rechargeInput)
+        {
+            return _IemployeeRepository.Recharge(rechargeInput);
+        }
+
         public AccountViewModel GetAccountInfor(AccountInforInput infor)
         {
             return _IemployeeRepository.GetAccountInfor(infor);

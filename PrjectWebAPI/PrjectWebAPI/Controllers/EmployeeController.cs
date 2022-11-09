@@ -15,7 +15,7 @@ namespace PrjectWebAPI.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpPost("test")]
+        [HttpPost("RegisterAccount")]
         public ResponeseMessage RegisterAccount([FromBody] AccountViewModel accountViewModel)
         {
             ResponeseMessage rs = new ResponeseMessage();
@@ -29,6 +29,24 @@ namespace PrjectWebAPI.Controllers
             {
                 rs.Status = 0;
                 rs.Message = "Register an account failed!";
+            }
+            return rs;
+        }
+
+        [HttpPost("Recharge")]
+        public ResponeseMessage Recharge([FromBody] RechargeInput rechargeInput)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _employeeService.Recharge(rechargeInput);
+            if (model)
+            {
+                rs.Status = 200;
+                rs.Message = "Recharge successfully!";
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Recharge failed!";
             }
             return rs;
         }

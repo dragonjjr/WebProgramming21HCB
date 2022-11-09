@@ -40,7 +40,7 @@ namespace Common
         public bool IsStaff { get; set; }
     }
 
-    public class RechargeVM
+    public class RechargeInput
     {
         public int BankID { get; set; }
         public string STK_Send { get; set; }

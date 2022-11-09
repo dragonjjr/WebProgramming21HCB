@@ -11,6 +11,6 @@ namespace Service.Interfaces
     {
         bool RegisterAccount(AccountViewModel accountViewModel);
         AccountViewModel GetAccountInfor(AccountInforInput infor);
-
+        bool Recharge(RechargeInput rechargeInput);
     }
 }

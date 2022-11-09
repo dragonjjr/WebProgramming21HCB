@@ -67,29 +67,38 @@ namespace Repository.Repositories
         }
 
 
-        public bool Recharge(RechargeVM rechargeVM)
+        public bool Recharge(RechargeInput rechargeInput)
         {
             try
             {
-                var account = dbContext.UserManages.Where(x => x.BankKind == rechargeVM.BankID.ToString() && x.Stk == rechargeVM.STK_Receive).FirstOrDefault();
+                var account = dbContext.UserManages.Where(x => x.Stk == rechargeInput.STK_Receive).FirstOrDefault();//x.BankKind == rechargeInput.BankID.ToString() &&
                 if (account != null)
                 {
                     TransactionBanking tb = new TransactionBanking
                     {
-                        Stksend = rechargeVM.STK_Send,
-                        Stkreceive = rechargeVM.STK_Receive,
-                        BankReferenceId = rechargeVM.BankID,
-                        TransactionTypeId = rechargeVM.TransactionTypeId,
-                        PaymentFeeTypeId = rechargeVM.PaymentTypeID,
-
+                        Stksend = rechargeInput.STK_Send,
+                        Stkreceive = rechargeInput.STK_Receive,
+                        BankReferenceId = rechargeInput.BankID,
+                        TransactionTypeId = rechargeInput.TransactionTypeId,
+                        PaymentFeeTypeId = rechargeInput.PaymentTypeID,
+                        Money = rechargeInput.SoTien,
+                        Content = rechargeInput.NoiDung
                     };
+                    dbContext.TransactionBankings.Add(tb);
+                    account.SoDu = account.SoDu + rechargeInput.SoTien;
+                    dbContext.UserManages.Update(account);
+                    dbContext.SaveChanges();
+                    return true;
                 }
-                return true;
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
-
                 throw ex;
+                return false;
             }
         }
     }
