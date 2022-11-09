@@ -8,10 +8,10 @@ namespace Repository.DBContext
     public partial class TransactionBanking
     {
         public int Id { get; set; }
-        public int Stksend { get; set; }
-        public int Stkreceive { get; set; }
+        public string Stksend { get; set; }
+        public string Stkreceive { get; set; }
         public string Content { get; set; }
-        public double Money { get; set; }
+        public decimal Money { get; set; }
         public int TransactionTypeId { get; set; }
         public int PaymentFeeTypeId { get; set; }
         public int? BankReferenceId { get; set; }

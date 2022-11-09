@@ -11,5 +11,7 @@ namespace Repository.Interfaces
     public interface IEmployeeRepository
     {
         bool RegisterAccount(AccountViewModel accountViewModel);
+        bool Recharge(RechargeVM rechargeVM);
+        AccountViewModel GetAccountInfor(AccountInforInput infor);
     }
 }

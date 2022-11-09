@@ -32,5 +32,24 @@ namespace PrjectWebAPI.Controllers
             }
             return rs;
         }
+
+        [HttpPost("GetAccountInfor")]
+        public ResponeseMessage GetAccountInfor([FromBody] AccountInforInput infor)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _employeeService.GetAccountInfor(infor);
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.Message = "Get Account infor successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Get Account infor failed!";
+            }
+            return rs;
+        }
     }
 }

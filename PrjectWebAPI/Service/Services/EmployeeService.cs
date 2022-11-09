@@ -22,5 +22,10 @@ namespace Service.Services
         {
             return _IemployeeRepository.RegisterAccount(accountViewModel);
         }
+
+        public AccountViewModel GetAccountInfor(AccountInforInput infor)
+        {
+            return _IemployeeRepository.GetAccountInfor(infor);
+        }
     }
 }

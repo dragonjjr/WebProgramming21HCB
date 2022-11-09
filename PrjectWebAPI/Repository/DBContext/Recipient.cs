@@ -8,8 +8,8 @@ namespace Repository.DBContext
     public partial class Recipient
     {
         public int Id { get; set; }
-        public int Stk { get; set; }
-        public int Name { get; set; }
+        public string Stk { get; set; }
+        public string Name { get; set; }
         public int UserId { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }

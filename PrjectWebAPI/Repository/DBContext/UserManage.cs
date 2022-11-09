@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace Repository.DBContext
 {
-    [Table("User_manage")]
     public partial class UserManage
     {
         public UserManage()

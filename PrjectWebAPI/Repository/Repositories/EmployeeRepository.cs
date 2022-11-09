@@ -1,6 +1,5 @@
 ﻿using Common;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
@@ -13,10 +12,23 @@ namespace Repository.Repositories
 {
     public class EmployeeRepository: IEmployeeRepository
     {
-        private readonly d3bphnumi39q70Context dbContext;
-        public EmployeeRepository(d3bphnumi39q70Context _dbContext)
+        private readonly _6IVYVvfe0wContext dbContext;
+        public EmployeeRepository(_6IVYVvfe0wContext _dbContext)
         {
             this.dbContext = _dbContext;
+        }
+
+
+        public AccountViewModel GetAccountInfor(AccountInforInput infor)
+        {
+            AccountViewModel rs = new AccountViewModel();
+            var ac = dbContext.Accounts.FromSqlRaw("Select * from Account").FirstOrDefault();
+            if (ac != null)
+            {
+                rs.UserName = ac.Username;
+                rs.RoleID = int.Parse(ac.Role);
+            }
+            return rs;
         }
 
         public bool RegisterAccount(AccountViewModel accountViewModel)
@@ -51,7 +63,34 @@ namespace Repository.Repositories
                 throw ex;
                 //return false;
             }
-            
+
+        }
+
+
+        public bool Recharge(RechargeVM rechargeVM)
+        {
+            try
+            {
+                var account = dbContext.UserManages.Where(x => x.BankKind == rechargeVM.BankID.ToString() && x.Stk == rechargeVM.STK_Receive).FirstOrDefault();
+                if (account != null)
+                {
+                    TransactionBanking tb = new TransactionBanking
+                    {
+                        Stksend = rechargeVM.STK_Send,
+                        Stkreceive = rechargeVM.STK_Receive,
+                        BankReferenceId = rechargeVM.BankID,
+                        TransactionTypeId = rechargeVM.TransactionTypeId,
+                        PaymentFeeTypeId = rechargeVM.PaymentTypeID,
+
+                    };
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

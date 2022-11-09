@@ -10,5 +10,7 @@ namespace Service.Interfaces
     public interface IEmployeeService
     {
         bool RegisterAccount(AccountViewModel accountViewModel);
+        AccountViewModel GetAccountInfor(AccountInforInput infor);
+
     }
 }

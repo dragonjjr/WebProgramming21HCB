@@ -39,4 +39,21 @@ namespace Common
         public string Phone { get; set; }
         public bool IsStaff { get; set; }
     }
+
+    public class RechargeVM
+    {
+        public int BankID { get; set; }
+        public string STK_Send { get; set; }
+        public string STK_Receive { get; set; }
+        public decimal SoTien { get; set; }
+        public string NoiDung { get; set; }
+        public int PaymentTypeID { get; set; }
+        public int TransactionTypeId { get; set; }
+    }
+
+    public class AccountInforInput
+    {
+        public int BankID { get; set; }
+        public string STK { get; set; }
+    }
 }

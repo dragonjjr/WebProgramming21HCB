@@ -30,7 +30,7 @@ namespace PrjectWebAPI
         {
 
             services.AddControllers();
-            services.AddDbContext<d3bphnumi39q70Context>();
+            services.AddDbContext<_6IVYVvfe0wContext>();
             services.ListServices();
             services.ListRepository();
             services.AddSwaggerGen(c =>
