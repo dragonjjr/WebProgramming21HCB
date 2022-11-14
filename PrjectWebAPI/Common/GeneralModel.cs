@@ -56,4 +56,12 @@ namespace Common
         public int BankID { get; set; }
         public string STK { get; set; }
     }
+
+
+    public class RecipientInput
+    {
+        public string STK { get; set; }
+        public string Name { get; set; }
+        public int UserID { get; set; }
+    }
 }

@@ -12,12 +12,14 @@ namespace PrjectWebAPI.RegisterServices
         {
             services.AddScoped<IEmployeeService, EmployeeService>();
             //services.AddScoped<IInternalTransferService, InternalTransferService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             return services;
         }
 
         public static IServiceCollection ListRepository(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             return services;
         }
     }
