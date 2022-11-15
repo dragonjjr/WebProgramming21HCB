@@ -37,5 +37,10 @@ namespace Service.Services
         {
             return _IcustomerRepository.GetUserBalance(id);
         }
+
+        public bool UpdateRecipient(int id, RecipientEdit recipientEdit)
+        {
+            return _IcustomerRepository.UpdateRecipient(id, recipientEdit);
+        }
     }
 }

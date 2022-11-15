@@ -1,4 +1,5 @@
 ﻿using Common;
+using Microsoft.EntityFrameworkCore;
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
@@ -64,7 +65,7 @@ namespace Repository.Repositories
         public bool DeleteRecipient(int id)
         {
             var recipient = FindRecipientById(id);
-            if(recipient!= null)
+            if (recipient != null)
             {
                 dbContext.Recipients.Remove(recipient);
                 dbContext.SaveChanges();
@@ -76,7 +77,7 @@ namespace Repository.Repositories
         public UserBalance GetUserBalance(int id)
         {
             var existUser = FindUserById(id);
-            if(existUser != null)
+            if (existUser != null)
             {
                 UserBalance userBalance = new UserBalance();
                 userBalance.SoDu = existUser.SoDu;
@@ -91,9 +92,22 @@ namespace Repository.Repositories
             var existUser = FindUserById(id);
             if (existUser != null)
             {
-                return dbContext.Recipients.Where(x => x.UserId == id).Select(x=> new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
+                return dbContext.Recipients.Where(x => x.UserId == id).Select(x => new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
             }
             return null;
+        }
+
+        public bool UpdateRecipient(int id ,RecipientEdit recipientEdit)
+        {
+            var existRecipient = FindRecipientById(id);
+            if(existRecipient != null)
+            {
+                existRecipient.Stk = recipientEdit.STK;
+                existRecipient.Name = recipientEdit.Name;
+                dbContext.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }

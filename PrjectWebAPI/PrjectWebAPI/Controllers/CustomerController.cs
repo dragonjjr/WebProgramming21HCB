@@ -54,6 +54,25 @@ namespace PrjectWebAPI.Controllers
 
         }
 
+        [HttpPatch("Recipient/{id}")]
+        public ResponeseMessage UpdateRecipient(int id, [FromBody] RecipientEdit recipientEdit)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _customerService.UpdateRecipient(id, recipientEdit);
+            if (model)
+            {
+                rs.Status = 200;
+                rs.Message = "Update a recipient successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Update a recipient failed!";
+            }
+            return rs;
+        }
+
 
         [HttpDelete("Recipient/{id}")]
         public ResponeseMessage DeleteRecipient(int id)
@@ -92,5 +111,7 @@ namespace PrjectWebAPI.Controllers
             return rs;
 
         }
+
+        
     }
 }

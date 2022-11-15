@@ -78,6 +78,12 @@ namespace Common
         public string Name { get; set; }
     }
 
+    public class RecipientEdit
+    {
+        public string STK { get; set; }
+        public string Name { get; set; }
+    }
+
     public class UserBalance
     {
         public string STK { get; set; }
