@@ -53,5 +53,25 @@ namespace PrjectWebAPI.Controllers
             }
             return rs;
         }
+
+        [HttpGet("{id}")]
+        public ResponeseMessage GetUserBalance(int id)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _customerService.GetUserBalance(id);
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.Message = "Get user balance successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Get user balance failed!";
+            }
+            return rs;
+
+        }
     }
 }

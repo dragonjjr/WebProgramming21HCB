@@ -14,12 +14,16 @@ namespace Repository.Repositories
         {
             this.dbContext = _dbContext;
         }
-        public Recipient FindById(int id)
+        public Recipient FindRecipientById(int id)
         {
             return dbContext.Recipients.Find(id);
         }
+        public UserManage FindUserById(int id)
+        {
+            return dbContext.UserManages.Find(id);
+        }
 
-        public bool FindByStkAndUserId(RecipientInput recipientInput)
+        public bool FindRecipientByStkAndUserId(RecipientInput recipientInput)
         {
             var existRecipient = dbContext.Recipients.Where(x => x.Stk == recipientInput.STK && x.UserId == recipientInput.UserID).FirstOrDefault();
             if (existRecipient != null)
@@ -33,7 +37,7 @@ namespace Repository.Repositories
         {
             try
             {
-                bool existRecipient = FindByStkAndUserId(recipientInput);
+                bool existRecipient = FindRecipientByStkAndUserId(recipientInput);
                 if (existRecipient == false)
                 {
 
@@ -58,7 +62,7 @@ namespace Repository.Repositories
 
         public bool DeleteRecipient(int id)
         {
-            var recipient = FindById(id);
+            var recipient = FindRecipientById(id);
             if(recipient!= null)
             {
                 dbContext.Recipients.Remove(recipient);
@@ -66,6 +70,19 @@ namespace Repository.Repositories
                 return true;
             }
             return false;
+        }
+
+        public UserBalance GetUserBalance(int id)
+        {
+            var existUser = FindUserById(id);
+            if(existUser != null)
+            {
+                UserBalance userBalance = new UserBalance();
+                userBalance.SoDu = existUser.SoDu;
+                userBalance.STK = existUser.Stk;
+                return userBalance;
+            }
+            return null;
         }
     }
 }

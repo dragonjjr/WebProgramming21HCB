@@ -10,9 +10,11 @@ namespace Repository.Interfaces
 {
     public interface ICustomerRepository
     {
-        Recipient FindById(int id);
-        bool FindByStkAndUserId(RecipientInput recipientInput);
+        Recipient FindRecipientById(int id);
+        UserManage FindUserById(int id);
+        bool FindRecipientByStkAndUserId(RecipientInput recipientInput);
         bool AddRecipient(RecipientInput recipientInput);
         bool DeleteRecipient(int id);
+        UserBalance GetUserBalance(int id);
     }
 }

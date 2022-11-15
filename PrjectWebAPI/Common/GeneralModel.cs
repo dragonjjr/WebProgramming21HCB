@@ -64,4 +64,11 @@ namespace Common
         public string Name { get; set; }
         public int UserID { get; set; }
     }
+
+    public class UserBalance
+    {
+        public string STK { get; set; }
+
+        public decimal SoDu { get; set; }
+    }
 }

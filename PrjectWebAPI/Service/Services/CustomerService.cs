@@ -27,5 +27,10 @@ namespace Service.Services
         {
             return _IcustomerRepository.DeleteRecipient(id);
         }
+
+        public UserBalance GetUserBalance(int id)
+        {
+            return _IcustomerRepository.GetUserBalance(id);
+        }
     }
 }
