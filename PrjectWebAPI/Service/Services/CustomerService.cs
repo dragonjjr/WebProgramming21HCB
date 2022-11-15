@@ -22,5 +22,10 @@ namespace Service.Services
         {
             return _IcustomerRepository.AddRecipient(recipientInput);
         }
+
+        public bool DeleteRecipient(int id)
+        {
+            return _IcustomerRepository.DeleteRecipient(id);
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace Service.Interfaces
     {
         bool AddRecipient(RecipientInput recipientInput);
 
+        bool DeleteRecipient(int id);
     }
 }

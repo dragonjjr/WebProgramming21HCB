@@ -18,7 +18,7 @@ namespace PrjectWebAPI.Controllers
 
 
         [HttpPost("AddRecipient")]
-        public ResponeseMessage AddRecipient([FromBody]RecipientInput recipientInput)
+        public ResponeseMessage AddRecipient([FromBody] RecipientInput recipientInput)
         {
             ResponeseMessage rs = new ResponeseMessage();
             var model = _customerService.AddRecipient(recipientInput);
@@ -31,6 +31,25 @@ namespace PrjectWebAPI.Controllers
             {
                 rs.Status = 0;
                 rs.Message = "Add a recipient failed!";
+            }
+            return rs;
+        }
+
+
+        [HttpDelete("{id}")]
+        public ResponeseMessage DeleteRecipient(int id)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _customerService.DeleteRecipient(id);
+            if (model)
+            {
+                rs.Status = 200;
+                rs.Message = "Delete a recipient successfully!";
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Delete a recipient failed!";
             }
             return rs;
         }
