@@ -28,6 +28,11 @@ namespace Service.Services
             return _IcustomerRepository.DeleteRecipient(id);
         }
 
+        public List<RecipientOutput> GetListRecipientByUserId(int id)
+        {
+            return _IcustomerRepository.GetListRecipientByUserId(id);
+        }
+
         public UserBalance GetUserBalance(int id)
         {
             return _IcustomerRepository.GetUserBalance(id);

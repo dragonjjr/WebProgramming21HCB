@@ -1,5 +1,4 @@
 ﻿using Common;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
@@ -17,7 +16,7 @@ namespace PrjectWebAPI.Controllers
         }
 
 
-        [HttpPost("AddRecipient")]
+        [HttpPost("Recipient/AddRecipient")]
         public ResponeseMessage AddRecipient([FromBody] RecipientInput recipientInput)
         {
             ResponeseMessage rs = new ResponeseMessage();
@@ -35,8 +34,28 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
+        [HttpGet("Recipient/{id}")]
+        public ResponeseMessage GetUserBalance(int id)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _customerService.GetUserBalance(id);
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.Message = "Get user balance successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Get user balance failed!";
+            }
+            return rs;
 
-        [HttpDelete("{id}")]
+        }
+
+
+        [HttpDelete("Recipient/{id}")]
         public ResponeseMessage DeleteRecipient(int id)
         {
             ResponeseMessage rs = new ResponeseMessage();
@@ -55,20 +74,20 @@ namespace PrjectWebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ResponeseMessage GetUserBalance(int id)
+        public ResponeseMessage GetListRecipientByUserId(int id)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _customerService.GetUserBalance(id);
+            var model = _customerService.GetListRecipientByUserId(id);
             if (model != null)
             {
                 rs.Status = 200;
-                rs.Message = "Get user balance successfully!";
+                rs.Message = "Get list recipient successfully!";
                 rs.Data = model;
             }
             else
             {
                 rs.Status = 0;
-                rs.Message = "Get user balance failed!";
+                rs.Message = "Get list recipient failed!";
             }
             return rs;
 

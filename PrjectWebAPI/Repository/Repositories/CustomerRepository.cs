@@ -2,6 +2,7 @@
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -81,6 +82,16 @@ namespace Repository.Repositories
                 userBalance.SoDu = existUser.SoDu;
                 userBalance.STK = existUser.Stk;
                 return userBalance;
+            }
+            return null;
+        }
+
+        public List<RecipientOutput> GetListRecipientByUserId(int id)
+        {
+            var existUser = FindUserById(id);
+            if (existUser != null)
+            {
+                return dbContext.Recipients.Where(x => x.UserId == id).Select(x=> new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
             }
             return null;
         }

@@ -65,6 +65,13 @@ namespace Common
         public int UserID { get; set; }
     }
 
+    public class RecipientOutput
+    {
+        public int Id { get; set; }
+        public string STK { get; set; }
+        public string Name { get; set; }
+    }
+
     public class UserBalance
     {
         public string STK { get; set; }
