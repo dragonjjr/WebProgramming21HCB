@@ -52,7 +52,7 @@ namespace Repository.Repositories
             {
                 if(model.TransactionID > 0 && model.OTP != string.Empty)
                 {
-                    var row = dbContext.TransactionBankings.Where(x => x.Id == model.TransactionID && x.Otp == model.OTP && x.CeatedOtpdate < DateTime.Now && x.ExpiredOtpdate <= DateTime.Now).FirstOrDefault();
+                    var row = dbContext.TransactionBankings.Where(x => x.Id == model.TransactionID).FirstOrDefault();
                     if (row != null)
                     {
                         return true;
