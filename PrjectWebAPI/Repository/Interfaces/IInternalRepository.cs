@@ -10,5 +10,6 @@ namespace Repository.Interfaces
     public interface IInternalRepository
     {
         List<PaymentFeeTypeVM> GetPaymentFeeType();
+        bool CheckOTPTransaction(CheckOTPTransaction model);
     }
 }

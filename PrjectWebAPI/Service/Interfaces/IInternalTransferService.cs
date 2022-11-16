@@ -10,5 +10,6 @@ namespace Service.Interfaces
     public interface IInternalTransferService
     {
         List<PaymentFeeTypeVM> GetPaymentFeeType();
+        bool CheckOTPTransaction(CheckOTPTransaction model);
     }
 }

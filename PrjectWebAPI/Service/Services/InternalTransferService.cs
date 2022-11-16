@@ -20,5 +20,10 @@ namespace Service.Services
         {
             return _IinternalRepository.GetPaymentFeeType();
         }
+
+        public bool CheckOTPTransaction(CheckOTPTransaction model)
+        {
+            return _IinternalRepository.CheckOTPTransaction(model);
+        }
     }
 }

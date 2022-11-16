@@ -18,7 +18,11 @@ namespace Repository.Repositories
             this.dbContext = _dbContext;
         }
 
-
+        /// <summary>
+        /// Xem thông tin tài khoản
+        /// </summary>
+        /// <param name="infor"></param>
+        /// <returns></returns>
         public AccountViewModel GetAccountInfor(AccountInforInput infor)
         {
             AccountViewModel rs = new AccountViewModel();
@@ -31,6 +35,11 @@ namespace Repository.Repositories
             return rs;
         }
 
+        /// <summary>
+        /// Đăng ký tài khoản
+        /// </summary>
+        /// <param name="accountViewModel"></param>
+        /// <returns></returns>
         public bool RegisterAccount(AccountViewModel accountViewModel)
         {
             try
@@ -66,7 +75,11 @@ namespace Repository.Repositories
 
         }
 
-
+        /// <summary>
+        /// Nạp tiền vào tài khoản
+        /// </summary>
+        /// <param name="rechargeInput"></param>
+        /// <returns></returns>
         public bool Recharge(RechargeInput rechargeInput)
         {
             try

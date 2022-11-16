@@ -16,6 +16,11 @@ namespace Repository.Repositories
         {
             this.dbContext = _dbContext;
         }
+
+        /// <summary>
+        /// Lấy danh sách hình thức thanh toán
+        /// </summary>
+        /// <returns></returns>
         public List<PaymentFeeTypeVM> GetPaymentFeeType()
         {
             var rs = new List<PaymentFeeTypeVM>();
@@ -35,5 +40,31 @@ namespace Repository.Repositories
             return rs;
         }
 
+
+        /// <summary>
+        /// Kiểm tra OTP giao dịch chuyển tiền
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool CheckOTPTransaction(CheckOTPTransaction model)
+        {
+            try
+            {
+                if(model.TransactionID > 0 && model.OTP != string.Empty)
+                {
+                    var row = dbContext.TransactionBankings.Where(x => x.Id == model.TransactionID && x.Otp == model.OTP && x.CeatedOtpdate < DateTime.Now && x.ExpiredOtpdate <= DateTime.Now).FirstOrDefault();
+                    if (row != null)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

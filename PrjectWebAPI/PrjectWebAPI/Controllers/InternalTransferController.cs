@@ -18,6 +18,10 @@ namespace PrjectWebAPI.Controllers
             _internalTransferService = internalTransferService;
         }
 
+        /// <summary>
+        /// Lấy danh sách hình thức thanh toán phí 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetPaymentFeeType")]
         public ResponeseMessage GetPaymentFeeType()
         {
@@ -33,6 +37,29 @@ namespace PrjectWebAPI.Controllers
             {
                 rs.Status = 0;
                 rs.Message = "Get payment fee type failed!";
+            }
+            return rs;
+        }
+
+        /// <summary>
+        /// Kiểm tra OTP có hợp lệ
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("CheckOTPTransaction")]
+        public ResponeseMessage CheckOTPTransaction(CheckOTPTransaction model)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var isvalid = _internalTransferService.CheckOTPTransaction(model);
+            if (isvalid)
+            {
+                rs.Status = 200;
+                rs.Message = "OTP is Valid!";
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "OTP is inValid!";
             }
             return rs;
         }
