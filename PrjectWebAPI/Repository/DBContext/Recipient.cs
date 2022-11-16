@@ -16,7 +16,9 @@ namespace Repository.DBContext
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
+        public int? BankId { get; set; }
 
+        public virtual PaymentFeeType Bank { get; set; }
         public virtual UserManage User { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace Repository.DBContext
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<BankReference> BankReferences { get; set; }
         public virtual DbSet<DebtReminder> DebtReminders { get; set; }
+        public virtual DbSet<OtpTable> OtpTables { get; set; }
         public virtual DbSet<PaymentFeeType> PaymentFeeTypes { get; set; }
         public virtual DbSet<Recipient> Recipients { get; set; }
         public virtual DbSet<TransactionBanking> TransactionBankings { get; set; }
@@ -41,6 +42,11 @@ namespace Repository.DBContext
             {
                 entity.ToTable("Account");
 
+                entity.HasIndex(e => e.OtpId, "OtpID");
+
+                entity.HasIndex(e => e.Username, "Username")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("ID");
@@ -49,13 +55,9 @@ namespace Repository.DBContext
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.CreatedOtpdate).HasColumnName("CreatedOTPDate");
-
-                entity.Property(e => e.ExpiredOtpdate).HasColumnName("ExpiredOTPDate");
-
-                entity.Property(e => e.Otp)
-                    .HasMaxLength(255)
-                    .HasColumnName("OTP");
+                entity.Property(e => e.OtpId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("OtpID");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -78,6 +80,11 @@ namespace Repository.DBContext
                     .HasForeignKey<Account>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Account_fk0");
+
+                entity.HasOne(d => d.Otp)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.OtpId)
+                    .HasConstraintName("Account_ibfk_1");
             });
 
             modelBuilder.Entity<BankReference>(entity =>
@@ -140,6 +147,28 @@ namespace Repository.DBContext
                     .HasConstraintName("Debt_reminder_fk0");
             });
 
+            modelBuilder.Entity<OtpTable>(entity =>
+            {
+                entity.ToTable("OTP_Table");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.Otp)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("OTP");
+
+                entity.Property(e => e.TransactionId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("TransactionID");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("UserID");
+            });
+
             modelBuilder.Entity<PaymentFeeType>(entity =>
             {
                 entity.ToTable("PaymentFeeType");
@@ -159,11 +188,17 @@ namespace Repository.DBContext
 
             modelBuilder.Entity<Recipient>(entity =>
             {
+                entity.HasIndex(e => e.BankId, "BankID");
+
                 entity.HasIndex(e => e.UserId, "Recipients_fk0");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("ID");
+
+                entity.Property(e => e.BankId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("BankID");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(255);
 
@@ -186,6 +221,11 @@ namespace Repository.DBContext
                     .HasColumnType("int(255)")
                     .HasColumnName("UserID");
 
+                entity.HasOne(d => d.Bank)
+                    .WithMany(p => p.Recipients)
+                    .HasForeignKey(d => d.BankId)
+                    .HasConstraintName("Recipients_ibfk_1");
+
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Recipients)
                     .HasForeignKey(d => d.UserId)
@@ -196,6 +236,8 @@ namespace Repository.DBContext
             modelBuilder.Entity<TransactionBanking>(entity =>
             {
                 entity.ToTable("Transaction_banking");
+
+                entity.HasIndex(e => e.OtpId, "OtpID");
 
                 entity.HasIndex(e => e.TransactionTypeId, "Transaction_banking_fk0");
 
@@ -211,8 +253,6 @@ namespace Repository.DBContext
                     .HasColumnType("int(11)")
                     .HasColumnName("BankReferenceID");
 
-                entity.Property(e => e.CeatedOtpdate).HasColumnName("CeatedOTPDate");
-
                 entity.Property(e => e.Content)
                     .IsRequired()
                     .HasMaxLength(255);
@@ -221,13 +261,11 @@ namespace Repository.DBContext
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.ExpiredOtpdate).HasColumnName("ExpiredOTPDate");
-
                 entity.Property(e => e.Money).HasColumnType("decimal(10,0)");
 
-                entity.Property(e => e.Otp)
-                    .HasMaxLength(255)
-                    .HasColumnName("OTP");
+                entity.Property(e => e.OtpId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("OtpID");
 
                 entity.Property(e => e.PaymentFeeTypeId)
                     .HasColumnType("int(11)")
@@ -256,16 +294,19 @@ namespace Repository.DBContext
                     .HasForeignKey(d => d.BankReferenceId)
                     .HasConstraintName("Transaction_banking_fk2");
 
+                entity.HasOne(d => d.Otp)
+                    .WithMany(p => p.TransactionBankings)
+                    .HasForeignKey(d => d.OtpId)
+                    .HasConstraintName("Transaction_banking_ibfk_1");
+
                 entity.HasOne(d => d.PaymentFeeType)
                     .WithMany(p => p.TransactionBankings)
                     .HasForeignKey(d => d.PaymentFeeTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Transaction_banking_fk1");
 
                 entity.HasOne(d => d.TransactionType)
                     .WithMany(p => p.TransactionBankings)
                     .HasForeignKey(d => d.TransactionTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Transaction_banking_fk0");
             });
 
@@ -293,6 +334,9 @@ namespace Repository.DBContext
             modelBuilder.Entity<UserManage>(entity =>
             {
                 entity.ToTable("User_manage");
+
+                entity.HasIndex(e => e.Email, "Email")
+                    .IsUnique();
 
                 entity.HasIndex(e => e.Stk, "STK")
                     .IsUnique();

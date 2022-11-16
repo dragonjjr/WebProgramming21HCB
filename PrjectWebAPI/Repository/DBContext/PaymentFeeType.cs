@@ -9,6 +9,7 @@ namespace Repository.DBContext
     {
         public PaymentFeeType()
         {
+            Recipients = new HashSet<Recipient>();
             TransactionBankings = new HashSet<TransactionBanking>();
         }
 
@@ -20,6 +21,7 @@ namespace Repository.DBContext
         public DateTime? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
 
+        public virtual ICollection<Recipient> Recipients { get; set; }
         public virtual ICollection<TransactionBanking> TransactionBankings { get; set; }
     }
 }
