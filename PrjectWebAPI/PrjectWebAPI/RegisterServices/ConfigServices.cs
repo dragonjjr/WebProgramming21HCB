@@ -13,6 +13,7 @@ namespace PrjectWebAPI.RegisterServices
             services.AddScoped<IEmployeeService, EmployeeService>();
             //services.AddScoped<IInternalTransferService, InternalTransferService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IEmailService, EmailService>();
             return services;
         }
 
@@ -20,6 +21,7 @@ namespace PrjectWebAPI.RegisterServices
         {
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
             return services;
         }
     }

@@ -16,15 +16,30 @@ namespace Repository.Repositories
         {
             this.dbContext = _dbContext;
         }
+
+        /// <summary>
+        /// Tìm người thụ hưởng/ người nhận theo Id
+        /// </summary>
+        /// <returns></returns>
         public Recipient FindRecipientById(int id)
         {
             return dbContext.Recipients.Find(id);
         }
+
+        /// <summary>
+        /// Lấy thông tin khách hàng theo id
+        /// </summary>
+        /// <returns></returns>
         public UserManage FindUserById(int id)
         {
             return dbContext.UserManages.Find(id);
         }
 
+
+        /// <summary>
+        /// Tìm người nhận/ người thụ hưởng theo stk và id người gửi
+        /// </summary>
+        /// <returns></returns>
         public bool FindRecipientByStkAndUserId(RecipientInput recipientInput)
         {
             var existRecipient = dbContext.Recipients.Where(x => x.Stk == recipientInput.STK && x.UserId == recipientInput.UserID).FirstOrDefault();
@@ -35,6 +50,10 @@ namespace Repository.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Thêm mới người thụ hưởng/ người nhận
+        /// </summary>
+        /// <returns></returns>
         public bool AddRecipient(RecipientInput recipientInput)
         {
             try
@@ -62,6 +81,10 @@ namespace Repository.Repositories
             }
         }
 
+        /// <summary>
+        /// Xóa người thụ hưởng/ người nhận
+        /// </summary>
+        /// <returns></returns>
         public bool DeleteRecipient(int id)
         {
             var recipient = FindRecipientById(id);
@@ -74,6 +97,10 @@ namespace Repository.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Lấy thông tin số dư của khách hàng
+        /// </summary>
+        /// <returns></returns>
         public UserBalance GetUserBalance(int id)
         {
             var existUser = FindUserById(id);
@@ -87,6 +114,10 @@ namespace Repository.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Lấy danh sách người thụ hưởng/ người nhận của khách hàng
+        /// </summary>
+        /// <returns></returns>
         public List<RecipientOutput> GetListRecipientByUserId(int id)
         {
             var existUser = FindUserById(id);
@@ -97,6 +128,10 @@ namespace Repository.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Cập nhật người thụ hưởng/ người nhận
+        /// </summary>
+        /// <returns></returns>
         public bool UpdateRecipient(int id ,RecipientEdit recipientEdit)
         {
             var existRecipient = FindRecipientById(id);

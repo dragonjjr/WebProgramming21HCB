@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Common.Helpers;
 
 namespace Common
 {
@@ -89,5 +90,20 @@ namespace Common
         public string STK { get; set; }
 
         public decimal SoDu { get; set; }
+    }
+
+
+    public class EmailDTO
+    {
+        public string To { get; set; }
+
+        public string Subject { get; set; }
+
+        public string Body { get; set; }
+    }
+
+    public class EmailInput
+    {
+        public string Email { get; set; }
     }
 }

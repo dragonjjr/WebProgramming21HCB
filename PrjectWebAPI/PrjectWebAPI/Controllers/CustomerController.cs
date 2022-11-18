@@ -10,12 +10,16 @@ namespace PrjectWebAPI.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+
         public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
         }
 
-
+        /// <summary>
+        /// Thêm người thụ hưởng/ người nhận
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("Recipient/AddRecipient")]
         public ResponeseMessage AddRecipient([FromBody] RecipientInput recipientInput)
         {
@@ -34,6 +38,10 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
+        /// <summary>
+        /// Xem thông tin số tài khoản và số dư của khách hàng
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Recipient/{id}")]
         public ResponeseMessage GetUserBalance(int id)
         {
@@ -54,6 +62,10 @@ namespace PrjectWebAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Cập nhật người thụ hưởng/ người nhận
+        /// </summary>
+        /// <returns></returns>
         [HttpPatch("Recipient/{id}")]
         public ResponeseMessage UpdateRecipient(int id, [FromBody] RecipientEdit recipientEdit)
         {
@@ -74,6 +86,10 @@ namespace PrjectWebAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Xóa người thụ hưởng/ người nhận
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete("Recipient/{id}")]
         public ResponeseMessage DeleteRecipient(int id)
         {
@@ -92,6 +108,10 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
+        /// <summary>
+        /// Lấy danh sách người nhận của một khách hàng
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ResponeseMessage GetListRecipientByUserId(int id)
         {
@@ -111,7 +131,5 @@ namespace PrjectWebAPI.Controllers
             return rs;
 
         }
-
-        
     }
 }
