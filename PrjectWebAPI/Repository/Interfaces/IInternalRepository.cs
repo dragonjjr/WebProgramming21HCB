@@ -11,5 +11,9 @@ namespace Repository.Interfaces
     {
         List<PaymentFeeTypeVM> GetPaymentFeeType();
         bool CheckOTPTransaction(CheckOTPTransaction model);
+        RecipientOutput ViewRecipientBySTK(string STK);
+        UserViewModel GetListAccount(int UserID);
+        bool InternalTransfer(InternalTransfer model);
+        bool ExternalTransfer(ExternalTransfer model);
     }
 }

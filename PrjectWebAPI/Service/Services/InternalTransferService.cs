@@ -1,4 +1,5 @@
 ﻿using Common;
+using Org.BouncyCastle.Bcpg;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,26 @@ namespace Service.Services
         public bool CheckOTPTransaction(CheckOTPTransaction model)
         {
             return _IinternalRepository.CheckOTPTransaction(model);
+        }
+
+        public RecipientOutput ViewRecipientBySTK(string STK)
+        {
+            return _IinternalRepository.ViewRecipientBySTK( STK);
+        }
+
+        public UserViewModel GetListAccount(int UserID)
+        {
+            return _IinternalRepository.GetListAccount(UserID);
+        }
+
+        public bool InternalTransfer(InternalTransfer model)
+        {
+            return _IinternalRepository.InternalTransfer(model);
+        }
+
+        public bool ExternalTransfer(ExternalTransfer model)
+        {
+            return _IinternalRepository.ExternalTransfer(model);
         }
     }
 }

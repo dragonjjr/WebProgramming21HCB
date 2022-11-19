@@ -11,4 +11,31 @@ namespace Common
         public int TransactionID { get; set; }
         public string OTP { get; set; }
     }
+
+    public class InternalTransfer
+    {
+        public int Send_UserID { get; set; }
+        public string Send_STK { get; set; }
+        public decimal Send_Money { get; set; }
+
+        public string Receive_STK { get; set; }
+        public string Content { get; set; }
+        public int PaymentFeeTypeID { get; set; }
+        public int TransactionTypeID { get; set; }
+        public int BankReferenceId { get; set; }
+    }
+
+    public class ExternalTransfer
+    {
+        public int Send_UserID { get; set; }
+        public string Send_STK { get; set; }
+        public decimal Send_Money { get; set; }
+
+        public int Receive_BankID { get; set; }
+        public string Receive_STK { get; set; }
+        public string Content { get; set; }
+        public int PaymentFeeTypeID { get; set; }
+        public int TransactionTypeID { get; set; }
+        public int BankReferenceId { get; set; }
+    }
 }
