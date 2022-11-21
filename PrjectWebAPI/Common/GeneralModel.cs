@@ -42,6 +42,32 @@ namespace Common
         public bool IsStaff { get; set; }
     }
 
+    // Model cho các API quản lý danh sách nhân viên (Các chức năng quản lý cơ bản)
+    public class EmployeeInfoOutput
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Cmnd { get; set; }
+        public string Address { get; set; }
+        public string Stk { get; set; }
+        public decimal SoDu { get; set; }
+        public string BankKind { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+    }
+    public class EmployeeInfoInput
+    {
+        public string Name { get; set; }
+        public string Cmnd { get; set; }
+        public string Address { get; set; }
+        public string Stk { get; set; }
+        public decimal SoDu { get; set; }
+        public string BankKind { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+    }
+    // End.
+
     public class RechargeInput
     {
         public int BankID { get; set; }
