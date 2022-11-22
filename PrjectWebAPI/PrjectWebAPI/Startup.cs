@@ -13,6 +13,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using PrjectWebAPI.RegisterServices;
 using Repository.DBContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IO;
+using System.Reflection;
 
 namespace PrjectWebAPI
 {
@@ -33,9 +38,52 @@ namespace PrjectWebAPI
             services.AddDbContext<_6IVYVvfe0wContext>();
             services.ListServices();
             services.ListRepository();
+            object value = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    ClockSkew = TimeSpan.Zero,
+                    RequireExpirationTime = true,
+                    ValidateTokenReplay = true,
+                };
+            });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PrjectWebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectWebAPI", Version = "v1" });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
@@ -46,7 +94,7 @@ namespace PrjectWebAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PrjectWebAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectWebAPI v1"));
             }
 
             app.UseHttpsRedirection();
