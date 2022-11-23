@@ -132,4 +132,44 @@ namespace Common
     {
         public string Email { get; set; }
     }
+
+    public class AccountInput
+    {
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+    }
+    public class ChangePasswordInput
+    {
+        public int Id { get; set; }
+
+        public string CurrentPassword { get; set; }
+
+        public string NewPassword { get; set; }
+
+        public string ConfirmNewPassword { get; set; }
+    }
+
+    public class UserIdInfor
+    {
+        public int Id { get; set; }
+    }
+
+    public class AccountTokenInfor
+    {
+        public int Id { get; set; }
+        public string RefreshToken { get; set; }
+    }
+
+    public class TransactionVM
+    {
+        public int Id { get; set; }
+        public string STKSend { get; set; }
+        public string STKReceive { get; set; }
+        public string Content { get; set; }
+        public decimal Money { get; set; }
+        public string TransactionType { get; set; }
+        public string PaymentFeeType { get; set; }
+        public string BankReference { get; set; }
+    }
 }
