@@ -10,6 +10,7 @@ namespace PrjectWebAPI.RegisterServices
     {
         public static IServiceCollection ListServices(this IServiceCollection services)
         {
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             //services.AddScoped<IInternalTransferService, InternalTransferService>();
@@ -20,6 +21,7 @@ namespace PrjectWebAPI.RegisterServices
 
         public static IServiceCollection ListRepository(this IServiceCollection services)
         {
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAdministratorRepository, AdministratorRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();

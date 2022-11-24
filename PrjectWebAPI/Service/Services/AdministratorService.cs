@@ -28,5 +28,19 @@ namespace Service.Services
             return this._IAdministratorRepository.GetListEmployee(searchName);
         }
 
+        public bool AddNewEmployee(EmployeeAccountInput employeeInfo)
+        {
+            return this._IAdministratorRepository.AddNewEmployee(employeeInfo);
+        }
+
+        public bool UpdateEmployeeInfo(int employeeId, EmployeeInfoInput employeeInfo)
+        {
+            return this._IAdministratorRepository.UpdateEmployeeInfo(employeeId,employeeInfo);
+        }
+
+        public bool DeleteEmployee(int employeeId)
+        {
+            return this._IAdministratorRepository.DeleteEmployee(employeeId);
+        }
     }
 }

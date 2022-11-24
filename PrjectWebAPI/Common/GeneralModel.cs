@@ -35,7 +35,7 @@ namespace Common
         public string Cmnd { get; set; }
         public string Address { get; set; }
         public string Stk { get; set; }
-        public decimal SoDu { get; set; }
+        public decimal? SoDu { get; set; }
         public string BankKind { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -50,19 +50,22 @@ namespace Common
         public string Cmnd { get; set; }
         public string Address { get; set; }
         public string Stk { get; set; }
-        public decimal SoDu { get; set; }
+        public decimal? SoDu { get; set; }
         public string BankKind { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+    }
+    public class EmployeeAccountInput
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public EmployeeInfoInput Infor { get; set; }
     }
     public class EmployeeInfoInput
     {
         public string Name { get; set; }
         public string Cmnd { get; set; }
         public string Address { get; set; }
-        public string Stk { get; set; }
-        public decimal SoDu { get; set; }
-        public string BankKind { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     }
@@ -115,7 +118,7 @@ namespace Common
     {
         public string STK { get; set; }
 
-        public decimal SoDu { get; set; }
+        public decimal? SoDu { get; set; }
     }
 
 
@@ -131,5 +134,45 @@ namespace Common
     public class EmailInput
     {
         public string Email { get; set; }
+    }
+
+    public class AccountInput
+    {
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+    }
+    public class ChangePasswordInput
+    {
+        public int Id { get; set; }
+
+        public string CurrentPassword { get; set; }
+
+        public string NewPassword { get; set; }
+
+        public string ConfirmNewPassword { get; set; }
+    }
+
+    public class UserIdInfor
+    {
+        public int Id { get; set; }
+    }
+
+    public class AccountTokenInfor
+    {
+        public int Id { get; set; }
+        public string RefreshToken { get; set; }
+    }
+
+    public class TransactionVM
+    {
+        public int Id { get; set; }
+        public string STKSend { get; set; }
+        public string STKReceive { get; set; }
+        public string Content { get; set; }
+        public decimal Money { get; set; }
+        public string TransactionType { get; set; }
+        public string PaymentFeeType { get; set; }
+        public string BankReference { get; set; }
     }
 }

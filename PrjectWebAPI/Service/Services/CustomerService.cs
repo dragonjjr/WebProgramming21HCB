@@ -13,9 +13,9 @@ namespace Service.Services
     {
         private ICustomerRepository _IcustomerRepository;
 
-        public CustomerService(ICustomerRepository IemployeeRepository)
+        public CustomerService(ICustomerRepository IcustomerRepository)
         {
-            _IcustomerRepository = IemployeeRepository;
+            _IcustomerRepository = IcustomerRepository;
         }
 
         public bool AddRecipient(RecipientInput recipientInput)

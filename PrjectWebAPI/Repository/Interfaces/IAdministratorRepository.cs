@@ -8,5 +8,8 @@ namespace Repository.Interfaces
     {
         List<EmployeeInfoOutput> GetListEmployee(string searchName);
         EmployeeInfoOutput FindEmployeeById(int id);
+        bool AddNewEmployee(EmployeeAccountInput employeeInfo);
+        bool UpdateEmployeeInfo(int employeeId, EmployeeInfoInput employeeInfo);
+        bool DeleteEmployee(int employeeId);
     }
 }
