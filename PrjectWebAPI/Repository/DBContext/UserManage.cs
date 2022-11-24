@@ -18,7 +18,7 @@ namespace Repository.DBContext
         public string Cmnd { get; set; }
         public string Address { get; set; }
         public string Stk { get; set; }
-        public decimal SoDu { get; set; }
+        public decimal? SoDu { get; set; }
         public string BankKind { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

@@ -42,7 +42,7 @@ namespace Repository.DBContext
             {
                 entity.ToTable("Account");
 
-                entity.HasIndex(e => e.OtpId, "OtpID");
+                entity.HasIndex(e => e.OtpId, "OtpId");
 
                 entity.HasIndex(e => e.Username, "Username")
                     .IsUnique();
@@ -55,9 +55,7 @@ namespace Repository.DBContext
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.OtpId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("OtpID");
+                entity.Property(e => e.OtpId).HasColumnType("int(11)");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -237,7 +235,7 @@ namespace Repository.DBContext
             {
                 entity.ToTable("Transaction_banking");
 
-                entity.HasIndex(e => e.OtpId, "OtpID");
+                entity.HasIndex(e => e.OtpId, "OtpId");
 
                 entity.HasIndex(e => e.TransactionTypeId, "Transaction_banking_fk0");
 
@@ -263,9 +261,7 @@ namespace Repository.DBContext
 
                 entity.Property(e => e.Money).HasColumnType("decimal(10,0)");
 
-                entity.Property(e => e.OtpId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("OtpID");
+                entity.Property(e => e.OtpId).HasColumnType("int(11)");
 
                 entity.Property(e => e.PaymentFeeTypeId)
                     .HasColumnType("int(11)")
@@ -349,9 +345,7 @@ namespace Repository.DBContext
                     .IsRequired()
                     .HasMaxLength(255);
 
-                entity.Property(e => e.BankKind)
-                    .IsRequired()
-                    .HasMaxLength(255);
+                entity.Property(e => e.BankKind).HasMaxLength(255);
 
                 entity.Property(e => e.Cmnd)
                     .IsRequired()
