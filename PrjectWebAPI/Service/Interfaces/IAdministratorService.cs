@@ -10,5 +10,6 @@ namespace Service.Interfaces
         bool AddNewEmployee(EmployeeAccountInput employeeInfo);
         bool UpdateEmployeeInfo(int employeeId, EmployeeInfoInput employeeInfo);
         bool DeleteEmployee(int employeeId);
+        List<TransactionVM> GetListTransaction();
     }
 }

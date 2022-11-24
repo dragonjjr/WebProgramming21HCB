@@ -175,4 +175,16 @@ namespace Common
         public string PaymentFeeType { get; set; }
         public string BankReference { get; set; }
     }
+
+    public class LoginOutput
+    {
+        public int Id { get; set; }
+        public string RefreshToken { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public bool LoggedIn { get; set; }
+
+        public int Status { get; set; }
+    }
 }

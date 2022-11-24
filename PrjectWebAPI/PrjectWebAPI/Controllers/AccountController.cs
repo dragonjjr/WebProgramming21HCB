@@ -1,4 +1,5 @@
 ﻿using Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PrjectWebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -22,16 +24,17 @@ namespace PrjectWebAPI.Controllers
             _emailService = emailService;
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public ResponeseMessage Login([FromBody] AccountInput accountInput)
         {
             ResponeseMessage rs = new ResponeseMessage();
             var model = _accountService.Login(accountInput);
-            if (model)
+            if (model.LoggedIn)
             {
                 rs.Status = 200;
                 rs.Message = "Login successfully!";
-                rs.Data = _accountService.GetUserIdAndToken(accountInput.Username);
+                rs.Data = model;
             }
             else
             {

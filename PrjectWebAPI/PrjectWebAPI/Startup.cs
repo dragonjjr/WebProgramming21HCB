@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using Common;
 
 namespace PrjectWebAPI
 {
@@ -26,6 +27,11 @@ namespace PrjectWebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Helpers.JWT_key = configuration["JWT:Key"];
+            Helpers.JWT_Issuer = configuration["JWT:Issuer"];
+            Helpers.JWT_Time = int.Parse(configuration["JWT:Time"]);
+            Helpers.JWT_Audience = configuration["JWT:Audience"];
+            Helpers.conn = configuration.GetConnectionString("ConnectionString");
         }
 
         public IConfiguration Configuration { get; }

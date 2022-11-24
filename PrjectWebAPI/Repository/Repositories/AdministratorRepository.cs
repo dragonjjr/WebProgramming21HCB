@@ -203,5 +203,28 @@ namespace Repository.Repositories
                 return false;
             }
         }
+
+        /// <summary>
+        /// API Get List Transaction banking
+        /// </summary>
+        /// <returns></returns>
+        public List<TransactionVM> GetListTransaction()
+        {
+            return dbContext.TransactionBankings
+                        .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId, TransactionTypeName = d2.Name })
+                        .Join(dbContext.PaymentFeeTypes, d1 => d1.PaymentFeeTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.TransactionTypeName, PaymentFeeTypeName = d2.Name, d1.BankReferenceId })
+                        .Join(dbContext.BankReferences, d1 => d1.BankReferenceId, d2 => d2.Id,
+                        (d1, d2) => new TransactionVM()
+                        {
+                            Id = d1.Id,
+                            STKReceive = d1.Stkreceive,
+                            STKSend = d1.Stksend,
+                            Content = d1.Content,
+                            Money = d1.Money,
+                            TransactionType = d1.TransactionTypeName,
+                            PaymentFeeType = d1.PaymentFeeTypeName,
+                            BankReference = d2.Name
+                        }).ToList();
+        }
     }
 }

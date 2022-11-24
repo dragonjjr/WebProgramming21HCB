@@ -42,5 +42,10 @@ namespace Service.Services
         {
             return this._IAdministratorRepository.DeleteEmployee(employeeId);
         }
+
+        public List<TransactionVM> GetListTransaction()
+        {
+            return _IAdministratorRepository.GetListTransaction();
+        }
     }
 }

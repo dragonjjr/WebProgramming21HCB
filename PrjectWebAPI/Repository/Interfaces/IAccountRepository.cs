@@ -9,7 +9,7 @@ namespace Repository.Interfaces
 {
     public interface IAccountRepository
     {
-        bool Login(AccountInput accountInput);
+        LoginOutput Login(AccountInput accountInput);
 
         bool AuthOTP();
 
