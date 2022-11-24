@@ -11,8 +11,12 @@ namespace Service.Interfaces
     {
         LoginOutput Login(AccountInput accountInput);
 
-        bool ChangePassword(ChangePasswordInput changePasswordInput);
+        bool ChangePassword(int Id, ChangePasswordInput changePasswordInput);
 
         AccountTokenInfor GetUserIdAndToken(string username);
+
+        int GetAccountIdByEmail(string email);
+
+        ResponeseMessage ResetPassword(int Id, ResetPasswordInput resetPasswordInput);
     }
 }

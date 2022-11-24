@@ -18,9 +18,14 @@ namespace Service.Services
             _IaccountRepository = IaccountRepository;
         }
 
-        public bool ChangePassword(ChangePasswordInput changePasswordInput)
+        public bool ChangePassword(int Id, ChangePasswordInput changePasswordInput)
         {
-            return _IaccountRepository.ChangePassword(changePasswordInput);
+            return _IaccountRepository.ChangePassword(Id, changePasswordInput);
+        }
+
+        public int GetAccountIdByEmail(string email)
+        {
+            return _IaccountRepository.GetAccountIdByEmail(email);
         }
 
         public AccountTokenInfor GetUserIdAndToken(string username)
@@ -31,6 +36,11 @@ namespace Service.Services
         public LoginOutput Login(AccountInput accountInput)
         {
             return _IaccountRepository.Login(accountInput);
+        }
+
+        public ResponeseMessage ResetPassword(int Id, ResetPasswordInput resetPasswordInput)
+        {
+            return _IaccountRepository.ResetPassword(Id, resetPasswordInput);
         }
     }
 }

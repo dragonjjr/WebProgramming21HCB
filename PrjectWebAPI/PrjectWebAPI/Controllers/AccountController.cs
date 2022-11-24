@@ -44,24 +44,32 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
-        [HttpPost("ChangePassword")]
-        public ResponeseMessage ResetPassword([FromBody] ChangePasswordInput changePasswordInput)
+
+        /// <summary>
+        /// API Change password by Id
+        /// </summary>
+        /// <param name="AccountId"></param>
+        /// <returns></returns>
+        [HttpPatch("ChangePassword/{id}")]
+        public ResponeseMessage ChangePassword(int id, [FromBody] ChangePasswordInput changePasswordInput)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _accountService.ChangePassword(changePasswordInput);
+            var model = _accountService.ChangePassword(id, changePasswordInput);
             if (model)
             {
                 rs.Status = 200;
-                rs.Message = "Reset password successfully!";
+                rs.Message = "Change password successfully!";
             }
             else
             {
                 rs.Status = 0;
-                rs.Message = "Reset password failed!";
+                rs.Message = "Change password failed!";
             }
             return rs;
         }
 
+
+        [AllowAnonymous]
         [HttpPost("ForgotPassword")]
         public ResponeseMessage SendMail([FromBody] EmailInput emailInput)
         {
@@ -72,11 +80,36 @@ namespace PrjectWebAPI.Controllers
             {
                 rs.Status = 200;
                 rs.Message = "Send otp code successfully!";
+                rs.Data = _accountService.GetAccountIdByEmail(emailInput.Email);
             }
             else
             {
                 rs.Status = 0;
                 rs.Message = "Send otp code failed!";
+            }
+            return rs;
+        }
+
+
+        /// <summary>
+        /// API Reset password by Id
+        /// </summary>
+        /// <param name="AccountId"></param>
+        /// <returns></returns>
+        [HttpPatch("ForgotPassword/ResetPassword/{id}")]
+        public ResponeseMessage ResetPassword(int id, [FromBody] ResetPasswordInput resetPasswordInput)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _accountService.ResetPassword(id, resetPasswordInput);
+            if (model.Status != 0)
+            {
+                rs.Status = 200;
+                rs.Message = model.Message;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = model.Message;
             }
             return rs;
         }

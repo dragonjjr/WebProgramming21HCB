@@ -42,12 +42,20 @@ namespace Repository.Repositories
         /// <returns></returns>
         public bool FindRecipientByStkAndUserId(RecipientInput recipientInput)
         {
-            var existRecipient = dbContext.Recipients.Where(x => x.Stk == recipientInput.STK && x.UserId == recipientInput.UserID).FirstOrDefault();
-            if (existRecipient != null)
+            try
             {
-                return true;
+                var existRecipient = dbContext.Recipients.Where(x => x.Stk == recipientInput.STK && x.UserId == recipientInput.UserID).FirstOrDefault();
+                if (existRecipient != null)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                throw ex;
+                return false;
+            }
         }
 
         /// <summary>
@@ -87,14 +95,22 @@ namespace Repository.Repositories
         /// <returns></returns>
         public bool DeleteRecipient(int id)
         {
-            var recipient = FindRecipientById(id);
-            if (recipient != null)
+            try
             {
-                dbContext.Recipients.Remove(recipient);
-                dbContext.SaveChanges();
-                return true;
+                var recipient = FindRecipientById(id);
+                if (recipient != null)
+                {
+                    dbContext.Recipients.Remove(recipient);
+                    dbContext.SaveChanges();
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                throw ex;
+                return false;
+            }
         }
 
         /// <summary>
@@ -103,15 +119,23 @@ namespace Repository.Repositories
         /// <returns></returns>
         public UserBalance GetUserBalance(int id)
         {
-            var existUser = FindUserById(id);
-            if (existUser != null)
+            try
             {
-                UserBalance userBalance = new UserBalance();
-                userBalance.SoDu = existUser.SoDu;
-                userBalance.STK = existUser.Stk;
-                return userBalance;
+                var existUser = FindUserById(id);
+                if (existUser != null)
+                {
+                    UserBalance userBalance = new UserBalance();
+                    userBalance.SoDu = existUser.SoDu;
+                    userBalance.STK = existUser.Stk;
+                    return userBalance;
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                throw ex;
+                //return false;
+            }
         }
 
         /// <summary>
@@ -120,12 +144,20 @@ namespace Repository.Repositories
         /// <returns></returns>
         public List<RecipientOutput> GetListRecipientByUserId(int id)
         {
-            var existUser = FindUserById(id);
-            if (existUser != null)
+            try
             {
-                return dbContext.Recipients.Where(x => x.UserId == id).Select(x => new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
+                var existUser = FindUserById(id);
+                if (existUser != null)
+                {
+                    return dbContext.Recipients.Where(x => x.UserId == id).Select(x => new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                throw ex;
+                //return false;
+            }
         }
 
         /// <summary>
@@ -134,15 +166,23 @@ namespace Repository.Repositories
         /// <returns></returns>
         public bool UpdateRecipient(int id ,RecipientEdit recipientEdit)
         {
-            var existRecipient = FindRecipientById(id);
-            if(existRecipient != null)
+            try
             {
-                existRecipient.Stk = recipientEdit.STK;
-                existRecipient.Name = recipientEdit.Name;
-                dbContext.SaveChanges();
-                return true;
+                var existRecipient = FindRecipientById(id);
+                if (existRecipient != null)
+                {
+                    existRecipient.Stk = recipientEdit.STK;
+                    existRecipient.Name = recipientEdit.Name;
+                    dbContext.SaveChanges();
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                throw ex;
+                return false;
+            }
         }
     }
 }

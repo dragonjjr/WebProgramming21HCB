@@ -11,12 +11,12 @@ namespace Repository.Interfaces
     {
         LoginOutput Login(AccountInput accountInput);
 
-        bool AuthOTP();
-
-        bool ChangePassword(ChangePasswordInput  changePasswordInput);
+        bool ChangePassword(int Id,ChangePasswordInput  changePasswordInput);
 
         AccountTokenInfor GetUserIdAndToken(string username);
 
-        int GetUserIdByEmail(string email);
+        int GetAccountIdByEmail(string email);
+
+        ResponeseMessage ResetPassword(int Id,ResetPasswordInput resetPasswordInput);
     }
 }

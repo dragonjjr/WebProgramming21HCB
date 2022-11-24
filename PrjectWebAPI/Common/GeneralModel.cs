@@ -144,8 +144,6 @@ namespace Common
     }
     public class ChangePasswordInput
     {
-        public int Id { get; set; }
-
         public string CurrentPassword { get; set; }
 
         public string NewPassword { get; set; }
@@ -186,5 +184,12 @@ namespace Common
         public bool LoggedIn { get; set; }
 
         public int Status { get; set; }
+    }
+
+    public class ResetPasswordInput
+    {
+        public string OTPCode { get; set; }
+        public string NewPassword { get; set; }
+        public string ConfirmNewPassword { get; set; }
     }
 }
