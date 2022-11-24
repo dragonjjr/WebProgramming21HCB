@@ -5,18 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Interfaces
+namespace Service.Interfaces
 {
-    public interface IAccountRepository
+    public interface IAccountService
     {
         LoginOutput Login(AccountInput accountInput);
 
-        bool AuthOTP();
-
-        bool ChangePassword(ChangePasswordInput  changePasswordInput);
+        bool ChangePassword(ChangePasswordInput changePasswordInput);
 
         AccountTokenInfor GetUserIdAndToken(string username);
-
-        int GetUserIdByEmail(string email);
     }
 }

@@ -20,7 +20,7 @@ namespace Service.Services
 
         public bool ChangePassword(ChangePasswordInput changePasswordInput)
         {
-            throw new NotImplementedException();
+            return _IaccountRepository.ChangePassword(changePasswordInput);
         }
 
         public AccountTokenInfor GetUserIdAndToken(string username)
@@ -28,7 +28,7 @@ namespace Service.Services
             return _IaccountRepository.GetUserIdAndToken(username);
         }
 
-        public bool Login(AccountInput accountInput)
+        public LoginOutput Login(AccountInput accountInput)
         {
             return _IaccountRepository.Login(accountInput);
         }

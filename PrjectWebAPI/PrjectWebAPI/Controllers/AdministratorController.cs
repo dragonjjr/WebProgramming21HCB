@@ -149,5 +149,27 @@ namespace PrjectWebAPI.Controllers
 
         }
 
+        /// <summary>
+        /// API Get List Transaction Banking All Customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ViewTransaction")]
+        public ResponeseMessage GetListTransaction()
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _administratorService.GetListTransaction();
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.Message = "Get list transaction successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Get list transaction failed!";
+            }
+            return rs;
+        }
     }
 }

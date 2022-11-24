@@ -3,7 +3,10 @@ using Repository.DBContext;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,17 +19,39 @@ namespace Repository.Repositories
         {
             this.dbContext = _dbContext;
         }
-        public bool Login(AccountInput accountInput)
+        public LoginOutput Login(AccountInput VM)
         {
-            var result = dbContext.Accounts.Where(x => x.Username == accountInput.Username && x.Password == accountInput.Password).FirstOrDefault();
-            if (result != null)
+            LoginOutput rs = new LoginOutput();
+            if (!string.IsNullOrEmpty(VM.Username) && !string.IsNullOrEmpty(VM.Password))
             {
-                return true;
+                string pwd = VM.Password;
+                using (var sha256 = SHA256.Create())
+                {
+                    //byte[] PasswordAsBytes = Encoding.UTF8.GetBytes(VM.Password);
+                    //string pwd = Convert.ToBase64String(PasswordAsBytes);
+                    Account user = dbContext.Accounts.Where(x => x.Username == VM.Username && x.Password == pwd).FirstOrDefault();
+
+                    if (user != null)
+                    {
+                        var authClaims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.Username),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        };
+                        var token = Helpers.CreateToken(authClaims);
+                        var refreshToken = Helpers.GenerateRefreshToken();
+                        user.RefreshToken = refreshToken;
+                        user.ExpiredDate = DateTime.Now.AddDays(Helpers.JWT_Time);
+                        rs.AccessToken = new JwtSecurityTokenHandler().WriteToken(token);
+                        rs.RefreshToken = refreshToken;
+                        rs.Status = 200;
+                        rs.LoggedIn = true;
+                        dbContext.Accounts.Update(user);
+                        dbContext.SaveChanges();
+                    }
+                }
             }
-            else
-            {
-                return false;
-            }
+            return rs;
         }
         public bool AuthOTP()
         {
