@@ -1,34 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj": {}
+    "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj": {}
   },
   "projects": {
-    "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
+    "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj",
+        "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj",
-        "packagesPath": "C:\\Users\\tinh.pv\\.nuget\\packages\\",
-        "outputPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\obj\\",
+        "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj",
+        "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
+        "outputPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages",
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\tinh.pv\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.1.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
+          "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\System\\Components\\Packages": {},
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -47,6 +39,12 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.25.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -67,31 +65,23 @@
         }
       }
     },
-    "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj": {
+    "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
+        "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
         "projectName": "PrjectWebAPI",
-        "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
-        "packagesPath": "C:\\Users\\tinh.pv\\.nuget\\packages\\",
-        "outputPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\obj\\",
+        "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
+        "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
+        "outputPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages",
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\tinh.pv\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.1.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
+          "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\System\\Components\\Packages": {},
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -99,8 +89,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj": {
-                "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj"
+              "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj": {
+                "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj"
               }
             }
           }
@@ -115,6 +105,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -124,6 +118,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.17, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.17.0, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
@@ -169,31 +167,23 @@
         }
       }
     },
-    "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj": {
+    "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
+        "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
         "projectName": "Repository",
-        "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
-        "packagesPath": "C:\\Users\\tinh.pv\\.nuget\\packages\\",
-        "outputPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\obj\\",
+        "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
+        "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
+        "outputPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages",
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\tinh.pv\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.1.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
+          "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\System\\Components\\Packages": {},
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -201,8 +191,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
-                "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
+              "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
+                "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
               }
             }
           }
@@ -217,6 +207,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.4.2, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -226,6 +224,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.17, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[3.4.2, )"
             },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
@@ -260,31 +262,23 @@
         }
       }
     },
-    "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj": {
+    "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
+        "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
-        "packagesPath": "C:\\Users\\tinh.pv\\.nuget\\packages\\",
-        "outputPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Service\\obj\\",
+        "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
+        "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
+        "outputPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Service\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages",
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\tinh.pv\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.1.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
+          "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\System\\Components\\Packages": {},
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -292,11 +286,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
-                "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
+              "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
+                "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
               },
-              "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj": {
-                "projectPath": "D:\\Hoctap\\HK3\\CongNgheLapTrinhHienDai\\DoAn\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj"
+              "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj": {
+                "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj"
               }
             }
           }
@@ -310,6 +304,16 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.4.2, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[3.4.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
