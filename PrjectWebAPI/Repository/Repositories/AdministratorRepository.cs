@@ -107,6 +107,7 @@ namespace Repository.Repositories
                 newEmployee.CreatedDate = DateTime.Now;
                 newEmployee.IsStaff = true;
                 newEmployee.IsDeleted = false;
+                newEmployee.Stk = String.Empty;
 
                 dbContext.UserManages.Add(newEmployee);
 
