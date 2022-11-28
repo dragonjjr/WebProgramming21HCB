@@ -41,6 +41,18 @@ namespace PrjectWebAPI
         {
 
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AppCors", builder =>
+                {
+                    //for when you're running on localhost
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                    .AllowAnyHeader().AllowAnyMethod();
+
+
+                    //builder.WithOrigins("url from where you're trying to do the requests")
+                });
+            });
             services.AddDbContext<_6IVYVvfe0wContext>();
             services.ListServices();
             services.ListRepository();
@@ -107,6 +119,8 @@ namespace PrjectWebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AppCors");
 
             app.UseAuthorization();
 
