@@ -6,12 +6,13 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Component } from "react";
+import Login from "./views/account/Login";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Component />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/"
           element={
