@@ -157,5 +157,30 @@ namespace PrjectWebAPI.Controllers
             }
             return rs;
         }
+
+        /// <summary>
+        /// Chuyển khoản liên ngân hàng
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpGet("GetListTransactionByAcount")]
+        public ResponeseMessage GetListTransactionByAcount(string accountNumber, int typeTransaction)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _internalTransferService.GetListTransactionByAcount(accountNumber, typeTransaction);
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.Message = "Get list transaction successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Get list transaction failed!";
+            }
+            return rs;
+        }
+
     }
 }

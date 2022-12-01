@@ -1,6 +1,7 @@
 ﻿using Common;
 using Org.BouncyCastle.Bcpg;
 using Repository.Interfaces;
+using Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Service.Services
 {
-    public class InternalTransferService
+    public class InternalTransferService:IInternalTransferService
     {
         private IInternalRepository _IinternalRepository;
         public InternalTransferService(IInternalRepository IinternalRepository)
@@ -45,6 +46,11 @@ namespace Service.Services
         public bool ExternalTransfer(ExternalTransfer model)
         {
             return _IinternalRepository.ExternalTransfer(model);
+        }
+
+        public List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction)
+        {
+            return _IinternalRepository.GetListTransactionByAcount(accountNumber, typeTransaction);
         }
     }
 }

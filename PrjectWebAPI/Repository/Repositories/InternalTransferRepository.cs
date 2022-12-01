@@ -226,5 +226,37 @@ namespace Repository.Repositories
                 return false;
             }
         }
+
+        /// <summary>
+        /// Xem lịch sử giao dịch của một tài khoản
+        /// </summary>
+        /// <param name="typeTransaction">type = 0: send transaction, type = 1: receive transaction, type = 2: debt transaction</param>
+        /// <returns></returns>
+        public List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction)
+        {
+            try
+            {
+                return dbContext.TransactionBankings
+                            .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId, TransactionTypeName = d2.Name })
+                            .Join(dbContext.PaymentFeeTypes, d1 => d1.PaymentFeeTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.TransactionTypeName, PaymentFeeTypeName = d2.Name, d1.BankReferenceId })
+                            .Join(dbContext.BankReferences, d1 => d1.BankReferenceId, d2 => d2.Id,
+                            (d1, d2) => new TransactionVM()
+                            {
+                                Id = d1.Id,
+                                STKReceive = d1.Stkreceive,
+                                STKSend = d1.Stksend,
+                                Content = d1.Content,
+                                Money = d1.Money,
+                                TransactionType = d1.TransactionTypeName,
+                                PaymentFeeType = d1.PaymentFeeTypeName,
+                                BankReference = d2.Name
+                            }).Where(typeTransaction==0?(trans=>trans.STKSend==accountNumber):(trans => trans.STKReceive == accountNumber)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return false;
+            }
+        }
     }
 }

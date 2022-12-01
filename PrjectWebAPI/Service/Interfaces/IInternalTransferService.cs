@@ -16,5 +16,7 @@ namespace Service.Interfaces
         UserViewModel GetListAccount(int UserID);
         bool InternalTransfer(InternalTransfer model);
         bool ExternalTransfer(ExternalTransfer model);
+
+        List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction);
     }
 }
