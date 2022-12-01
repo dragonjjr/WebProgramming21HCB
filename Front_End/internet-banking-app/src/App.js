@@ -5,22 +5,25 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Component } from "react";
+
 import Login from "./views/account/Login";
+import ForgotPassword from "./views/account/ForgotPassword";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route
           path="/"
           element={
             <RequireAuth>
-              <Component />
+              <div></div>
             </RequireAuth>
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

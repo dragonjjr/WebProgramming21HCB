@@ -70,11 +70,12 @@ namespace Repository.Repositories
                 if (changePasswordInput.NewPassword == changePasswordInput.ConfirmNewPassword)
                 {
                     string currentPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordInput.CurrentPassword);
-                    var oldPassword = dbContext.Accounts.Where(x => x.Id == Id).Select(x => x.Password).SingleOrDefault();
+                    var account = dbContext.Accounts.Where(x => x.Id == Id).SingleOrDefault();
+                    string oldPassword = account.Password;
                     bool verified = BCrypt.Net.BCrypt.Verify(oldPassword, currentPassword);
                     if (verified)
                     {
-                        oldPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordInput.NewPassword);
+                        account.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordInput.NewPassword);
                         dbContext.SaveChanges();
                         return true;
                     }
@@ -114,8 +115,8 @@ namespace Repository.Repositories
                 {
                     if (resetPasswordInput.NewPassword == resetPasswordInput.ConfirmNewPassword)
                     {
-                        var oldPassword = dbContext.Accounts.Where(x => x.Id == Id).Select(x => x.Password).FirstOrDefault();
-                        oldPassword = BCrypt.Net.BCrypt.HashPassword(resetPasswordInput.NewPassword);
+                        var account = dbContext.Accounts.Where(x => x.Id == Id).FirstOrDefault();
+                        account.Password = BCrypt.Net.BCrypt.HashPassword(resetPasswordInput.NewPassword);
                         dbContext.SaveChanges();
                         rs.Status = 200;
                         rs.Message = "Reset password successfully!";

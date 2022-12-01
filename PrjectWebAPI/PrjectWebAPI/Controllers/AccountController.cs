@@ -96,6 +96,7 @@ namespace PrjectWebAPI.Controllers
         /// </summary>
         /// <param name="AccountId"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPatch("ForgotPassword/ResetPassword/{id}")]
         public ResponeseMessage ResetPassword(int id, [FromBody] ResetPasswordInput resetPasswordInput)
         {
