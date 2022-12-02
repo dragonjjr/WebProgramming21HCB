@@ -8,7 +8,7 @@ namespace Repository.DBContext
     public partial class DebtReminder
     {
         public int Id { get; set; }
-        public string Stk { get; set; }
+        public string Stksend { get; set; }
         public decimal SoTien { get; set; }
         public string NoiDung { get; set; }
         public int Status { get; set; }
@@ -17,7 +17,6 @@ namespace Repository.DBContext
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
-
-        public virtual UserManage StkNavigation { get; set; }
+        public string Stkreceive { get; set; }
     }
 }

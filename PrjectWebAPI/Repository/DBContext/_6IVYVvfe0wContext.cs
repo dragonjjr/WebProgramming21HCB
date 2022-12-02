@@ -31,6 +31,7 @@ namespace Repository.DBContext
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseMySQL("server=remotemysql.com;userid=6IVYVvfe0w;password=rSLnSeLDh7;database=6IVYVvfe0w;Port=3306");
             }
         }
@@ -40,8 +41,6 @@ namespace Repository.DBContext
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.ToTable("Account");
-
-                entity.HasIndex(e => e.OtpId, "OtpId");
 
                 entity.HasIndex(e => e.Username, "Username")
                     .IsUnique();
@@ -53,8 +52,6 @@ namespace Repository.DBContext
                 entity.Property(e => e.CreatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.OtpId).HasColumnType("int(11)");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -77,11 +74,6 @@ namespace Repository.DBContext
                     .HasForeignKey<Account>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Account_fk0");
-
-                entity.HasOne(d => d.Otp)
-                    .WithMany(p => p.Accounts)
-                    .HasForeignKey(d => d.OtpId)
-                    .HasConstraintName("Account_ibfk_1");
             });
 
             modelBuilder.Entity<BankReference>(entity =>
@@ -109,7 +101,9 @@ namespace Repository.DBContext
             {
                 entity.ToTable("Debt_reminder");
 
-                entity.HasIndex(e => e.Stk, "Debt_reminder_fk0");
+                entity.HasIndex(e => e.Stksend, "STK");
+
+                entity.HasIndex(e => e.Stkreceive, "STKReceive");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -127,21 +121,19 @@ namespace Repository.DBContext
 
                 entity.Property(e => e.Status).HasColumnType("int(11)");
 
-                entity.Property(e => e.Stk)
+                entity.Property(e => e.Stkreceive)
                     .IsRequired()
                     .HasMaxLength(255)
-                    .HasColumnName("STK");
+                    .HasColumnName("STKReceive");
+
+                entity.Property(e => e.Stksend)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("STKSend");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(d => d.StkNavigation)
-                    .WithMany(p => p.DebtReminders)
-                    .HasPrincipalKey(p => p.Stk)
-                    .HasForeignKey(d => d.Stk)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Debt_reminder_fk0");
             });
 
             modelBuilder.Entity<OtpTable>(entity =>
@@ -156,6 +148,8 @@ namespace Repository.DBContext
                     .IsRequired()
                     .HasMaxLength(255)
                     .HasColumnName("OTP");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.TransactionId)
                     .HasColumnType("int(11)")
@@ -234,8 +228,6 @@ namespace Repository.DBContext
             {
                 entity.ToTable("Transaction_banking");
 
-                entity.HasIndex(e => e.OtpId, "OtpId");
-
                 entity.HasIndex(e => e.TransactionTypeId, "Transaction_banking_fk0");
 
                 entity.HasIndex(e => e.PaymentFeeTypeId, "Transaction_banking_fk1");
@@ -259,8 +251,6 @@ namespace Repository.DBContext
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Money).HasColumnType("decimal(10,0)");
-
-                entity.Property(e => e.OtpId).HasColumnType("int(11)");
 
                 entity.Property(e => e.PaymentFeeTypeId)
                     .HasColumnType("int(11)")
@@ -288,11 +278,6 @@ namespace Repository.DBContext
                     .WithMany(p => p.TransactionBankings)
                     .HasForeignKey(d => d.BankReferenceId)
                     .HasConstraintName("Transaction_banking_fk2");
-
-                entity.HasOne(d => d.Otp)
-                    .WithMany(p => p.TransactionBankings)
-                    .HasForeignKey(d => d.OtpId)
-                    .HasConstraintName("Transaction_banking_ibfk_1");
 
                 entity.HasOne(d => d.PaymentFeeType)
                     .WithMany(p => p.TransactionBankings)
@@ -333,8 +318,7 @@ namespace Repository.DBContext
                 entity.HasIndex(e => e.Email, "Email")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Stk, "STK")
-                    .IsUnique();
+                entity.HasIndex(e => e.Stk, "STK");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -371,7 +355,6 @@ namespace Repository.DBContext
                 entity.Property(e => e.SoDu).HasColumnType("decimal(10,0)");
 
                 entity.Property(e => e.Stk)
-                    .IsRequired()
                     .HasMaxLength(255)
                     .HasColumnName("STK");
 

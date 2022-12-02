@@ -9,7 +9,6 @@ namespace Repository.DBContext
     {
         public UserManage()
         {
-            DebtReminders = new HashSet<DebtReminder>();
             Recipients = new HashSet<Recipient>();
         }
 
@@ -30,7 +29,6 @@ namespace Repository.DBContext
         public bool IsDeleted { get; set; }
 
         public virtual Account Account { get; set; }
-        public virtual ICollection<DebtReminder> DebtReminders { get; set; }
         public virtual ICollection<Recipient> Recipients { get; set; }
     }
 }

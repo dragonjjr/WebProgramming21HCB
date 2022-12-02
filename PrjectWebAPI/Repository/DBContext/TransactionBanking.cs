@@ -20,10 +20,9 @@ namespace Repository.DBContext
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
         public bool IsDeleted { get; set; }
-        public int? OtpId { get; set; }
+        public bool? IsDebtRemind { get; set; }
 
         public virtual BankReference BankReference { get; set; }
-        public virtual OtpTable Otp { get; set; }
         public virtual PaymentFeeType PaymentFeeType { get; set; }
         public virtual TransactionType TransactionType { get; set; }
     }
