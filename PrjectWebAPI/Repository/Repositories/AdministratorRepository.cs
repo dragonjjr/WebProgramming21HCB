@@ -94,9 +94,10 @@ namespace Repository.Repositories
         /// <returns></returns>
         public bool AddNewEmployee(EmployeeAccountInput employeeInfo)
         {
+            using var _trans = dbContext.Database.BeginTransaction();
             try
             {
-
+                _trans.CreateSavepoint("BeforeAddEmployee");
                 // Add new employee info
                 UserManage newEmployee = new UserManage();
                 newEmployee.Name = employeeInfo.Infor.Name;
@@ -125,6 +126,7 @@ namespace Repository.Repositories
 
                     if (dbContext.SaveChanges() > 0)
                     {
+                        _trans.Commit();
                         return true;
                     }
                 }
@@ -133,6 +135,7 @@ namespace Repository.Repositories
             }
             catch (Exception e)
             {
+                _trans.RollbackToSavepoint("BeforeAddEmployee");
                 return false;
             }
         }

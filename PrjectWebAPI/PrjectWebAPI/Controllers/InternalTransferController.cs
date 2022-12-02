@@ -159,9 +159,9 @@ namespace PrjectWebAPI.Controllers
         }
 
         /// <summary>
-        /// Chuyển khoản liên ngân hàng
+        /// Xem lịch sử giao dịch của một tài khoản
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="typeTransaction">type = 0: send transaction, type = 1: receive transaction, type = 2: debt transaction</param>
         /// <returns></returns>
         [HttpGet("GetListTransactionByAcount")]
         public ResponeseMessage GetListTransactionByAcount(string accountNumber, int typeTransaction)
@@ -171,12 +171,14 @@ namespace PrjectWebAPI.Controllers
             if (model != null)
             {
                 rs.Status = 200;
+                rs.IsSuccess = true;
                 rs.Message = "Get list transaction successfully!";
                 rs.Data = model;
             }
             else
             {
                 rs.Status = 0;
+                rs.IsSuccess = false;
                 rs.Message = "Get list transaction failed!";
             }
             return rs;
