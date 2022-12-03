@@ -20,6 +20,7 @@ namespace Repository.DBContext
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<BankReference> BankReferences { get; set; }
         public virtual DbSet<DebtReminder> DebtReminders { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OtpTable> OtpTables { get; set; }
         public virtual DbSet<PaymentFeeType> PaymentFeeTypes { get; set; }
         public virtual DbSet<Recipient> Recipients { get; set; }
@@ -101,10 +102,6 @@ namespace Repository.DBContext
             {
                 entity.ToTable("Debt_reminder");
 
-                entity.HasIndex(e => e.Stksend, "STK");
-
-                entity.HasIndex(e => e.Stkreceive, "STKReceive");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("ID");
@@ -129,6 +126,43 @@ namespace Repository.DBContext
                 entity.Property(e => e.Stksend)
                     .IsRequired()
                     .HasMaxLength(255)
+                    .HasColumnName("STKSend");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
+
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Notification");
+
+                entity.HasIndex(e => e.Id, "id")
+                    .IsUnique();
+
+                entity.Property(e => e.Content)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.Stkreceive)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnName("STKReceive");
+
+                entity.Property(e => e.Stksend)
+                    .IsRequired()
+                    .HasMaxLength(20)
                     .HasColumnName("STKSend");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
