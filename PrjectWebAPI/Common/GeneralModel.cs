@@ -193,4 +193,21 @@ namespace Common
         public string NewPassword { get; set; }
         public string ConfirmNewPassword { get; set; }
     }
+
+    public class DebtRemindInput
+    {
+        public string STKSend { get; set; }
+        public string STKReceive { get; set; }
+        public decimal Money { get; set; }
+        public string Content { get; set; }
+        public string Status { get; set; }
+    }
+
+    public class DebtRemindInfo
+    {
+        public int Id { get; set; }
+        public string STK { get; set; }
+        public decimal Money { get; set; }
+        public string Content { get; set; }
+    }
 }

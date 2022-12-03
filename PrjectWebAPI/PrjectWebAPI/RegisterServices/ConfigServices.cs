@@ -12,7 +12,7 @@ namespace PrjectWebAPI.RegisterServices
         {
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
-            //services.AddScoped<IDebtReminderService, DebtReminderService>();
+            services.AddScoped<IDebtReminderService, DebtReminderService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IInternalTransferService, InternalTransferService>();
             services.AddScoped<ICustomerService, CustomerService>();
@@ -24,7 +24,7 @@ namespace PrjectWebAPI.RegisterServices
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAdministratorRepository, AdministratorRepository>();
-            //services.AddScoped<IDebtReminderRepository, DebtReminderRepository>();
+            services.AddScoped<IDebtReminderRepository, DebtReminderRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IInternalRepository, InternalTransferRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();

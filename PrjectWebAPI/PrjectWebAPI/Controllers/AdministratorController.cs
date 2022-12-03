@@ -79,13 +79,12 @@ namespace PrjectWebAPI.Controllers
         public ResponeseMessage AddNewEmployee([FromBody] EmployeeAccountInput employeeInfo)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _administratorService.AddNewEmployee(employeeInfo);
-            if (model)
+            var isSuccess = _administratorService.AddNewEmployee(employeeInfo);
+            if (isSuccess)
             {
                 rs.Status = 200;
                 rs.IsSuccess = true;
                 rs.Message = "Create a new employee successfully!";
-                rs.Data = model;
             }
             else
             {
@@ -105,13 +104,12 @@ namespace PrjectWebAPI.Controllers
         public ResponeseMessage UpdateEmployeeInfo(int employeeId, [FromBody] EmployeeInfoInput employeeInfo)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _administratorService.UpdateEmployeeInfo(employeeId,employeeInfo);
-            if (model)
+            var isSuccess = _administratorService.UpdateEmployeeInfo(employeeId,employeeInfo);
+            if (isSuccess)
             {
                 rs.Status = 200;
                 rs.IsSuccess = true;
                 rs.Message = "Update a employee information successfully!";
-                rs.Data = model;
             }
             else
             {
@@ -131,13 +129,12 @@ namespace PrjectWebAPI.Controllers
         public ResponeseMessage DeleteEmployee(int employeeId)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _administratorService.DeleteEmployee(employeeId);
-            if (model)
+            var isSuccess = _administratorService.DeleteEmployee(employeeId);
+            if (isSuccess)
             {
                 rs.Status = 200;
                 rs.IsSuccess = true;
                 rs.Message = "Delete a employee information successfully!";
-                rs.Data = model;
             }
             else
             {

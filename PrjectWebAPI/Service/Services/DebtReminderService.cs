@@ -11,13 +11,32 @@ namespace Service.Services
 {
     public class DebtReminderService : IDebtReminderService
     {
-        private DebtReminderService _IDebtReminderService;
+        private IDebtReminderRepository _IDebtReminderRepository;
 
-        public DebtReminderService(DebtReminderService _IAdministratorRepository)
+        public DebtReminderService(IDebtReminderRepository _IDebtReminderRepository)
         {
-            this._IDebtReminderService = _IAdministratorRepository;
+            this._IDebtReminderRepository = _IDebtReminderRepository;
         }
 
-       
+        public bool CreateDebtRemind(DebtRemindInput debtRemindInfo)
+        {
+            return this._IDebtReminderRepository.CreateDebtRemind(debtRemindInfo);
+        }
+
+        public bool CancelDebtRemind(int debtRemindID)
+        {
+            return this._IDebtReminderRepository.CancelDebtRemind(debtRemindID);
+        }
+
+        public bool payDebtRemind(int debtRemindID)
+        {
+            return this._IDebtReminderRepository.payDebtRemind(debtRemindID);
+        }
+
+
+        public List<DebtRemindInfo> viewInfoDebtReminds(string STK, bool isSelf, int? status)
+        {
+            return this._IDebtReminderRepository.viewInfoDebtReminds(STK, isSelf, status);
+        }
     }
 }
