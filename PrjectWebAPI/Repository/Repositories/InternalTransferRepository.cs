@@ -158,6 +158,7 @@ namespace Repository.Repositories
                             TransactionTypeId = model.TransactionTypeID,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             BankReferenceId = model.BankReferenceId,
+                            IsDebtRemind = model.isDebtRemind,
                             CreatedDate = DateTime.Now
                         };
                         dbContext.TransactionBankings.Add(transaction);
@@ -173,7 +174,7 @@ namespace Repository.Repositories
                 }
                 return false;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 _trans.RollbackToSavepoint("BeforeTransfer");
                 return false;

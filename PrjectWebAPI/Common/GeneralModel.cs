@@ -200,7 +200,6 @@ namespace Common
         public string STKReceive { get; set; }
         public decimal Money { get; set; }
         public string Content { get; set; }
-        public string Status { get; set; }
     }
 
     public class DebtRemindInfo
