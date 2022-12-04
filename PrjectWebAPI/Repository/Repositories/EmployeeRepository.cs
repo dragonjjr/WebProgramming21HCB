@@ -60,7 +60,7 @@ namespace Repository.Repositories
                 Account ac = new Account();
                 ac.Username = accountViewModel.UserName;
                 ac.Role = accountViewModel.RoleID.ToString();
-                ac.Password = accountViewModel.Password;
+                ac.Password = BCrypt.Net.BCrypt.HashPassword(accountViewModel.Password);
                 ac.Id = userManage.Id;
 
                 dbContext.Accounts.Add(ac);

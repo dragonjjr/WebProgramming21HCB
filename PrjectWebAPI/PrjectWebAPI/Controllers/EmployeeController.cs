@@ -19,6 +19,7 @@ namespace PrjectWebAPI.Controllers
         public ResponeseMessage RegisterAccount([FromBody] AccountViewModel accountViewModel)
         {
             ResponeseMessage rs = new ResponeseMessage();
+
             var model = _employeeService.RegisterAccount(accountViewModel);
             if (model)
             {
