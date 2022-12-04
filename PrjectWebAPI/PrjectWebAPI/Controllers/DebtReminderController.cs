@@ -46,7 +46,7 @@ namespace PrjectWebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         /// 
-        [HttpGet("viewInfoDebtReminds")]
+        [HttpGet("viewInfoDebtReminds/{STK}")]
         public ResponeseMessage viewInfoDebtReminds(string STK, bool isSelf, int? status)
         {
             ResponeseMessage rs = new ResponeseMessage();
@@ -73,7 +73,7 @@ namespace PrjectWebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         /// 
-        [HttpPatch("CancelDebtRemind")]
+        [HttpPatch("CancelDebtRemind/{debtRemindID}")]
         public ResponeseMessage CancelDebtRemind(int debtRemindID)
         {
             ResponeseMessage rs = new ResponeseMessage();
@@ -99,7 +99,7 @@ namespace PrjectWebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         /// 
-        [HttpPatch("payDebtRemind")]
+        [HttpPatch("payDebtRemind/{debtRemindID}")]
         public ResponeseMessage payDebtRemind(int debtRemindID)
         {
             ResponeseMessage rs = new ResponeseMessage();

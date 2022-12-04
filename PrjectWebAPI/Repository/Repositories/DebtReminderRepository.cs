@@ -11,9 +11,11 @@ namespace Repository.Repositories
     public class DebtReminderRepository : IDebtReminderRepository
     {
         private readonly _6IVYVvfe0wContext dbContext;
-        public DebtReminderRepository(_6IVYVvfe0wContext dbContext)
+        private IInternalRepository IinternalRepository;
+        public DebtReminderRepository(_6IVYVvfe0wContext dbContext, IInternalRepository IinternalRepository)
         {
             this.dbContext = dbContext;
+            this.IinternalRepository = IinternalRepository;
         }
 
         /// <summary>
@@ -35,6 +37,8 @@ namespace Repository.Repositories
                     debtRemind.SoTien = debtRemindInfo.Money;
                     debtRemind.NoiDung = debtRemindInfo.Content;
                     debtRemind.Status = 0; // new debt remind
+                    debtRemind.CreatedDate = DateTime.Now;
+                    debtRemind.UpdatedDate = DateTime.Now;
 
                     dbContext.DebtReminders.Add(debtRemind);
 
@@ -61,6 +65,7 @@ namespace Repository.Repositories
                 if(row!=null)
                 {
                     row.IsDeleted = true;
+                    row.UpdatedDate = DateTime.Now;
 
                     if(dbContext.SaveChanges()>0)
                     {
@@ -81,22 +86,43 @@ namespace Repository.Repositories
         {
             try
             {
-                var row = dbContext.DebtReminders.Where(x=>x.IsDeleted==false && x.Id==debtRemindID).Single();
+                
+                var debtRemindInfo = dbContext.DebtReminders.Where(x=>x.IsDeleted==false && x.Id==debtRemindID && x.Status==0).FirstOrDefault();
 
-                if (row != null)
+                if (debtRemindInfo != null)
                 {
-                    row.Status = 1;
+                    var sendUser = dbContext.UserManages.Where(x => x.IsDeleted == false && x.Stk == debtRemindInfo.Stksend).FirstOrDefault();
 
-                    if (dbContext.SaveChanges() > 0)
+                    // pay
+                    InternalTransfer infoTrans = new InternalTransfer{
+                        Send_UserID = sendUser.Id,
+                        Send_STK = debtRemindInfo.Stksend,
+                        Receive_STK = debtRemindInfo.Stkreceive,
+                        Send_Money = debtRemindInfo.SoTien,
+                        Content = "Payment for debt remind",
+                        PaymentFeeTypeID = 2, // Transferr pays fee
+                        TransactionTypeID = 1, // internal transfer
+                        isDebtRemind = true,
+                    };
+
+                    bool isSuccess = IinternalRepository.InternalTransfer(infoTrans);
+
+                    if(isSuccess)
                     {
-                        return true;
+                        debtRemindInfo.Status = 1;
+                        debtRemindInfo.UpdatedDate = DateTime.Now;
+
+                        if (dbContext.SaveChanges() > 0)
+                        {
+                            return true;
+                        }
                     }
 
                 }
                 return false;
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }

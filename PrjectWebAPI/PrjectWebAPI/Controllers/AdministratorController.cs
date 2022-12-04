@@ -48,7 +48,7 @@ namespace PrjectWebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("GetEmployee")]
+        [HttpGet("GetEmployee/{id}")]
         public ResponeseMessage FindEmployeeById(int id)
         {
             ResponeseMessage rs = new ResponeseMessage();

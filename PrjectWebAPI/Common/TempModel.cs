@@ -22,7 +22,8 @@ namespace Common
         public string Content { get; set; }
         public int PaymentFeeTypeID { get; set; }
         public int TransactionTypeID { get; set; }
-        public int BankReferenceId { get; set; }
+        public int? BankReferenceId { get; set; }
+        public bool? isDebtRemind { get; set; }
     }
 
     public class ExternalTransfer
