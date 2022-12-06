@@ -21,6 +21,7 @@ namespace Repository.DBContext
         public string CreatedBy { get; set; }
         public bool IsDeleted { get; set; }
         public bool? IsDebtRemind { get; set; }
+        public string Rsa { get; set; }
 
         public virtual BankReference BankReference { get; set; }
         public virtual PaymentFeeType PaymentFeeType { get; set; }
