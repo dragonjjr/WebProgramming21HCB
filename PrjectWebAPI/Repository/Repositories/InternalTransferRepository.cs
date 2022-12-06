@@ -208,7 +208,8 @@ namespace Repository.Repositories
                             Money = model.Send_Money,
                             TransactionTypeId = model.TransactionTypeID,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
-                            CreatedDate = DateTime.Now
+                            CreatedDate = DateTime.Now,
+                            Rsa = Helpers.Encryption(model.Send_STK+model.Send_Money.ToString()+model.Receive_STK)
                         };
                         dbContext.TransactionBankings.Add(transaction);
                         send_acc.SoDu = send_acc.SoDu - model.Send_Money;
