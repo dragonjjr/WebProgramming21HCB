@@ -8,6 +8,7 @@ import {
 
 import Login from "./views/account/Login";
 import ForgotPassword from "./views/account/ForgotPassword";
+import Register from "./views/account/Register";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/"
           element={
