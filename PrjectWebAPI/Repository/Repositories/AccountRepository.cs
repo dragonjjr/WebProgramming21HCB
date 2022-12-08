@@ -29,17 +29,15 @@ namespace Repository.Repositories
                     string pwd = VM.Password;
                     using (var sha256 = SHA256.Create())
                     {
-                        //byte[] PasswordAsBytes = Encoding.UTF8.GetBytes(VM.Password);
-                        //string pwd = Convert.ToBase64String(PasswordAsBytes);
-                        Account user = dbContext.Accounts.Where(x => x.Username == VM.Username && x.Password == pwd).FirstOrDefault();
+                        var user = dbContext.Accounts.SingleOrDefault(x => x.Username == VM.Username);
 
-                        if (user != null)
+                        if (user != null &&  BCrypt.Net.BCrypt.Verify(VM.Password, user.Password))
                         {
                             var authClaims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, user.Username),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        };
+                            {
+                                new Claim(ClaimTypes.Name, user.Username),
+                                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            };
                             var token = Helpers.CreateToken(authClaims);
                             var refreshToken = Helpers.GenerateRefreshToken();
                             user.RefreshToken = refreshToken;
