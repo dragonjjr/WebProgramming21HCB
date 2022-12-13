@@ -38,5 +38,6 @@ namespace Common
         public int PaymentFeeTypeID { get; set; }
         public int TransactionTypeID { get; set; }
         public int BankReferenceId { get; set; }
+        public string RSA { get; set; }
     }
 }

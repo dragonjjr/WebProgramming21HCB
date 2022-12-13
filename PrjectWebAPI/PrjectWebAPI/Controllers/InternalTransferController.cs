@@ -89,6 +89,29 @@ namespace PrjectWebAPI.Controllers
         }
 
         /// <summary>
+        /// Nhận tiền từ chuyển khoản liên ngân hàng
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("ExternalTranfer")]
+        public ResponeseMessage ExternalTranfer(ExternalTransfer model)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var Is_Success = _internalTransferService.ExternalTransfer(model);
+            if (Is_Success)
+            {
+                rs.Status = 200;
+                rs.Message = "Transfer successfull!";
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Transfer failed!";
+            }
+            return rs;
+        }
+
+        /// <summary>
         /// Lấy danh sách tài khoản thanh toán
         /// </summary>
         /// <param name="UserID"></param>
@@ -122,29 +145,6 @@ namespace PrjectWebAPI.Controllers
         {
             ResponeseMessage rs = new ResponeseMessage();
             var Is_Success = _internalTransferService.InternalTransfer(model);
-            if (Is_Success)
-            {
-                rs.Status = 200;
-                rs.Message = "Transfer successfull!";
-            }
-            else
-            {
-                rs.Status = 0;
-                rs.Message = "Transfer failed!";
-            }
-            return rs;
-        }
-
-        /// <summary>
-        /// Chuyển khoản liên ngân hàng
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost("ExternalTranfer")]
-        public ResponeseMessage ExternalTranfer(ExternalTransfer model)
-        {
-            ResponeseMessage rs = new ResponeseMessage();
-            var Is_Success = _internalTransferService.ExternalTransfer(model);
             if (Is_Success)
             {
                 rs.Status = 200;

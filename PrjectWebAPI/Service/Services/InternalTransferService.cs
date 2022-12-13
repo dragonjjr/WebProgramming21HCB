@@ -48,6 +48,11 @@ namespace Service.Services
             return _IinternalRepository.ExternalTransfer(model);
         }
 
+        public bool ReceiveExternalTransfer(ExternalTransfer model)
+        {
+            return _IinternalRepository.ReceiveExternalTransfer(model);
+        }
+
         public List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction)
         {
             return _IinternalRepository.GetListTransactionByAcount(accountNumber, typeTransaction);

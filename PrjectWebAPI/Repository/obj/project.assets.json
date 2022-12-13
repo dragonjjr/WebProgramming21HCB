@@ -6858,11 +6858,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
+      "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
       "projectName": "Repository",
-      "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
+      "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj",
       "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
-      "outputPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\obj\\",
+      "outputPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6879,8 +6879,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
-              "projectPath": "D:\\Software\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
+            "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
+              "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
             }
           }
         }

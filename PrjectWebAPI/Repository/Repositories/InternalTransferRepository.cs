@@ -209,10 +209,57 @@ namespace Repository.Repositories
                             TransactionTypeId = model.TransactionTypeID,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             CreatedDate = DateTime.Now,
-                            Rsa = Helpers.Encryption(model.Send_STK+model.Send_Money.ToString()+model.Receive_STK)
+                            Rsa = model.RSA
                         };
                         dbContext.TransactionBankings.Add(transaction);
                         send_acc.SoDu = send_acc.SoDu - model.Send_Money;
+                        dbContext.UserManages.Update(send_acc);
+                        dbContext.SaveChanges();
+                        _trans.Commit();
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                _trans.RollbackToSavepoint("BeforeTransfer");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Nhận tiền chuyển khoản từ bên ngoài
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool ReceiveExternalTransfer(ExternalTransfer model)
+        {
+            using var _trans = dbContext.Database.BeginTransaction();
+            try
+            {
+                _trans.CreateSavepoint("BeforeTransfer");
+                if (model.Send_UserID > 0 && model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
+                {
+                    var send_acc = dbContext.UserManages.Where(x => x.Id == model.Send_UserID && x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
+
+                    if (send_acc != null)
+                    {
+                        var transaction = new TransactionBanking
+                        {
+                            Stksend = model.Send_STK,
+                            Stkreceive = model.Receive_STK,
+                            BankReferenceId = model.Receive_BankID,
+                            Content = model.Content,
+                            Money = model.Send_Money,
+                            TransactionTypeId = model.TransactionTypeID,
+                            PaymentFeeTypeId = model.PaymentFeeTypeID,
+                            CreatedDate = DateTime.Now,
+                            Rsa = Helpers.Encryption(model.Send_STK + model.Send_Money + model.Receive_STK)
+                        };
+                        dbContext.TransactionBankings.Add(transaction);
+                        send_acc.SoDu = send_acc.SoDu + model.Send_Money;
                         dbContext.UserManages.Update(send_acc);
                         dbContext.SaveChanges();
                         _trans.Commit();

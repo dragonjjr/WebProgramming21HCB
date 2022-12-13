@@ -21,6 +21,14 @@ namespace Common
         public static string JWT_Audience = string.Empty;
         public static string PublicKey = "<RSAKeyValue><Modulus>wDMByIE1irne3d2NBJ9IWL/3iltV7kwBEBYy7zkftv/bnx13cEuzLS7l1+6Y2WcxU4KOwW+Kjxe0rMAjKI72ZK0igV3mdnY3xfDtTXNr+3+k7bzC8KnGLXN6QYNM60RcUpLHqs5pi7x7uMWLtBKfpXYCbsAAj+NhFapJkpFFdb8=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
         public static string PrivateKey = "<RSAKeyValue><Modulus>wDMByIE1irne3d2NBJ9IWL/3iltV7kwBEBYy7zkftv/bnx13cEuzLS7l1+6Y2WcxU4KOwW+Kjxe0rMAjKI72ZK0igV3mdnY3xfDtTXNr+3+k7bzC8KnGLXN6QYNM60RcUpLHqs5pi7x7uMWLtBKfpXYCbsAAj+NhFapJkpFFdb8=</Modulus><Exponent>AQAB</Exponent><P>36fdifJI9dU83A3Q4i6ctX0osoUwNebGRF0nc0rtZHivATyXWPysrZQ2GmBKEFRZfjnRDLEH4awY3cZfS/aCWQ==</P><Q>2/6RCLU+8b5+4iy6gSxBRADEdgDCTTK69q6pbsiTrnT0it0x4MUkHCuFdYo9z6dLHDsosmsXCpDQMpqSmXxF1w==</Q><DP>JRF/aFOdwBDdi2NG0ZYEJxhdXGkyulxLVB1UYolymwpdhwjx1K/cNtCvvuNiox43zvHqMf5NXhvV6zvro31x0Q==</DP><DQ>Kl6W9ERkAQ8dRNY0fVhWoZA8RjXTNicFFymAfFOpDbp8tpnvV0jgsYQ4SfD8AphHwQIrzmENqP1G+9gFUAY9NQ==</DQ><InverseQ>q+nuWefoKuEHuSHR1Aaos/vbdKDE4MBocMCXURMlBG+dYVhWO2YPNidavNMcwXp0/cZOiHfj6DBAxuNQu1Jqtw==</InverseQ><D>CYB8DhWVOA6IXh+d4SSexwR2kHiDfwxy4QC38+u3Da0Iho1GYl7btNgktNAu7lCTt7U0qYuCJiDd5cx58H9g3vNhVuyFZ/XVVku7WqzAq9z+AKFTgp0W3EzN6POPixh2iGCkKArZX/ywHoyQM0ctpH02ORqaMJuHRk01mvvjpoE=</D></RSAKeyValue>";
+
+        public static string GetToken(string input)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(input + SecretKey);
+            SHA256 sHA256ManagedString = new SHA256Managed();
+            byte[] hash = sHA256ManagedString.ComputeHash(bytes);
+            return Convert.ToBase64String(hash);
+        }
         public static string Encryption(string strText)
         {
             var testData = Encoding.UTF8.GetBytes(strText);
