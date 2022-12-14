@@ -173,6 +173,8 @@ namespace Common
         public string PaymentFeeType { get; set; }
         public string BankReference { get; set; }
         public DateTime? TransDate { get; set; }
+
+        public bool? IsDebtRemind { get; set; }
     }
 
     public class LoginOutput

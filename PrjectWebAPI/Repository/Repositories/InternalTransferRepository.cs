@@ -288,9 +288,9 @@ namespace Repository.Repositories
                 if (typeTransaction < 0 || typeTransaction > 2)
                     return null;
 
-                return dbContext.TransactionBankings.Where(typeTransaction == 0 ? (trans => trans.Stksend == accountNumber):(typeTransaction == 1 ? (trans => trans.Stkreceive == accountNumber):(trans => trans.Stksend == accountNumber&&trans.IsDebtRemind==true)))
-                            .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId, TransactionTypeName = d2.Name, TransDate = d1.UpdatedDate })
-                            .Join(dbContext.PaymentFeeTypes, d1 => d1.PaymentFeeTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.TransactionTypeName, PaymentFeeTypeName = d2.Name, d1.BankReferenceId, d1.TransDate })
+                return dbContext.TransactionBankings.Where(typeTransaction == 0 ? (trans => trans.Stksend == accountNumber) : (typeTransaction == 1 ? (trans => trans.Stkreceive == accountNumber) : (trans => trans.Stksend == accountNumber && trans.IsDebtRemind == true)))
+                            .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId, TransactionTypeName = d2.Name, TransDate = d1.UpdatedDate, IsDebtRemind = d1.IsDebtRemind })
+                            .Join(dbContext.PaymentFeeTypes, d1 => d1.PaymentFeeTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.TransactionTypeName, PaymentFeeTypeName = d2.Name, d1.BankReferenceId, d1.TransDate, d1.IsDebtRemind })
                             .Join(dbContext.BankReferences, d1 => d1.BankReferenceId, d2 => d2.Id,
                             (d1, d2) => new TransactionVM()
                             {
@@ -302,7 +302,8 @@ namespace Repository.Repositories
                                 TransactionType = d1.TransactionTypeName,
                                 PaymentFeeType = d1.PaymentFeeTypeName,
                                 BankReference = d2.Name,
-                                TransDate = d1.TransDate
+                                TransDate = d1.TransDate,
+                                IsDebtRemind = d1.IsDebtRemind
                             }).OrderByDescending(trans=>trans.TransDate).ToList();
             }
             catch (Exception ex)
