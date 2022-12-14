@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace WebApplication2.Handler
+namespace PrjectWebAPI.Handler
 {
     public class SecretKeyAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {

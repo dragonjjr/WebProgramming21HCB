@@ -1,11 +1,14 @@
 ﻿using Common;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI;
 using Service.Interfaces;
+using System.Net;
+using System.Security.Claims;
 
 namespace External.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ExternalController : ControllerBase
@@ -50,18 +53,51 @@ namespace External.Controllers
         public ResponeseMessage ExternalTranfer(ExternalTransfer model)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var Is_Success = _internalTransferService.ReceiveExternalTransfer(model);
-            if (Is_Success)
+            if (!CheckToken())
             {
-                rs.Status = 200;
-                rs.Message = "Transfer successfull!";
+                rs.Status = -1;
+                rs.Message = "Request failed!";
+                return rs;
             }
             else
             {
-                rs.Status = 0;
-                rs.Message = "Transfer failed!";
+                var Is_Success = _internalTransferService.ReceiveExternalTransfer(model);
+                if (Is_Success)
+                {
+                    rs.Status = 200;
+                    rs.Message = "Transfer successfull!";
+                }
+                else
+                {
+                    rs.Status = 0;
+                    rs.Message = "Transfer failed!";
+                }
+                return rs;
+            }  
+        }
+        private bool CheckToken()
+        {
+            if (!Request.Headers.ContainsKey("Token"))
+                return false;
+            var header_token = Request.Headers["Token"];
+            var header_time = Request.Headers["Time"];
+
+            if (!string.IsNullOrEmpty(header_token) && !string.IsNullOrEmpty(header_time))
+            {
+                var token = Helpers.GetToken(header_time);
+                if (header_token == token)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            return rs;
+            else
+            {
+                return false;
+            }
         }
     }
 }

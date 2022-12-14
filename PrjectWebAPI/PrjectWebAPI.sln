@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{C5653182-DF76-42EC-9E4A-8530A1F52E10}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "External", "WebApplication2\External.csproj", "{F22F1A37-ABA4-4154-9328-00D85F54F183}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{C5653182-DF76-42EC-9E4A-8530A1F52E10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5653182-DF76-42EC-9E4A-8530A1F52E10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5653182-DF76-42EC-9E4A-8530A1F52E10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F22F1A37-ABA4-4154-9328-00D85F54F183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F22F1A37-ABA4-4154-9328-00D85F54F183}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F22F1A37-ABA4-4154-9328-00D85F54F183}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F22F1A37-ABA4-4154-9328-00D85F54F183}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
