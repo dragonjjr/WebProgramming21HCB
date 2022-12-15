@@ -1,18 +1,18 @@
-import React from 'react';
-import { BarChartOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu } from 'antd';
-import EmployeeManage from './EmployeeManage';
+import React from "react";
+import { BarChartOutlined, UserOutlined } from "@ant-design/icons";
+import { Breadcrumb, Layout, Menu } from "antd";
+import EmployeeManage from "./EmployeeManage";
 
 // Layout
 const { Header, Content, Sider } = Layout;
-const headerTitle = ['Admin'].map((key) => ({
+const headerTitle = ["Admin"].map((key) => ({
   key,
   label: `${key}`,
 }));
 const menuItems = [
-  { key: "1", icon : BarChartOutlined , name: "Dashboard"},
-  { key: "2", icon : UserOutlined, name: "Employee"},
-].map((item,index)=>{
+  { key: "1", icon: BarChartOutlined, name: "Dashboard" },
+  { key: "2", icon: UserOutlined, name: "Employee" },
+].map((item, index) => {
   const key = String(index + 1);
   return {
     key: `${key}`,
@@ -21,24 +21,27 @@ const menuItems = [
   };
 });
 
-
-
 // UI
-function App(){
+function Admin() {
   return (
     <Layout>
       <Header className="header">
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['Admin']} items={headerTitle} />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={["Admin"]}
+          items={headerTitle}
+        />
       </Header>
       <Layout>
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            defaultSelectedKeys={["1"]}
+            defaultOpenKeys={["sub1"]}
             style={{
-              height: '100%',
+              height: "100%",
               borderRight: 0,
             }}
             items={menuItems}
@@ -46,12 +49,12 @@ function App(){
         </Sider>
         <Layout
           style={{
-            padding: '0 24px 24px',
+            padding: "0 24px 24px",
           }}
         >
           <Breadcrumb
             style={{
-              margin: '16px 0',
+              margin: "16px 0",
             }}
           >
             <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -66,12 +69,12 @@ function App(){
               minHeight: 280,
             }}
           >
-            <EmployeeManage/>
+            <EmployeeManage />
           </Content>
         </Layout>
       </Layout>
     </Layout>
   );
-} 
+}
 
-export default App;
+export default Admin;

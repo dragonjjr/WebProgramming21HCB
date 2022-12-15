@@ -11,6 +11,8 @@ import ForgotPassword from "./views/account/ForgotPassword";
 import Register from "./views/account/Register";
 import Employee from "./views/employee/Employee";
 
+import Admin from "./views/admin/Admin";
+
 function App() {
   return (
     <Router>
@@ -27,10 +29,10 @@ function App() {
           }
         />
         <Route
-          path="/"
+          path="/admin"
           element={
             <RequireAuth>
-              <div></div>
+              <Admin />
             </RequireAuth>
           }
         />

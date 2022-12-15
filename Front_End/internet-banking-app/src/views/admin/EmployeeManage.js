@@ -3,6 +3,7 @@ import { Button, Table, Modal, Input } from "antd";
 import { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { instance } from "../../utils.js";
+import "../../Assets/CSS/EmployeeManage.css";
 
 const { TextArea } = Input;
 const ActionType = {
@@ -11,7 +12,7 @@ const ActionType = {
   Delete: "Delete",
 };
 
-function App() {
+function EmployeeManage() {
   const [action, setAction] = useState(null);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [dataSource, setDataSource] = useState([]);
@@ -201,4 +202,4 @@ function App() {
   );
 }
 
-export default App;
+export default EmployeeManage;
