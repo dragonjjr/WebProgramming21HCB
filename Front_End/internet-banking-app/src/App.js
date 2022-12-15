@@ -9,6 +9,7 @@ import {
 import Login from "./views/account/Login";
 import ForgotPassword from "./views/account/ForgotPassword";
 import Register from "./views/account/Register";
+import Employee from "./views/employee/Employee";
 
 function App() {
   return (
@@ -17,6 +18,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/employee"
+          element={
+            <RequireAuth>
+              <Employee />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/"
           element={

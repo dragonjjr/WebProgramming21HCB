@@ -9,6 +9,8 @@ import {
 
 import Recharge from "./Recharge";
 import Register from "../account/Register";
+import TransactionHistory from "./TransactionHistory";
+
 import { Layout, Menu, theme } from "antd";
 const { Header, Sider, Content } = Layout;
 
@@ -73,7 +75,7 @@ function Employee() {
         >
           {(current === "1" && <Register></Register>) ||
             (current === "2" && <Recharge></Recharge>) ||
-            (current === "3" && <div></div>)}
+            (current === "3" && <TransactionHistory></TransactionHistory>)}
         </Content>
       </Layout>
     </Layout>
