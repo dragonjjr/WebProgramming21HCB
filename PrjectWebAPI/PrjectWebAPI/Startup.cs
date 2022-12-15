@@ -19,11 +19,13 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using Common;
+using Microsoft.AspNetCore.Http;
 
 namespace PrjectWebAPI
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,24 +41,20 @@ namespace PrjectWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy(name: MyAllowSpecificOrigins, builder =>
+            {
+                builder//.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .AllowCredentials();
+            }));
 
             services.AddControllers();
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "AppCors", builder =>
-                {
-                    //for when you're running on localhost
-                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-                    .AllowAnyHeader().AllowAnyMethod();
-
-
-                    //builder.WithOrigins("url from where you're trying to do the requests")
-                });
-            });
+            
             services.AddDbContext<_6IVYVvfe0wContext>();
             services.ListServices();
             services.ListRepository();
-            object value = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
@@ -108,22 +106,21 @@ namespace PrjectWebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-                
-            //}
-            app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectWebAPI v1"));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors("AppCors");
+            app.UseAuthentication();
 
             app.UseAuthorization();
-
+            app.UseSwagger();
+            app.UseCors(MyAllowSpecificOrigins);
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
