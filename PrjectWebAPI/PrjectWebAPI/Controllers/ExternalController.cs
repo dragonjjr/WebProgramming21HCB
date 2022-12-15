@@ -29,19 +29,29 @@ namespace External.Controllers
         public ResponeseMessage ViewRecipientBySTK(string STK)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _internalTransferService.ViewRecipientBySTK(STK);
-            if (model != null)
+            if (!CheckToken())
             {
-                rs.Status = 200;
-                rs.Message = "Get recipient infor successfull!";
-                rs.Data = model;
+                rs.Status = 0;
+                rs.Message = "Request failed!";
+                return rs;
             }
             else
             {
-                rs.Status = 0;
-                rs.Message = "Get recipient infor failed!";
+                var model = _internalTransferService.ViewRecipientBySTK(STK);
+                if (model != null)
+                {
+                    rs.Status = 200;
+                    rs.Message = "Get recipient infor successfull!";
+                    rs.Data = model;
+                }
+                else
+                {
+                    rs.Status = 0;
+                    rs.Message = "Get recipient infor failed!";
+                }
+                return rs;
             }
-            return rs;
+            
         }
 
         /// <summary>

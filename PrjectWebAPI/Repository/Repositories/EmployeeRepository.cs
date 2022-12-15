@@ -1,5 +1,6 @@
 ﻿using Common;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto;
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
@@ -44,12 +45,14 @@ namespace Repository.Repositories
         {
             try
             {
+                var stk = dbContext.UserManages.Select(x => x.Stk.Max()).FirstOrDefault().ToString();
+                var stk_new = int.Parse(stk) < 1000000 ? 1000000 : int.Parse(stk.ToString()) + 1;
                 UserManage userManage = new UserManage();
                 userManage.Name = accountViewModel.Infor.Name;
                 userManage.Cmnd = accountViewModel.Infor.Cmnd;
                 userManage.Address = accountViewModel.Infor.Address;
                 userManage.BankKind = accountViewModel.Infor.BankKind;
-                userManage.Stk = accountViewModel.Infor.Stk;
+                userManage.Stk = stk_new.ToString();
                 userManage.Phone = accountViewModel.Infor.Phone;
                 userManage.Email = accountViewModel.Infor.Email;
                 userManage.CreatedDate = DateTime.Now;
