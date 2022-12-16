@@ -43,11 +43,13 @@ namespace PrjectWebAPI
         {
             services.AddCors(o => o.AddPolicy(name: MyAllowSpecificOrigins, builder =>
             {
-                builder//.AllowAnyOrigin()
+                builder
                        .AllowAnyMethod()
                        .AllowAnyHeader()
+                       .SetIsOriginAllowed(origin => true) // allow any origin
                        .AllowCredentials();
-            }));
+
+        }));
 
             services.AddControllers();
             
