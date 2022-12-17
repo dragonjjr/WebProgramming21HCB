@@ -66,8 +66,10 @@ function Admin() {
             }}
           >
             <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
+            {current === "1" && <Breadcrumb.Item>Dashboard</Breadcrumb.Item>}
+            {current === "2" && (
+              <Breadcrumb.Item>Employee management</Breadcrumb.Item>
+            )}
           </Breadcrumb>
           <Content
             className="site-layout-background"

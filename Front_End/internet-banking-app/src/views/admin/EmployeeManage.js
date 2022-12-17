@@ -1,8 +1,12 @@
-//import "./EmployeeManage.css";
 import { Button, Table, Modal, Input } from "antd";
 import { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import { instance } from "../../utils.js";
+import "./Admin.css";
 
 const { TextArea } = Input;
 const ActionType = {
@@ -17,10 +21,10 @@ function EmployeeManage() {
   const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
-    loadTasks();
+    loadDatas();
   }, []);
 
-  const loadTasks = async function (e) {
+  const loadDatas = async function (e) {
     const res = await instance.get(`Administrator/GetEmployeeList`);
     if (res.data.status === 200) {
       const result = res.data.data.map((row) => ({
@@ -88,9 +92,8 @@ function EmployeeManage() {
     },
   ];
   const executeAction = async () => {
-    console.log(action);
     // Add
-    if (action === ActionType.Add) {
+    if (action === ActionType.Add && editingEmployee !== null) {
       const res = await instance.post(`/Administrator/AddNewEmployee`, {
         userName: editingEmployee.userName,
         password: editingEmployee.password,
@@ -104,15 +107,14 @@ function EmployeeManage() {
       });
 
       if (res.data.status === 200) {
-        console.log(res.data);
-        alert("OK");
-        loadTasks();
+        success("Add employee", res.data.message);
+        loadDatas();
       } else {
-        alert("Fail");
+        error("Add employee", res.data.message);
       }
     }
     // Update
-    else if (action === ActionType.Edit) {
+    else if (action === ActionType.Edit && editingEmployee !== null) {
       const res = await instance.patch(
         `/Administrator/UpdateEmployeeInfo/${editingEmployee.key}`,
         {
@@ -125,10 +127,10 @@ function EmployeeManage() {
       );
 
       if (res.data.status === 200) {
-        alert("OK");
-        loadTasks();
+        success("Update employee", res.data.message);
+        loadDatas();
       } else {
-        alert("Fail");
+        error("Update employee", res.data.message);
       }
     }
 
@@ -140,10 +142,10 @@ function EmployeeManage() {
       );
 
       if (res.data.status === 200) {
-        alert("OK");
-        loadTasks();
+        success("Delete employee", res.data.message);
+        loadDatas();
       } else {
-        alert("Fail");
+        error("Delete employee", res.data.message);
       }
     }
 
@@ -153,20 +155,8 @@ function EmployeeManage() {
     setAction(ActionType.Add);
   };
   const onDeleteEmployee = (record) => {
-    // setAction(ActionType.Delete);
-    // setEditingEmployee({ ...record });
-    // Modal.confirm({
-    //   title: "Are you sure, you want to delete this employee record?",
-    //   open: { action } === ActionType.Delete,
-    //   okText: "Yes",
-    //   okType: "danger",
-    //   onCancel: () => {
-    //     resetEditing();
-    //   },
-    //   onOk: () => {
-    //     executeAction();
-    //   },
-    // });
+    setAction(ActionType.Delete);
+    setEditingEmployee({ ...record });
   };
   const onEditEmployee = (record) => {
     setAction(ActionType.Edit);
@@ -176,10 +166,31 @@ function EmployeeManage() {
     setAction(null);
     setEditingEmployee(null);
   };
+
+  const success = (title, content) => {
+    Modal.success({
+      title: title,
+      content: content,
+    });
+  };
+
+  const error = (title, content) => {
+    Modal.error({
+      title: title,
+      content: content,
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button onClick={onAddEmployee}>Add a new Employee</Button>
+    <div>
+      <header>
+        <Button
+          onClick={onAddEmployee}
+          className="btnAdd-Employee"
+          type="primary"
+        >
+          Add a new Employee
+        </Button>
         <Table columns={columns} dataSource={dataSource}></Table>
         <Modal
           title={action === ActionType.Edit ? "Edit Employee" : "Add Employee"}
@@ -189,15 +200,6 @@ function EmployeeManage() {
             resetEditing();
           }}
           onOk={() => {
-            // setDataSource((pre) => {
-            //   return pre.map((employee) => {
-            //     if (employee.id === editingEmployee.id) {
-            //       return editingEmployee;
-            //     } else {
-            //       return employee;
-            //     }
-            //   });
-            // });
             executeAction();
           }}
         >
@@ -301,6 +303,19 @@ function EmployeeManage() {
             }}
           />
         </Modal>
+
+        <Modal
+          title="Are you sure, you want to delete this employee record?"
+          open={action === ActionType.Delete}
+          okText="Yes"
+          okType="danger"
+          onCancel={() => {
+            resetEditing();
+          }}
+          onOk={() => {
+            executeAction();
+          }}
+        ></Modal>
       </header>
     </div>
   );
