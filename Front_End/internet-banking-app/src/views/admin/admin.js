@@ -1,6 +1,8 @@
 import React from "react";
+import { useState } from "react";
 import { BarChartOutlined, UserOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu } from "antd";
+import DashBoard from "./DashBoard";
 import EmployeeManage from "./EmployeeManage";
 
 // Layout
@@ -23,6 +25,12 @@ const menuItems = [
 
 // UI
 function Admin() {
+  const [current, setCurrent] = useState("1");
+  const onClick = (e) => {
+    //console.log("click ", e);
+    setCurrent(e.key);
+  };
+
   return (
     <Layout>
       <Header className="header">
@@ -38,8 +46,8 @@ function Admin() {
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
+            onClick={onClick}
+            selectedKeys={[current]}
             style={{
               height: "100%",
               borderRight: 0,
@@ -69,7 +77,8 @@ function Admin() {
               minHeight: 280,
             }}
           >
-            <EmployeeManage />
+            {current === "1" && <DashBoard />}
+            {current === "2" && <EmployeeManage />}
           </Content>
         </Layout>
       </Layout>

@@ -116,12 +116,12 @@ namespace PrjectWebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
 
             app.UseAuthorization();
             app.UseSwagger();
-            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             app.UseEndpoints(endpoints =>
             {

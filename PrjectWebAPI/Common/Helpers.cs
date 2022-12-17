@@ -101,7 +101,7 @@ namespace Common
             var token = new JwtSecurityToken(
                 issuer: JWT_Issuer,
                 audience: JWT_Audience,
-                expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+                expires: DateTime.Now.AddHours(tokenValidityInMinutes),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
