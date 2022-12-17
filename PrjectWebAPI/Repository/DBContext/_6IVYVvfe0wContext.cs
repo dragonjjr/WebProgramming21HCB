@@ -135,12 +135,12 @@ namespace Repository.DBContext
 
             modelBuilder.Entity<Notification>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("Notification");
 
-                entity.HasIndex(e => e.Id, "id")
-                    .IsUnique();
+                entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("ID");
 
                 entity.Property(e => e.Content)
                     .IsRequired()
@@ -149,11 +149,6 @@ namespace Repository.DBContext
                 entity.Property(e => e.CreatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(11)")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ID");
 
                 entity.Property(e => e.Stkreceive)
                     .IsRequired()

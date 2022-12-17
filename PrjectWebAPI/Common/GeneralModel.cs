@@ -211,4 +211,12 @@ namespace Common
         public decimal Money { get; set; }
         public string Content { get; set; }
     }
+
+    public class NotificationInfo
+    {
+        public int Id { get; set; }
+        public string STKSend { get; set; }
+        public string STKReceive { get; set; }
+        public string Content { get; set; }
+    }
 }
