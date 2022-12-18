@@ -6771,19 +6771,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dung\\.nuget\\packages\\": {}
+    "C:\\Users\\tinh.v.phan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
+      "projectUniqueName": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
       "projectName": "Service",
-      "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
-      "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
-      "outputPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Service\\obj\\",
+      "projectPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj",
+      "packagesPath": "C:\\Users\\tinh.v.phan\\.nuget\\packages\\",
+      "outputPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Service\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tinh.v.phan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6797,11 +6797,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
-              "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
+            "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj": {
+              "projectPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Common\\Common.csproj"
             },
-            "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj": {
-              "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj"
+            "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj": {
+              "projectPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Repository\\Repository.csproj"
             }
           }
         }
@@ -6841,7 +6841,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

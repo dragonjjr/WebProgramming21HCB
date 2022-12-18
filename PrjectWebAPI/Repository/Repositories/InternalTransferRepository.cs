@@ -5,6 +5,7 @@ using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -81,11 +82,22 @@ namespace Repository.Repositories
                 if (STK != string.Empty)
                 {
                     var row = dbContext.Recipients.Where(x => x.Stk == STK).Select(x=> new RecipientOutput { Id = x.Id, Name = x.Name, STK = x.Stk}).FirstOrDefault();
+                    var row1 = dbContext.UserManages.Where(x => x.Stk == STK).Select(x => new RecipientOutput { Id = x.Id, Name = x.Name, STK = x.Stk }).FirstOrDefault();
                     if (row != null)
-                    {
+                    { 
                         return row;
                     }
-                    return null;
+                    else
+                    {
+                        if(row1 != null)
+                        {
+                            return row1;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
                 }
                 return null;
             }
@@ -193,9 +205,9 @@ namespace Repository.Repositories
             try
             {
                 _trans.CreateSavepoint("BeforeTransfer");
-                if (model.Send_UserID > 0 && model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
+                if ( model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
                 {
-                    var send_acc = dbContext.UserManages.Where(x => x.Id == model.Send_UserID && x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
+                    var send_acc = dbContext.UserManages.Where(x => x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
                     
                     if (send_acc != null)
                     {
@@ -240,9 +252,9 @@ namespace Repository.Repositories
             try
             {
                 _trans.CreateSavepoint("BeforeTransfer");
-                if (model.Send_UserID > 0 && model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
+                if (model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
                 {
-                    var send_acc = dbContext.UserManages.Where(x => x.Id == model.Send_UserID && x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
+                    var send_acc = dbContext.UserManages.Where(x => x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
 
                     if (send_acc != null)
                     {
@@ -256,7 +268,7 @@ namespace Repository.Repositories
                             TransactionTypeId = model.TransactionTypeID,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             CreatedDate = DateTime.Now,
-                            Rsa = Helpers.Encryption(model.Send_STK + model.Send_Money + model.Receive_STK)
+                            Rsa = model.RSA
                         };
                         dbContext.TransactionBankings.Add(transaction);
                         send_acc.SoDu = send_acc.SoDu + model.Send_Money;

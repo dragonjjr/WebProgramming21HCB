@@ -686,6 +686,19 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
+      "Newtonsoft.Json/13.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Npgsql/5.0.10": {
         "type": "package",
         "dependencies": {
@@ -3339,6 +3352,36 @@
         "dotnet_library_license.txt",
         "netstandard.library.1.6.1.nupkg.sha512",
         "netstandard.library.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/13.0.2": {
+      "sha512": "R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.2.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
       ]
     },
     "Npgsql/5.0.10": {
@@ -7363,6 +7406,7 @@
       "Microsoft.EntityFrameworkCore >= 5.0.17",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.17",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.17.0",
+      "Newtonsoft.Json >= 13.0.2",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 5.0.10",
       "Npgsql.EntityFrameworkCore.PostgreSQL.Design >= 1.1.0",
       "Serilog >= 2.12.0",
@@ -7372,19 +7416,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dung\\.nuget\\packages\\": {}
+    "C:\\Users\\tinh.v.phan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
+      "projectUniqueName": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
       "projectName": "PrjectWebAPI",
-      "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
-      "packagesPath": "C:\\Users\\Dung\\.nuget\\packages\\",
-      "outputPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\obj\\",
+      "projectPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\PrjectWebAPI.csproj",
+      "packagesPath": "C:\\Users\\tinh.v.phan\\.nuget\\packages\\",
+      "outputPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\PrjectWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Dung\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tinh.v.phan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7398,8 +7442,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj": {
-              "projectPath": "D:\\Software\\WebProgramming21HCB\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj"
+            "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj": {
+              "projectPath": "D:\\Study\\HK3\\WebNangCao\\WebProgramming21HCB\\PrjectWebAPI\\Service\\Service.csproj"
             }
           }
         }
@@ -7431,6 +7475,10 @@
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
             "target": "Package",
             "version": "[1.17.0, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.2, )"
           },
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
@@ -7472,7 +7520,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

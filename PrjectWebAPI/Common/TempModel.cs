@@ -28,7 +28,6 @@ namespace Common
 
     public class ExternalTransfer
     {
-        public int Send_UserID { get; set; }
         public string Send_STK { get; set; }
         public decimal Send_Money { get; set; }
 
@@ -39,5 +38,29 @@ namespace Common
         public int TransactionTypeID { get; set; }
         public int BankReferenceId { get; set; }
         public string RSA { get; set; }
+    }
+
+    public class ResponeseMessagePartner
+    {
+        public DataPartnerAccount data { get; set; }
+        public bool success { get; set; }
+    }
+
+    public class DataPartnerAccount
+    {
+        public string name { get; set; }
+        public string paymentAccount { get; set; }
+    }
+
+    public class SendMoneyRequest
+    {
+        public string sendPayAccount { get; set; }
+        public string sendAccountName { get; set; }
+        public string receiverPayAccount { get; set; }
+        public string payAccountFee { get; set; }
+        public decimal transactionFee { get; set; }
+        public decimal amountOwed { get; set; }
+        public string bankReferenceId { get; set; }
+        public string description { get; set; }
     }
 }
