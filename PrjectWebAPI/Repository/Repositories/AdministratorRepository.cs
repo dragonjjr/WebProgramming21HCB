@@ -212,11 +212,13 @@ namespace Repository.Repositories
         /// API Get List Transaction banking
         /// </summary>
         /// <returns></returns>
-        public List<TransactionVM> GetListTransaction()
+        public List<TransactionVM> GetListTransaction(int month, int year)
         {
             try
             {
                 return dbContext.TransactionBankings
+                            .Where(x => x.CreatedDate.Value.Month == month && x.CreatedDate.Value.Year == year)
+                            .Where(x => x.TransactionTypeId == 2)
                             .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId,d1.CreatedDate, TransactionTypeName = d2.Name })
                             .Join(dbContext.PaymentFeeTypes, d1 => d1.PaymentFeeTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.TransactionTypeName, PaymentFeeTypeName = d2.Name, d1.BankReferenceId,d1.CreatedDate })
                             .Join(dbContext.BankReferences, d1 => d1.BankReferenceId, d2 => d2.Id,

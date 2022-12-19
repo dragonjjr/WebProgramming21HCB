@@ -11,6 +11,6 @@ namespace Repository.Interfaces
         bool AddNewEmployee(EmployeeAccountInput employeeInfo);
         bool UpdateEmployeeInfo(int employeeId, EmployeeInfoInput employeeInfo);
         bool DeleteEmployee(int employeeId);
-        List<TransactionVM> GetListTransaction();
+        List<TransactionVM> GetListTransaction(int month, int year);
     }
 }

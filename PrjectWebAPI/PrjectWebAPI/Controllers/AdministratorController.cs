@@ -153,10 +153,10 @@ namespace PrjectWebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("ViewTransaction")]
-        public ResponeseMessage GetListTransaction()
+        public ResponeseMessage GetListTransaction(int month, int year)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var model = _administratorService.GetListTransaction();
+            var model = _administratorService.GetListTransaction(month,year);
             if (model != null)
             {
                 rs.Status = 200;
