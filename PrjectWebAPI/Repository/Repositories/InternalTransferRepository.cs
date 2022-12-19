@@ -254,7 +254,7 @@ namespace Repository.Repositories
                 _trans.CreateSavepoint("BeforeTransfer");
                 if (model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
                 {
-                    var send_acc = dbContext.UserManages.Where(x => x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
+                    var send_acc = dbContext.UserManages.Where(x => x.Stk == model.Receive_STK).FirstOrDefault();
 
                     if (send_acc != null)
                     {
