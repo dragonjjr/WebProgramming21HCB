@@ -35,8 +35,9 @@ namespace Repository.Repositories
                         {
                             var authClaims = new List<Claim>
                             {
-                                new Claim(ClaimTypes.Name, user.Username),
+                                new Claim(ClaimTypes.Name , user.Username),
                                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                                new Claim("userId" , user.Id.ToString()),
                             };
                             var token = Helpers.CreateToken(authClaims);
                             var refreshToken = Helpers.GenerateRefreshToken();
@@ -67,10 +68,10 @@ namespace Repository.Repositories
             {
                 if (changePasswordInput.NewPassword == changePasswordInput.ConfirmNewPassword)
                 {
-                    string currentPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordInput.CurrentPassword);
+                    string currentPassword = changePasswordInput.CurrentPassword;
                     var account = dbContext.Accounts.Where(x => x.Id == Id).SingleOrDefault();
                     string oldPassword = account.Password;
-                    bool verified = BCrypt.Net.BCrypt.Verify(oldPassword, currentPassword);
+                    bool verified = BCrypt.Net.BCrypt.Verify(currentPassword,oldPassword);
                     if (verified)
                     {
                         account.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordInput.NewPassword);

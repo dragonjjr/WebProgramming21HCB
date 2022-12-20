@@ -10,29 +10,36 @@ import {
   IdcardOutlined,
 } from "@ant-design/icons";
 import "../../Assets/CSS/Register.css";
-import { instance } from "../../utils";
+import { instance, parseJwt } from "../../utils";
 import { useEffect } from "react";
 
 function ChangePassword(props) {
   const [loading, setLoading] = useState(false);
 
+  const [message, setMessage] = useState("");
+
+  const [failed, setFailed] = useState(false);
+
   const loadData = async function (values) {
     try {
-      const res = await instance.post(`Employee/RegisterAccount`, {
-        userName: values.userName,
-        password: values.password,
-        infor: {
-          name: values.fullname,
-          cmnd: values.cmnd,
-          email: values.email,
-          phone: values.phone,
-          isStaff: false,
-        },
-      });
+      const token = parseJwt(localStorage.App_AccessToken);
+      setLoading(true);
+
+      const res = await instance.patch(
+        `Account/ChangePassword/${token.userId}`,
+        {
+          currentPassword: values.currentPassword,
+          newPassword: values.newPassword,
+          confirmNewPassword: values.confirmNewPassword,
+        }
+      );
 
       if (res.data.status === 200) {
-        console.log("ASDS");
+        setFailed(false);
+      } else {
+        setFailed(true);
       }
+      setMessage(res.data.message);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -48,15 +55,15 @@ function ChangePassword(props) {
         onFinish={(e) => loadData(e)}
       >
         <Form.Item
-          name="password"
+          name="currentPassword"
           rules={[
-            { required: true, message: "Please input your current password!" },
+            { required: true, message: "Please input your new password!" },
           ]}
         >
           <Input.Password
             type="password"
             prefix={<LockOutlined className="site-form-item-icon" />}
-            placeholder="Password"
+            placeholder="Current Password"
             size="large"
             autoComplete="off"
             iconRender={(visible) =>
@@ -64,28 +71,56 @@ function ChangePassword(props) {
             }
           ></Input.Password>
         </Form.Item>
+
         <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Please input your email!" }]}
+          name="confirmNewPassword"
+          rules={[
+            {
+              required: true,
+              message: "Please input your confirm new password!",
+            },
+          ]}
         >
-          <Input
-            prefix={<MailOutlined className="site-form-item-icon" />}
-            placeholder="Email"
+          <Input.Password
+            type="password"
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            placeholder="Current Password"
             size="large"
             autoComplete="off"
-          ></Input>
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          ></Input.Password>
         </Form.Item>
+
         <Form.Item
-          name="phone"
-          rules={[{ required: true, message: "Please input your phone!" }]}
+          name="newPassword"
+          rules={[
+            { required: true, message: "Please input your current password!" },
+          ]}
         >
-          <Input
-            prefix={<PhoneOutlined className="site-form-item-icon" />}
-            placeholder="Phone"
+          <Input.Password
+            type="password"
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            placeholder="New Password"
             size="large"
             autoComplete="off"
-          ></Input>
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          ></Input.Password>
         </Form.Item>
+
+        {message && (
+          <Form.Item>
+            {failed ? (
+              <Alert message={message} type="error" />
+            ) : (
+              <Alert message={message} type="success" />
+            )}
+          </Form.Item>
+        )}
+
         <Form.Item>
           <Button
             type="primary"
@@ -93,20 +128,9 @@ function ChangePassword(props) {
             className="login-form-button"
             size="large"
             block
+            loading={loading}
           >
-            Register
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            danger
-            htmlType="button"
-            className="login-form-button"
-            size="large"
-            block
-          >
-            Clear
+            Submit
           </Button>
         </Form.Item>
       </Form>
