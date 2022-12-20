@@ -33,7 +33,7 @@ namespace Repository.DBContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySQL("server=remotemysql.com;user=6IVYVvfe0w;password=rSLnSeLDh7;database=6IVYVvfe0w;Port=3306");
+                optionsBuilder.UseMySQL("server=52.147.195.180;user=root;password=;database=webnc;Port=3306");
             }
         }
 
