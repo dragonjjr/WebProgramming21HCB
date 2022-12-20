@@ -6,7 +6,6 @@ import {
   ExclamationCircleFilled,
 } from "@ant-design/icons";
 import { instance } from "../../utils.js";
-import "./Admin.css";
 
 const { TextArea } = Input;
 const ActionType = {
