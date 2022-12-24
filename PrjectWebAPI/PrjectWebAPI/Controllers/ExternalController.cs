@@ -194,7 +194,7 @@ namespace External.Controllers
             var header_signature = Request.Headers["Signature"];
             var header_token = Request.Headers["Token"];
             var header_time = Request.Headers["Time"];
-            //var en = Helpers.Encryption(sendSTK + sendMoney + receiveSTK);
+            var en = Helpers.Encryption(sendSTK + sendMoney + receiveSTK);
             if (!string.IsNullOrEmpty(header_token) && !string.IsNullOrEmpty(header_time))
             {
                 var token = Helpers.GetToken(header_time);
