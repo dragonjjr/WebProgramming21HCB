@@ -268,6 +268,7 @@ namespace Repository.Repositories
                             TransactionTypeId = model.TransactionTypeID,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             CreatedDate = DateTime.Now,
+                            IsDebtRemind = false,
                             Rsa = model.RSA
                         };
                         dbContext.TransactionBankings.Add(transaction);
