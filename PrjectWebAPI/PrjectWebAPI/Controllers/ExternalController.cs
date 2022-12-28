@@ -61,6 +61,15 @@ namespace External.Controllers
         {
             var result = new ResponeseMessage();
             var signature = Helpers.EncryptionPartner(Helpers.Signature);
+            int paymentfee = 1;
+            if(input.typeFee == "receiver")
+            {
+                paymentfee = 2;
+            }
+            else
+            {
+                paymentfee = 1;
+            }
             ExternalTransfer model = new ExternalTransfer
             {
                 Send_STK = input.sendPayAccount,
@@ -68,7 +77,7 @@ namespace External.Controllers
                 Receive_BankID = 1,
                 Receive_STK = input.receiverPayAccount,
                 Content = input.description,
-                PaymentFeeTypeID = 1,
+                PaymentFeeTypeID = paymentfee,
                 TransactionTypeID = 1,
                 BankReferenceId = 2,
                 RSA = signature,

@@ -236,8 +236,7 @@ namespace Repository.Repositories
                             sendPayAccount = model.Send_STK,
                             sendAccountName = "Nhóm 1",
                             receiverPayAccount = model.Receive_STK,
-                            payAccountFee = model.Send_STK,
-                            transactionFee = 30000,
+                            typeFee = model.PaymentFeeTypeID == 1 ? "sender": "receiver ",
                             amountOwed = model.Send_Money,
                             bankReferenceId = "bank1",
                             description = model.Content
@@ -247,7 +246,7 @@ namespace Repository.Repositories
                         var httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
                         DateTime datetime = DateTime.Now;
                         long time = ((DateTimeOffset)datetime).ToUnixTimeSeconds();
-                        var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney" + data.sendPayAccount + data.sendAccountName + data.receiverPayAccount + data.payAccountFee + data.transactionFee + data.amountOwed + data.bankReferenceId + time.ToString();
+                        var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney" + data.sendPayAccount + data.sendAccountName + data.receiverPayAccount + data.typeFee + data.amountOwed + data.bankReferenceId + time.ToString();
                         var token = Helpers.GetTokenOfPartner(hashtring);
                         request.RequestUri = new Uri(Helpers.url_Partner + $"api/transaction/addmoney");
                         request.Content = httpContent;
