@@ -60,37 +60,22 @@ namespace External.Controllers
         public async Task<ResponeseMessage> SendMoney(SendMoneyRequest input)
         {
             var result = new ResponeseMessage();
-            HttpClient httpClient = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage();
-            var httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(input), Encoding.UTF8, "application/json");
-            DateTime datetime = DateTime.Now;
-            long time = ((DateTimeOffset)datetime).ToUnixTimeSeconds();
-            var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney"+ input.sendPayAccount +input.sendAccountName +input.receiverPayAccount +input.payAccountFee+ +input.transactionFee + input.amountOwed + input.bankReferenceId + time.ToString();
-            var token = Helpers.GetTokenOfPartner(hashtring);
-            request.RequestUri = new Uri(Helpers.url_Partner + $"api/transaction/addmoney");
             var signature = Helpers.EncryptionPartner(Helpers.Signature);
-            request.Content = httpContent;
-            request.Method= HttpMethod.Post;
-            request.Headers.Add("signature", signature); 
-            request.Headers.Add("token", token);
-            request.Headers.Add("time", time.ToString());
-
-            HttpResponseMessage response = await httpClient.SendAsync(request);
-            var responseString = await response.Content.ReadAsStringAsync();
-            if (response.StatusCode == HttpStatusCode.OK)
+            ExternalTransfer model = new ExternalTransfer
             {
-                ExternalTransfer model = new ExternalTransfer {
-                    Send_STK = input.sendPayAccount,
-                    Send_Money = input.amountOwed,
-                    Receive_BankID = 1,
-                    Receive_STK = input.receiverPayAccount,
-                    Content = input.description,
-                    PaymentFeeTypeID = 1,
-                    TransactionTypeID = 1,
-                    BankReferenceId = 2,
-                    RSA = signature,
-                };
-                _internalTransferService.ReceiveExternalTransfer(model);
+                Send_STK = input.sendPayAccount,
+                Send_Money = input.amountOwed,
+                Receive_BankID = 1,
+                Receive_STK = input.receiverPayAccount,
+                Content = input.description,
+                PaymentFeeTypeID = 1,
+                TransactionTypeID = 1,
+                BankReferenceId = 2,
+                RSA = signature,
+            };
+            var rs = await _internalTransferService.ExternalTransfer(model);
+            if (rs)
+            {
                 result.Status = 200;
                 result.Message = "Send Money successfull";
             }

@@ -1,10 +1,13 @@
 ﻿using Common;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Bcpg;
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -199,7 +202,7 @@ namespace Repository.Repositories
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool ExternalTransfer(ExternalTransfer model)
+        public async Task<bool> ExternalTransfer(ExternalTransfer model)
         {
             using var _trans = dbContext.Database.BeginTransaction();
             try
@@ -221,14 +224,44 @@ namespace Repository.Repositories
                             TransactionTypeId = model.TransactionTypeID,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             CreatedDate = DateTime.Now,
+                            IsDebtRemind = false,
                             Rsa = model.RSA
                         };
                         dbContext.TransactionBankings.Add(transaction);
                         send_acc.SoDu = send_acc.SoDu - model.Send_Money;
                         dbContext.UserManages.Update(send_acc);
                         dbContext.SaveChanges();
-                        _trans.Commit();
-                        return true;
+                        SendMoneyRequest data = new SendMoneyRequest
+                        {
+                            sendPayAccount = model.Send_STK,
+                            sendAccountName = "Nhóm 1",
+                            receiverPayAccount = model.Receive_STK,
+                            payAccountFee = model.Send_STK,
+                            transactionFee = 30000,
+                            amountOwed = model.Send_Money,
+                            bankReferenceId = "bank1",
+                            description = model.Content
+                        };
+                        HttpClient httpClient = new HttpClient();
+                        HttpRequestMessage request = new HttpRequestMessage();
+                        var httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                        DateTime datetime = DateTime.Now;
+                        long time = ((DateTimeOffset)datetime).ToUnixTimeSeconds();
+                        var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney" + data.sendPayAccount + data.sendAccountName + data.receiverPayAccount + data.payAccountFee + data.transactionFee + data.amountOwed + data.bankReferenceId + time.ToString();
+                        var token = Helpers.GetTokenOfPartner(hashtring);
+                        request.RequestUri = new Uri(Helpers.url_Partner + $"api/transaction/addmoney");
+                        request.Content = httpContent;
+                        request.Method = HttpMethod.Post;
+                        request.Headers.Add("signature", model.RSA);
+                        request.Headers.Add("token", token);
+                        request.Headers.Add("time", time.ToString());
+
+                        HttpResponseMessage response = await httpClient.SendAsync(request);
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            _trans.Commit();
+                            return true;
+                        }
                     }
                     return false;
                 }

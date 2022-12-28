@@ -43,7 +43,7 @@ namespace Service.Services
             return _IinternalRepository.InternalTransfer(model);
         }
 
-        public bool ExternalTransfer(ExternalTransfer model)
+        public Task<bool> ExternalTransfer(ExternalTransfer model)
         {
             return _IinternalRepository.ExternalTransfer(model);
         }

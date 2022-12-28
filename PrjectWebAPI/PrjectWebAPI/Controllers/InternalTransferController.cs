@@ -6,6 +6,7 @@ using Repository.DBContext;
 using Service.Interfaces;
 using Service.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PrjectWebAPI.Controllers
 {
@@ -96,10 +97,10 @@ namespace PrjectWebAPI.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("ExternalTranfer")]
-        public ResponeseMessage ExternalTranfer(ExternalTransfer model)
+        public async Task<ResponeseMessage> ExternalTranfer(ExternalTransfer model)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var Is_Success = _internalTransferService.ExternalTransfer(model);
+            var Is_Success = await _internalTransferService.ExternalTransfer(model);
             if (Is_Success)
             {
                 rs.Status = 200;
