@@ -74,7 +74,7 @@ namespace Repository.Repositories
                     recipient.Stk = recipientInput.STK;
                     recipient.Name = recipientInput.Name;
                     recipient.UserId = recipientInput.UserID;
-
+                    recipient.BankId = recipientInput.BankID;
 
                     dbContext.Recipients.Add(recipient);
                     dbContext.SaveChanges();
@@ -100,7 +100,8 @@ namespace Repository.Repositories
                 var recipient = FindRecipientById(id);
                 if (recipient != null)
                 {
-                    dbContext.Recipients.Remove(recipient);
+                    recipient.IsDeleted = true;
+                    dbContext.Recipients.Update(recipient);
                     dbContext.SaveChanges();
                     return true;
                 }
@@ -149,7 +150,7 @@ namespace Repository.Repositories
                 var existUser = FindUserById(id);
                 if (existUser != null)
                 {
-                    return dbContext.Recipients.Where(x => x.UserId == id).Select(x => new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
+                    return dbContext.Recipients.Where(x => x.UserId == id && x.IsDeleted != true).Select(x => new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
                 }
                 return null;
             }
