@@ -44,7 +44,7 @@ namespace PrjectWebAPI.Controllers
         /// Xem thông tin số tài khoản và số dư của khách hàng
         /// </summary>
         /// <returns></returns>
-        [HttpGet("Recipient/{id}")]
+        [HttpGet("GetUserBalance/{id}")]
         public ResponeseMessage GetUserBalance(int id)
         {
             ResponeseMessage rs = new ResponeseMessage();
