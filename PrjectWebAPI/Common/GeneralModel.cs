@@ -188,6 +188,7 @@ namespace Common
 
         public int Status { get; set; }
         public bool isStaff { get; set; }
+        public string Roles { get; set; }
     }
 
     public class ResetPasswordInput

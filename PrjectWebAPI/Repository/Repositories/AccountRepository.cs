@@ -47,6 +47,7 @@ namespace Repository.Repositories
                             rs.RefreshToken = refreshToken;
                             rs.Status = 200;
                             rs.LoggedIn = true;
+                            rs.Roles = user.Role;
                             rs.isStaff = dbContext.UserManages.Where(x => x.Id == user.Id).Select(x => x.IsStaff).FirstOrDefault();
                             dbContext.Accounts.Update(user);
                             dbContext.SaveChanges();
