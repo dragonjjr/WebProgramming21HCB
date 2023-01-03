@@ -74,7 +74,7 @@ namespace Repository.Repositories
                     recipient.Stk = recipientInput.STK;
                     recipient.Name = recipientInput.Name;
                     recipient.UserId = recipientInput.UserID;
-                    recipient.BankId = recipientInput.BankID;
+                    //recipient.BankId = recipientInput.UserID;
 
                     dbContext.Recipients.Add(recipient);
                     dbContext.SaveChanges();
