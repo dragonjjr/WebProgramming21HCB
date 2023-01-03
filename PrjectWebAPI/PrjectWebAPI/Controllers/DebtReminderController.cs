@@ -19,7 +19,10 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Create a new debt remind
         /// </summary>
-        /// <param name="searchName"></param>
+        /// <param name="searchName">STKSend: STK đang nợ tiền;
+        /// STKReceive: Số tài khoản nhận tiền nợ;
+        /// Money: số tiền;
+        /// Content: Nội dung nhắc nợ</param>
         /// <returns></returns>
         /// 
         [HttpPost("CreateDebtRemind")]
@@ -46,6 +49,8 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API view list debt remind
         /// </summary>
+        /// <param name="STK">STK: stk cần xem lịch sử nhắc nợ</param>
+        /// <param name="status">Status: Trạng thái</param>
         /// <returns></returns>
         /// 
         [HttpGet("viewInfoDebtReminds/{STK}")]
@@ -73,6 +78,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API cancel a debt remind
         /// </summary>
+        /// <param name="debtRemindID">debtRemindID: ID nhắc nợ muốn hủy bỏ</param>
         /// <returns></returns>
         /// 
         [HttpPatch("CancelDebtRemind/{debtRemindID}")]
@@ -99,6 +105,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API pay a debt remind
         /// </summary>
+        /// <param name="debtRemindID">debtRemindID: id nhắc nợ cần thực hiện thanh toán</param>
         /// <returns></returns>
         /// 
         [HttpPatch("payDebtRemind/{debtRemindID}")]

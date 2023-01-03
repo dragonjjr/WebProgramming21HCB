@@ -36,7 +36,7 @@ namespace External.Controllers
         /// <summary>
         /// Xem thông tin tài khoản đối tác theo STK
         /// </summary>
-        /// <param name="STK"></param>
+        /// <param name="STK">Số tài khoản từ ngân hàng liên kết cần xem thông tin</param>
         /// <returns></returns>
         [HttpGet("GetInforFromPartner")]
         public async Task<ResponeseMessagePartner> GetInforFromPartner(string STK)
@@ -63,15 +63,15 @@ namespace External.Controllers
 
         /// <summary>
         /// Chuyển tiền liên ngân hàng
-        /// sendPayAccount: STK chuyển tiền
-        /// sendAccountName: Tên chủ tài khoản chuyển tiền
-        /// receiverPayAccount: TK nhận tiền
-        /// typeFee: "receiver": người nhận trả phí, "sender": người chuyển trả phí
-        /// amountOwed: Số tiền cần chuyển
-        /// bankReferenceId: Thông tin ngân hàng tham chiếu. Mặc định với ngân hàng liên kết là "bank1"
-        /// description: Mô tả chuyển tiền
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="input">sendPayAccount: STK chuyển tiền;
+        /// sendAccountName: Tên chủ tài khoản chuyển tiền; 
+        /// receiverPayAccount: TK nhận tiền;
+        /// receiverPayAccount: TK nhận tiền;
+        /// typeFee: "receiver": người nhận trả phí, "sender": người chuyển trả phí;
+        /// amountOwed: Số tiền cần chuyển;
+        /// bankReferenceId: Thông tin ngân hàng tham chiếu. Mặc định với ngân hàng liên kết là "bank1";
+        /// description: Mô tả chuyển tiền</param>
         /// <returns></returns>
         [HttpPost("SendMoney")]
         public async Task<ResponeseMessage> SendMoney(SendMoneyRequest input)
@@ -111,7 +111,7 @@ namespace External.Controllers
         /// <summary>
         /// Lấy thông tin người nhận bằng STK
         /// </summary>
-        /// <param name="STK"></param>
+        /// <param name="STK">STK cần xem thông tin</param>
         /// <returns></returns>
         [HttpGet("ViewRecipientBySTK")]
         public ResponeseMessage ViewRecipientBySTK(string STK)
@@ -145,7 +145,15 @@ namespace External.Controllers
         /// <summary>
         /// Nhận tiền từ chuyển khoản liên ngân hàng
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">Send_STK: STK chuyển tiền; 
+        /// Send_Money: số tiền cần chuyển;
+        /// Receive_BankID: Ngân hàng liên kết ID: mặc định liên kết là 2 
+        /// Receive_STK: Số tài khoản nhận tiền
+        /// Content: Nội dung chuyển tiền
+        /// PaymentFeeTypeID: Phí chuyển tiền: 1 người chuyển trả phí, 2: người nhận trả phí
+        /// TransactionTypeID: Loại chuyển khoản: 2 chuyển khoản liên ngân hàng
+        /// BankReferenceId: để null
+        /// RSA: Chuỗi RSA từ đối tác cung cấp để lưu vào DB phục vụ đối chiếu sau này</param>
         /// <returns></returns>
         [HttpPost("ExternalTranfer")]
         public ResponeseMessage ExternalTranfer(ExternalTransfer model)

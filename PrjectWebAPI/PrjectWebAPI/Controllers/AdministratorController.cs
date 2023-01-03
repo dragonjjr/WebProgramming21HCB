@@ -20,7 +20,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Get list of employees by search condition (employee name). If search condition is empty, get all employees.
         /// </summary>
-        /// <param name="searchName"></param>
+        /// <param name="searchName">searchName: tên tài khoản cần tìm</param>
         /// <returns></returns>
         /// 
         [HttpGet("GetEmployeeList")]
@@ -48,7 +48,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Find employee by id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id tài khoản cần tìm</param>
         /// <returns></returns>
         [HttpGet("GetEmployee/{id}")]
         public ResponeseMessage FindEmployeeById(int id)
@@ -75,7 +75,13 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Create a new employee information
         /// </summary>
-        /// <param name="employeeInfo"></param>
+        /// <param name="employeeInfo">UserName: Tài khoản đăng nhập;
+        /// Password: Mật khẩu;
+        /// Name: Tên;
+        /// Cmnd: CMND/CCCD;
+        /// Address: Địa chỉ;
+        /// Email: Email;
+        /// Phone: Số điện thoại</param>
         /// <returns></returns>
         [HttpPost("AddNewEmployee")]
         public ResponeseMessage AddNewEmployee([FromBody] EmployeeAccountInput employeeInfo)
@@ -100,6 +106,8 @@ namespace PrjectWebAPI.Controllers
 
         /// <summary>
         /// API Update a employee information
+        /// <param name="employeeId">employeeId: Id tài khoản cần cập nhật;
+        /// employeeInfo: Những thông tin cần cập nhật</param>
         /// </summary>
         /// <returns></returns>
         [HttpPatch("UpdateEmployeeInfo/{employeeId}")]
@@ -125,7 +133,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Delete a employee information
         /// </summary>
-        /// <param name="employeeId"></param>
+        /// <param name="employeeId">ID: nhân viên cần xóa</param>
         /// <returns></returns>
         [HttpDelete("DeleteEmployee/{employeeId}")]
         public ResponeseMessage DeleteEmployee(int employeeId)
@@ -151,6 +159,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Get List Transaction Banking All Customer
         /// </summary>
+        /// <param></param>
         /// <returns></returns>
         [HttpGet("ViewTransaction")]
         public ResponeseMessage GetListTransaction(int month, int year)

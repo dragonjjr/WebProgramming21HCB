@@ -20,7 +20,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Get list notification of a account
         /// </summary>
-        /// <param name="STKReceive"></param>
+        /// <param name="STKReceive">STKReceive: số tài khoản nhận thông báo</param>
         /// <returns></returns>
         /// 
         [HttpGet("GetNotifications")]

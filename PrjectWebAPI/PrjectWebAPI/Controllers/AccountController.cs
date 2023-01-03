@@ -27,7 +27,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Login hệ thống
         /// </summary>
-        /// <param name="accountInput"></param>
+        /// <param name="accountInput">UserName: Tài khoản đăng nhập; Password:Mật khẩu</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("Login")]
@@ -53,7 +53,11 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Change password by Id
         /// </summary>
-        /// <param name="AccountId"></param>
+        /// <param name="AccountId">id: id tài khoản cần đổi mật khẩu;
+        /// CurrentPassowrd: Mật khẩu hiện tại;
+        /// NewPassword: Mật khẩu mới;
+        /// ConfirmNewPassword: Xác nhận lại mật khẩu
+        /// </param>
         /// <returns></returns>
         [HttpPatch("ChangePassword/{id}")]
         public ResponeseMessage ChangePassword(int id, [FromBody] ChangePasswordInput changePasswordInput)
@@ -76,7 +80,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Quên mật khẩu
         /// </summary>
-        /// <param name="emailInput"></param>
+        /// <param name="emailInput">Email: Email để nhận thông tin reset mật khẩu khi quên</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("ForgotPassword")]
@@ -103,7 +107,10 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// API Reset password by Id
         /// </summary>
-        /// <param name="AccountId"></param>
+        /// <param name="AccountId">ID: id tài khoản cần reset password; 
+        /// OTPCode: mã OTP nhận được qua mail; 
+        /// NewPassword: Mật khẩu mới;
+        /// ConfirmNewPassword: Xác nhận lại mật khẩu</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPatch("ForgotPassword/ResetPassword/{id}")]

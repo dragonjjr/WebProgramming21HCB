@@ -21,6 +21,8 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Thêm người thụ hưởng/ người nhận
         /// </summary>
+        /// <param name="recipientInput">STK: Số tài khoản người thụ hưởng;
+        /// Name: Tên người thụ hưởng</param>
         /// <returns></returns>
         [HttpPost("Recipient/AddRecipient")]
         public ResponeseMessage AddRecipient([FromBody] RecipientInput recipientInput)
@@ -43,6 +45,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Xem thông tin số tài khoản và số dư của khách hàng
         /// </summary>
+        /// <param name="id">Id: id số tài khoản cần xem số dư</param>
         /// <returns></returns>
         [HttpGet("GetUserBalance/{id}")]
         public ResponeseMessage GetUserBalance(int id)
@@ -67,6 +70,8 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Cập nhật người thụ hưởng/ người nhận
         /// </summary>
+        /// <param name="id">Id: id cần cập nhật thông tin;
+        /// recipientEdit: Thông tin cần cập nhật</param>
         /// <returns></returns>
         [HttpPatch("Recipient/{id}")]
         public ResponeseMessage UpdateRecipient(int id, [FromBody] RecipientEdit recipientEdit)
@@ -91,6 +96,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Xóa người thụ hưởng/ người nhận
         /// </summary>
+        /// <param name="id">Id: id người thụ hưởng cần xóa</param>
         /// <returns></returns>
         [HttpDelete("Recipient/{id}")]
         public ResponeseMessage DeleteRecipient(int id)
@@ -113,6 +119,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Lấy danh sách người nhận của một khách hàng
         /// </summary>
+        /// <param name="id">Id: id khách hàng cần lấy danh sách người thụ hưởng</param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public ResponeseMessage GetListRecipientByUserId(int id)

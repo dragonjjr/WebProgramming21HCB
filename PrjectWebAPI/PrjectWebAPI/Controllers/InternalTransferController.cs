@@ -47,7 +47,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Kiểm tra OTP có hợp lệ
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">TransactionID: Id của giao dịch; OTP: mã code xác thực</param>
         /// <returns></returns>
         [HttpPost("CheckOTPTransaction")]
         public ResponeseMessage CheckOTPTransaction(CheckOTPTransaction model)
@@ -70,7 +70,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Lấy thông tin người nhận bằng STK
         /// </summary>
-        /// <param name="STK"></param>
+        /// <param name="STK">STK: STK cần xem thông tin</param>
         /// <returns></returns>
         [HttpGet("ViewRecipientBySTK")]
         public ResponeseMessage ViewRecipientBySTK(string STK)
@@ -91,33 +91,33 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
-        /// <summary>
-        /// Nhận tiền từ chuyển khoản liên ngân hàng
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost("ExternalTranfer")]
-        public async Task<ResponeseMessage> ExternalTranfer(ExternalTransfer model)
-        {
-            ResponeseMessage rs = new ResponeseMessage();
-            var Is_Success = await _internalTransferService.ExternalTransfer(model);
-            if (Is_Success)
-            {
-                rs.Status = 200;
-                rs.Message = "Transfer successfull!";
-            }
-            else
-            {
-                rs.Status = 0;
-                rs.Message = "Transfer failed!";
-            }
-            return rs;
-        }
+        ///// <summary>
+        ///// Nhận tiền từ chuyển khoản liên ngân hàng
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <returns></returns>
+        //[HttpPost("ExternalTranfer")]
+        //public async Task<ResponeseMessage> ExternalTranfer(ExternalTransfer model)
+        //{
+        //    ResponeseMessage rs = new ResponeseMessage();
+        //    var Is_Success = await _internalTransferService.ExternalTransfer(model);
+        //    if (Is_Success)
+        //    {
+        //        rs.Status = 200;
+        //        rs.Message = "Transfer successfull!";
+        //    }
+        //    else
+        //    {
+        //        rs.Status = 0;
+        //        rs.Message = "Transfer failed!";
+        //    }
+        //    return rs;
+        //}
 
         /// <summary>
         /// Lấy danh sách tài khoản thanh toán
         /// </summary>
-        /// <param name="UserID"></param>
+        /// <param name="UserID">ID: id tài khoản cần lấy danh sách tài khoản thanh toán</param>
         /// <returns></returns>
         [HttpGet("GetListAccount")]
         public ResponeseMessage GetListAccount(int UserID)
@@ -141,7 +141,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Chuyển khoản nội bộ
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">model: thông tin chuyển khoản nội bộ</param>
         /// <returns></returns>
         [HttpPost("InternalTranfer")]
         public ResponeseMessage InternalTranfer(InternalTransfer model)

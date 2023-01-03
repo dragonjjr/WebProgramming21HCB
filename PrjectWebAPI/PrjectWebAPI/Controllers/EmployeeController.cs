@@ -20,7 +20,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Đăng ký tài khoản
         /// </summary>
-        /// <param name="accountViewModel"></param>
+        /// <param name="accountViewModel">accountViewModel: Thông tin tài khoản đăng ký</param>
         /// <returns></returns>
         [HttpPost("RegisterAccount")]
         public ResponeseMessage RegisterAccount([FromBody] AccountViewModel accountViewModel)
@@ -44,7 +44,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Nạp tiền vào tài khoản
         /// </summary>
-        /// <param name="rechargeInput"></param>
+        /// <param name="rechargeInput">rechargeInput: Thông tin nạp tiền vào tài khoản</param>
         /// <returns></returns>
         [HttpPost("Recharge")]
         public ResponeseMessage Recharge([FromBody] RechargeInput rechargeInput)
@@ -67,7 +67,7 @@ namespace PrjectWebAPI.Controllers
         /// <summary>
         /// Xem thông tin tài khoản
         /// </summary>
-        /// <param name="infor"></param>
+        /// <param name="infor">BankID: Id của ngân hàng; STK: số tk cần xem thông tin</param>
         /// <returns></returns>
         [HttpPost("GetAccountInfor")]
         public ResponeseMessage GetAccountInfor([FromBody] AccountInforInput infor)
