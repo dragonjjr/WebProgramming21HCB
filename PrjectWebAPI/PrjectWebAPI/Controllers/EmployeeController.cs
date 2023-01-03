@@ -17,6 +17,11 @@ namespace PrjectWebAPI.Controllers
             _employeeService = employeeService;
         }
 
+        /// <summary>
+        /// Đăng ký tài khoản
+        /// </summary>
+        /// <param name="accountViewModel"></param>
+        /// <returns></returns>
         [HttpPost("RegisterAccount")]
         public ResponeseMessage RegisterAccount([FromBody] AccountViewModel accountViewModel)
         {
@@ -36,6 +41,11 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
+        /// <summary>
+        /// Nạp tiền vào tài khoản
+        /// </summary>
+        /// <param name="rechargeInput"></param>
+        /// <returns></returns>
         [HttpPost("Recharge")]
         public ResponeseMessage Recharge([FromBody] RechargeInput rechargeInput)
         {
@@ -54,6 +64,11 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
+        /// <summary>
+        /// Xem thông tin tài khoản
+        /// </summary>
+        /// <param name="infor"></param>
+        /// <returns></returns>
         [HttpPost("GetAccountInfor")]
         public ResponeseMessage GetAccountInfor([FromBody] AccountInforInput infor)
         {

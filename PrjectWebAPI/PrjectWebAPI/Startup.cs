@@ -76,7 +76,7 @@ namespace PrjectWebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectWebAPI", Version = "v1" });
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",

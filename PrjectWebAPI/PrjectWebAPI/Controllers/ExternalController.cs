@@ -33,6 +33,11 @@ namespace External.Controllers
             _internalTransferService = internalTransferService;
         }
 
+        /// <summary>
+        /// Xem thông tin tài khoản đối tác theo STK
+        /// </summary>
+        /// <param name="STK"></param>
+        /// <returns></returns>
         [HttpGet("GetInforFromPartner")]
         public async Task<ResponeseMessagePartner> GetInforFromPartner(string STK)
         {
@@ -56,6 +61,18 @@ namespace External.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Chuyển tiền liên ngân hàng
+        /// sendPayAccount: STK chuyển tiền
+        /// sendAccountName: Tên chủ tài khoản chuyển tiền
+        /// receiverPayAccount: TK nhận tiền
+        /// typeFee: "receiver": người nhận trả phí, "sender": người chuyển trả phí
+        /// amountOwed: Số tiền cần chuyển
+        /// bankReferenceId: Thông tin ngân hàng tham chiếu. Mặc định với ngân hàng liên kết là "bank1"
+        /// description: Mô tả chuyển tiền
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [HttpPost("SendMoney")]
         public async Task<ResponeseMessage> SendMoney(SendMoneyRequest input)
         {

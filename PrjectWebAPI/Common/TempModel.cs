@@ -57,8 +57,7 @@ namespace Common
         public string sendPayAccount { get; set; }
         public string sendAccountName { get; set; }
         public string receiverPayAccount { get; set; }
-        public string payAccountFee { get; set; }
-        public decimal transactionFee { get; set; }
+        public string typeFee { get; set; }
         public decimal amountOwed { get; set; }
         public string bankReferenceId { get; set; }
         public string description { get; set; }

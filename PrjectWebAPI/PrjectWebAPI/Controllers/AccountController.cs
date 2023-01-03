@@ -24,6 +24,11 @@ namespace PrjectWebAPI.Controllers
             _emailService = emailService;
         }
 
+        /// <summary>
+        /// Login hệ thống
+        /// </summary>
+        /// <param name="accountInput"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("Login")]
         public ResponeseMessage Login([FromBody] AccountInput accountInput)
@@ -68,7 +73,11 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
-
+        /// <summary>
+        /// Quên mật khẩu
+        /// </summary>
+        /// <param name="emailInput"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("ForgotPassword")]
         public ResponeseMessage SendMail([FromBody] EmailInput emailInput)
