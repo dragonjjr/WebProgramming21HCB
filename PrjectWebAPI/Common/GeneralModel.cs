@@ -187,6 +187,7 @@ namespace Common
         public bool LoggedIn { get; set; }
 
         public int Status { get; set; }
+        public bool isStaff { get; set; }
     }
 
     public class ResetPasswordInput
