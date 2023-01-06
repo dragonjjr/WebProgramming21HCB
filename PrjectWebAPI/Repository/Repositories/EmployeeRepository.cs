@@ -1,17 +1,13 @@
 ﻿using Common;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto;
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class EmployeeRepository: IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly _6IVYVvfe0wContext dbContext;
         public EmployeeRepository(_6IVYVvfe0wContext _dbContext)
@@ -41,7 +37,7 @@ namespace Repository.Repositories
         /// </summary>
         /// <param name="accountViewModel"></param>
         /// <returns></returns>
-        public bool RegisterAccount(AccountViewModel accountViewModel)
+        public string RegisterAccount(AccountViewModel accountViewModel)
         {
             try
             {
@@ -67,8 +63,12 @@ namespace Repository.Repositories
                 ac.Id = userManage.Id;
 
                 dbContext.Accounts.Add(ac);
-                dbContext.SaveChanges();
-                return true;
+                if (
+                dbContext.SaveChanges() > 0)
+                {
+                    return userManage.Stk.ToString();
+                }
+                else { return "0"; }
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace Repository.Repositories
         /// </summary>
         /// <param name="rechargeInput"></param>
         /// <returns></returns>
-        public bool Recharge(RechargeInput rechargeInput)
+        public decimal Recharge(RechargeInput rechargeInput)
         {
             try
             {
@@ -98,23 +98,25 @@ namespace Repository.Repositories
                         TransactionTypeId = rechargeInput.TransactionTypeId,
                         PaymentFeeTypeId = rechargeInput.PaymentTypeID,
                         Money = rechargeInput.SoTien,
-                        Content = rechargeInput.NoiDung
+                        Content = rechargeInput.NoiDung,
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Now,
                     };
                     dbContext.TransactionBankings.Add(tb);
                     account.SoDu = account.SoDu + rechargeInput.SoTien;
                     dbContext.UserManages.Update(account);
                     dbContext.SaveChanges();
-                    return true;
+                    return (decimal)account.SoDu;
                 }
                 else
                 {
-                    return false;
+                    return 0;
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
-                return false;
+                return 0;
             }
         }
     }

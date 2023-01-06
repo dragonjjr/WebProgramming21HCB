@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Alert, Spin, Row } from "antd";
+import { Button, Form, Input, notification, Spin, Row } from "antd";
 import {
   LockOutlined,
   UserOutlined,
@@ -11,10 +11,24 @@ import {
 } from "@ant-design/icons";
 import "../../Assets/CSS/Register.css";
 import { instance } from "../../utils";
-import { useEffect } from "react";
 
 function Register(props) {
   const [loading, setLoading] = useState(false);
+
+  const [form] = Form.useForm();
+
+  const openNotification = (stk) => {
+    notification.open({
+      duration: 0,
+      message: "Register account",
+      description: (
+        <div>
+          <p>Register successfully!</p>
+          <p>Account number: {stk}</p>
+        </div>
+      ),
+    });
+  };
 
   const loadData = async function (values) {
     try {
@@ -31,7 +45,7 @@ function Register(props) {
       });
 
       if (res.data.status === 200) {
-        console.log("ASDS");
+        openNotification(res.data.data);
       }
       setLoading(false);
     } catch (err) {
@@ -46,6 +60,7 @@ function Register(props) {
         className="register-form"
         style={{ width: 450 }}
         onFinish={(e) => loadData(e)}
+        form={form}
       >
         <div>
           <Form.Item
@@ -119,15 +134,18 @@ function Register(props) {
             ></Input>
           </Form.Item>
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              size="large"
-              block
-            >
-              Register
-            </Button>
+            <Spin spinning={loading}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+                size="large"
+                block
+                onClick={() => setLoading(true)}
+              >
+                Register
+              </Button>
+            </Spin>
           </Form.Item>
           <Form.Item>
             <Button
@@ -137,6 +155,7 @@ function Register(props) {
               className="login-form-button"
               size="large"
               block
+              onClick={() => form.resetFields()}
             >
               Clear
             </Button>

@@ -9,8 +9,8 @@ namespace Service.Interfaces
 {
     public interface IEmployeeService
     {
-        bool RegisterAccount(AccountViewModel accountViewModel);
+        string RegisterAccount(AccountViewModel accountViewModel);
         AccountViewModel GetAccountInfor(AccountInforInput infor);
-        bool Recharge(RechargeInput rechargeInput);
+        decimal Recharge(RechargeInput rechargeInput);
     }
 }

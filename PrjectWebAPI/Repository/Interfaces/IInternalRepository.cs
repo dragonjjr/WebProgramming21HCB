@@ -17,5 +17,8 @@ namespace Repository.Interfaces
         Task<bool> ExternalTransfer(ExternalTransfer model);
         bool ReceiveExternalTransfer(ExternalTransfer model);
         List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction);
+
+        TransactionVM GetInforTransaction(int transactionId);
+        
     }
 }

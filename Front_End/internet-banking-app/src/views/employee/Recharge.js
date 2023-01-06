@@ -30,12 +30,15 @@ function Recharge() {
 
   const [data, setData] = useState([]);
 
+  // Loading...
+  const [loading, setLoading] = useState(false);
+
   const [form] = Form.useForm();
 
   const appendData = async () => {
     const res = await instance.get(`Customer/GetUserBalance/${userId}`, {});
     if (res.data.status === 200) {
-      setData(res.data.data);
+      setData(res.data.data.stk);
     }
   };
 
@@ -43,25 +46,24 @@ function Recharge() {
     appendData();
   }, []);
 
-  //openNotificationWithIcon
-  const [api, contextHolder] = notification.useNotification();
-
-  const openNotificationWithIcon = (type) => {
-    api[type]({
-      message: "Notification Title",
-      description:
-        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+  const openNotification = (soDu) => {
+    console.log(soDu);
+    notification.open({
+      duration: 0,
+      description: (
+        <div>
+          <p>Recharge successfully!</p>
+          <p>Account balance: {soDu}</p>
+        </div>
+      ),
     });
   };
-
-  // Loading...
-  const [loading, setLoading] = useState(false);
 
   //Submit Form
   const onFinish = async (values) => {
     const res = await instance.post(`Employee/Recharge`, {
       bankID: 1,
-      stK_Send: data.stk,
+      stK_Send: data,
       stK_Receive: values.AccountNumber,
       soTien: values.Amount,
       noiDung: "Employee recharge",
@@ -69,8 +71,8 @@ function Recharge() {
       transactionTypeId: 1,
     });
     if (res.data.status === 200) {
-      openNotificationWithIcon("Success");
       setLoading(false);
+      openNotification(res.data.data);
     }
     setLoading(false);
     onReset();
@@ -83,60 +85,59 @@ function Recharge() {
 
   return (
     <Row type="flex" justify="center" align="middle">
-      {contextHolder}
-      <Spin spinning={loading} delay={500}>
-        <Form
-          {...layout}
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-          size="large"
-          style={{ width: 650, minWidth: 300 }}
+      <Form
+        {...layout}
+        form={form}
+        name="control-hooks"
+        onFinish={onFinish}
+        size="large"
+        style={{ width: 650, minWidth: 300 }}
+      >
+        <Form.Item
+          name="AccountNumber"
+          label="Username or Account number"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
         >
-          <Form.Item
-            name="AccountNumber"
-            label="Username or Account number"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input style={{ maxWidth: 300 }} />
-          </Form.Item>
-          <Form.Item
-            name="Amount"
-            label="Amount"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <InputNumber
-              defaultValue={0}
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              style={{ minWidth: 200 }}
-            />
-          </Form.Item>
+          <Input style={{ maxWidth: 300 }} />
+        </Form.Item>
+        <Form.Item
+          name="Amount"
+          label="Amount"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <InputNumber
+            defaultValue={0}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            style={{ minWidth: 200 }}
+          />
+        </Form.Item>
 
-          <Form.Item {...tailLayout}>
+        <Form.Item {...tailLayout}>
+          <Spin spinning={loading}>
             <Button
               type="primary"
               htmlType="submit"
               block
               onClick={() => {
-                //setLoading(true);
+                setLoading(true);
               }}
             >
               Submit
             </Button>
-          </Form.Item>
-        </Form>
-      </Spin>
+          </Spin>
+        </Form.Item>
+      </Form>
     </Row>
   );
 }

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { List, message, Button, Row, Modal, Form, Input } from "antd";
-import {
-  DeleteTwoTone,
-  EditTwoTone,
-  PlusSquareTwoTone,
-} from "@ant-design/icons";
+import { List, Button, Row, Modal, Form, Input } from "antd";
+import { DeleteTwoTone, PlusSquareTwoTone } from "@ant-design/icons";
 import { instance, parseJwt } from "../../utils.js";
 
 const formItemLayout = {

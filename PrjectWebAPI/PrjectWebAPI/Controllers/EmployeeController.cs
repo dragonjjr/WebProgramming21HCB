@@ -28,10 +28,11 @@ namespace PrjectWebAPI.Controllers
             ResponeseMessage rs = new ResponeseMessage();
 
             var model = _employeeService.RegisterAccount(accountViewModel);
-            if (model)
+            if (model!="0")
             {
                 rs.Status = 200;
                 rs.Message = "Register an account successfully!";
+                rs.Data = model;
             }
             else
             {
@@ -51,10 +52,11 @@ namespace PrjectWebAPI.Controllers
         {
             ResponeseMessage rs = new ResponeseMessage();
             var model = _employeeService.Recharge(rechargeInput);
-            if (model)
+            if (model> 0)
             {
                 rs.Status = 200;
                 rs.Message = "Recharge successfully!";
+                rs.Data = model;
             }
             else
             {

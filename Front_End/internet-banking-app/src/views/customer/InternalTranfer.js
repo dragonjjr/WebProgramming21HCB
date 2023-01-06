@@ -11,12 +11,13 @@ import {
   Steps,
   Spin,
   Result,
+  Col,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { instance, parseJwt } from "../../utils.js";
 import ListRecipient from "./ListRecipient.js";
 import { StoreContext } from "../../AppContext.js";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Tranfer = ({ nextCurrent }) => {
   const { transaction } = useContext(StoreContext);
@@ -198,14 +199,21 @@ const VerifyOTP = ({ nextCurrent }) => {
 
   const [form] = Form.useForm();
 
+  const [loadingVerifyOTP, setLoadingVerifyOTP] = useState(false);
+
   const onCheckOTP = async (otp) => {
     const res = await instance.post(`InternalTransfer/CheckOTPTransaction/`, {
       transactionID: transaction[0],
       otp: otp.otp,
     });
     if (res.data.status === 200) {
+      setLoadingVerifyOTP(false);
       nextCurrent();
     }
+
+    setTimeout(() => {
+      setLoadingVerifyOTP(false);
+    }, 6000);
   };
 
   return (
@@ -229,14 +237,17 @@ const VerifyOTP = ({ nextCurrent }) => {
           </Form.Item>
 
           <Form.Item style={{ textAlign: "center", marginTop: 15 }}>
-            <Button
-              type="primary"
-              onClick={() => {
-                form.submit();
-              }}
-            >
-              Submit
-            </Button>
+            <Spin spinning={loadingVerifyOTP}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  form.submit();
+                  setLoadingVerifyOTP(true);
+                }}
+              >
+                Submit
+              </Button>
+            </Spin>
           </Form.Item>
         </Card>
       </Form>
@@ -244,11 +255,86 @@ const VerifyOTP = ({ nextCurrent }) => {
   );
 };
 
-const InternalTranfer = () => {
+const ResultTransaction = () => {
   const navigate = useNavigate();
 
   const { transaction } = useContext(StoreContext);
 
+  const [result, setResult] = useState();
+
+  const getData = async () => {
+    console.log("DSADSA");
+    const res = await instance.get(
+      `InternalTransfer/GetInforTransaction?transactionId=${transaction[0]}`
+    );
+    if (res.data.status === 200) {
+      setResult(res.data.data);
+      console.log(res.data.data);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <>
+      <Result
+        status="success"
+        title="Successfully Transaction"
+        subTitle={
+          result && (
+            <div>
+              <h1 style={{ padding: 0, margin: 0 }}>{result.money}</h1>
+              <p>
+                <h3 style={{ padding: 0, margin: 0 }}>{result.transDate}</h3>
+              </p>
+
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  Name: {result.transactionType}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  From: {result.stkSend}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  To: {result.stkReceive}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  Transaction ID: {transaction[0]}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  Content: {result.content}
+                </h4>
+              </Row>
+            </div>
+          )
+        }
+        extra={[
+          <Button type="primary" key="home" onClick={() => navigate("/")}>
+            Home
+          </Button>,
+          <Button
+            key="transactionhistory"
+            onClick={() => navigate("/transactionhistory")}
+          >
+            Transaction History
+          </Button>,
+          <Button key="saverecipient">Save Recipient</Button>,
+        ]}
+      />
+    </>
+  );
+};
+
+const InternalTranfer = () => {
   const [current, setCurrent] = useState(0);
 
   const next = () => {
@@ -265,24 +351,7 @@ const InternalTranfer = () => {
     },
     {
       title: "Last",
-      content: (
-        <Result
-          status="success"
-          title="Successfully Transaction"
-          subTitle={`Order number: ${transaction[0]} Cloud server configuration takes 1-5 minutes, please wait.`}
-          extra={[
-            <Button type="primary" key="home" onClick={() => navigate("/")}>
-              Home
-            </Button>,
-            <Button
-              key="transactionhistory"
-              onClick={() => navigate("/transactionhistory")}
-            >
-              Transaction History
-            </Button>,
-          ]}
-        />
-      ),
+      content: <ResultTransaction />,
     },
   ];
 
@@ -301,19 +370,6 @@ const InternalTranfer = () => {
             size="small"
           />
           <div className="steps-content">{steps[current].content}</div>
-          <div
-            className="steps-action"
-            style={{ marginTop: 15, textAlign: "center" }}
-          >
-            {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
-              >
-                Done
-              </Button>
-            )}
-          </div>
         </Card>
       </Row>
     </>

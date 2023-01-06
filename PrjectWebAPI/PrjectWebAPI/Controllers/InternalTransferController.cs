@@ -193,5 +193,31 @@ namespace PrjectWebAPI.Controllers
             return rs;
         }
 
+        /// <summary>
+        /// Xem thông tin của một giao dịch
+        /// </summary>
+        /// <param name="transactionId"></param>
+        /// <returns></returns>
+        [HttpGet("GetInforTransaction")]
+        public ResponeseMessage GetInforTransactionByAcount(int transactionId)
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _internalTransferService.GetInforTransaction(transactionId);
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.IsSuccess = true;
+                rs.Message = "Get a transaction successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.IsSuccess = false;
+                rs.Message = "Get a transaction failed!";
+            }
+            return rs;
+        }
+
     }
 }
