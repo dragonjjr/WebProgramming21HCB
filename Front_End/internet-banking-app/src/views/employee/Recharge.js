@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Form,
@@ -8,6 +8,7 @@ import {
   Spin,
   InputNumber,
 } from "antd";
+import { instance, parseJwt } from "../../utils.js";
 
 const layout = {
   labelCol: {
@@ -25,7 +26,22 @@ const tailLayout = {
 };
 
 function Recharge() {
+  const [userId] = useState(parseJwt(localStorage.App_AccessToken).userId);
+
+  const [data, setData] = useState([]);
+
   const [form] = Form.useForm();
+
+  const appendData = async () => {
+    const res = await instance.get(`Customer/GetUserBalance/${userId}`, {});
+    if (res.data.status === 200) {
+      setData(res.data.data);
+    }
+  };
+
+  useEffect(() => {
+    appendData();
+  }, []);
 
   //openNotificationWithIcon
   const [api, contextHolder] = notification.useNotification();
@@ -42,8 +58,22 @@ function Recharge() {
   const [loading, setLoading] = useState(false);
 
   //Submit Form
-  const onFinish = (values) => {
-    console.log(values);
+  const onFinish = async (values) => {
+    const res = await instance.post(`Employee/Recharge`, {
+      bankID: 1,
+      stK_Send: data.stk,
+      stK_Receive: values.AccountNumber,
+      soTien: values.Amount,
+      noiDung: "Employee recharge",
+      paymentTypeID: 1,
+      transactionTypeId: 1,
+    });
+    if (res.data.status === 200) {
+      openNotificationWithIcon("Success");
+      setLoading(false);
+    }
+    setLoading(false);
+    onReset();
   };
 
   //Reset Form
@@ -64,7 +94,7 @@ function Recharge() {
           style={{ width: 650, minWidth: 300 }}
         >
           <Form.Item
-            name="Username or Account number"
+            name="AccountNumber"
             label="Username or Account number"
             rules={[
               {
@@ -99,8 +129,7 @@ function Recharge() {
               htmlType="submit"
               block
               onClick={() => {
-                setLoading(true);
-                openNotificationWithIcon("success");
+                //setLoading(true);
               }}
             >
               Submit
