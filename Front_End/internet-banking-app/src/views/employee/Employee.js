@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
   WalletOutlined,
   HistoryOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 
 import Recharge from "./Recharge";
@@ -45,6 +47,16 @@ function Employee() {
               key: "3",
               icon: <HistoryOutlined />,
               label: "Transaction history",
+            },
+            {
+              key: "4",
+              icon: (
+                <div>
+                  <Link to="/logout">
+                    <LogoutOutlined /> Logout
+                  </Link>
+                </div>
+              ),
             },
           ]}
           onClick={(e) => setCurrent(e.key)}

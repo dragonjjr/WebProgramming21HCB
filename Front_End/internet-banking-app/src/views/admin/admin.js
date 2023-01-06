@@ -7,7 +7,7 @@ import EmployeeManage from "./EmployeeManage";
 
 // Layout
 const { Header, Content, Sider } = Layout;
-const headerTitle = ["Admin"].map((key) => ({
+const headerTitle = ["ADMIN"].map((key) => ({
   key,
   label: `${key}`,
 }));
@@ -38,7 +38,7 @@ function Admin() {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={["Admin"]}
+          defaultSelectedKeys={["ADMIN"]}
           items={headerTitle}
         />
       </Header>
