@@ -36,7 +36,16 @@ function Login(props) {
         localStorage.setItem("App_AccessToken", res.data.data.accessToken);
         setLoginFailed(false);
         //Role
-        navigate("/");
+        console.log(res.data);
+        if (res.data.data.isStaff === false) {
+          navigate("/");
+        } else {
+          if (res.data.data.Role === "0") {
+            navigate("/employee");
+          } else {
+            navigate("/admin");
+          }
+        }
       }
 
       //Login Failed
