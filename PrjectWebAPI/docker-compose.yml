@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  prjectwebapi:
+    image: ${DOCKER_REGISTRY-}prjectwebapi
+    build:
+      context: .
+      dockerfile: PrjectWebAPI/Dockerfile
+    ports:
+      - "5002:80"
+      - "8002:443"
+      - "50012:50001"
