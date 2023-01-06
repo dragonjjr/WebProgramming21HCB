@@ -39,7 +39,7 @@ function Login(props) {
         if (res.data.data.isStaff === false) {
           navigate("/");
         } else {
-          if (res.data.data.Role === "0") {
+          if (res.data.data.roles === "0") {
             navigate("/employee");
           } else {
             navigate("/admin");
