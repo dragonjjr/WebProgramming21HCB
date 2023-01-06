@@ -28,7 +28,7 @@ namespace Repository.Repositories
 
         public string FindEmailById(int id)
         {
-            return dbContext.UserManages.Where(x => x.Id == id).Select(x => x.Email).SingleOrDefault();
+            return dbContext.UserManages.Where(x => x.Id == id).Select(x => x.Email).FirstOrDefault();
         }
 
         public bool SendMail(EmailDTO emailDTO)
@@ -107,15 +107,23 @@ namespace Repository.Repositories
                 otp.TransactionId = transactionId;
                 otp.Otp = GenerateOTP();
                 otp.CreateDate = System.DateTime.UtcNow;
-                otp.ExpiredDate = System.DateTime.UtcNow.AddHours(2);
+                otp.ExpiredDate = System.DateTime.UtcNow.AddMinutes(3);
 
                 dbContext.OtpTables.Add(otp);
                 dbContext.SaveChanges();
 
                 EmailDTO emailDTO = new EmailDTO();
                 emailDTO.To = email;
-                emailDTO.Subject = "Transaction Banking";
-                emailDTO.Body = "Transaction Banking";
+                emailDTO.Subject = "Confirm your transaction";
+                emailDTO.Body = "Hi,"
+                    + "<p></p>"
+                    + "Please use this below verification code to complete your transation."
+                    + "<p></p>"
+                    + "<h2>"
+                    + otp.Otp.ToString()
+                    + "</h2>"
+                    + "<p></p>"
+                    + "Thank you.";
 
                 SendMail(emailDTO);
 

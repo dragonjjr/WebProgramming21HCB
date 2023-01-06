@@ -10,5 +10,6 @@ namespace Service.Interfaces
         bool DeleteRecipient(int id);
         UserBalance GetUserBalance(int id);
         List<RecipientOutput> GetListRecipientByUserId(int id);
+        List<BankReferenceVM> GetBankReferences();
     }
 }

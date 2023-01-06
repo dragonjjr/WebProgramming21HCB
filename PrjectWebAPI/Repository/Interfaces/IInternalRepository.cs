@@ -13,7 +13,7 @@ namespace Repository.Interfaces
         bool CheckOTPTransaction(CheckOTPTransaction model);
         RecipientOutput ViewRecipientBySTK(string STK);
         UserViewModel GetListAccount(int UserID);
-        bool InternalTransfer(InternalTransfer model);
+        int InternalTransfer(InternalTransfer model);
         Task<bool> ExternalTransfer(ExternalTransfer model);
         bool ReceiveExternalTransfer(ExternalTransfer model);
         List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction);

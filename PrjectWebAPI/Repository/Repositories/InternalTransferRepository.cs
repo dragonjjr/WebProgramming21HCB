@@ -1,6 +1,4 @@
 ﻿using Common;
-using Org.BouncyCastle.Asn1.Ocsp;
-using Org.BouncyCastle.Bcpg;
 using Repository.DBContext;
 using Repository.Interfaces;
 using System;
@@ -8,14 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Repository.Repositories
 {
-    public class InternalTransferRepository:IInternalRepository
+    public class InternalTransferRepository : IInternalRepository
     {
         private readonly _6IVYVvfe0wContext dbContext;
         public InternalTransferRepository(_6IVYVvfe0wContext _dbContext)
@@ -31,9 +27,9 @@ namespace Repository.Repositories
         {
             var rs = new List<PaymentFeeTypeVM>();
             var model = dbContext.PaymentFeeTypes.Where(x => x.IsDeleted == false).ToList();
-            if(model.Count() > 0)
+            if (model.Count() > 0)
             {
-                for(int i =0; i< model.Count(); i++)
+                for (int i = 0; i < model.Count(); i++)
                 {
                     var row = new PaymentFeeTypeVM
                     {
@@ -41,8 +37,8 @@ namespace Repository.Repositories
                         Name = model[i].Name
                     };
                     rs.Add(row);
-                }    
-            } 
+                }
+            }
             return rs;
         }
 
@@ -56,14 +52,33 @@ namespace Repository.Repositories
         {
             try
             {
-                if(model.TransactionID > 0 && model.OTP != string.Empty)
+                if (model.TransactionID > 0 && model.OTP != string.Empty)
                 {
-                    var row = dbContext.OtpTables.Where(x => x.TransactionId == model.TransactionID && x.Otp == model.OTP && x.CreateDate < DateTime.Now && x.ExpiredDate <= DateTime.Now).FirstOrDefault();
-                    if (row != null)
+                    var transactioninput = dbContext.TransactionBankings.Where(x => x.Id == model.TransactionID).FirstOrDefault();
+                    if (transactioninput != null)
                     {
-                        return true;
+                        var send_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stksend && x.SoDu > transactioninput.Money).FirstOrDefault();
+                        var receive_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stkreceive).FirstOrDefault();
+
+                        var row = dbContext.OtpTables.Where(x => x.TransactionId == model.TransactionID && x.Otp == model.OTP  && DateTime.Now <= x.ExpiredDate).FirstOrDefault();
+
+                        if (row != null)
+                        {
+                            transactioninput.IsDeleted = false;
+                            send_acc.SoDu = send_acc.SoDu - transactioninput.Money;
+                            receive_acc.SoDu = receive_acc.SoDu + transactioninput.Money;
+
+                            dbContext.TransactionBankings.Update(transactioninput);
+                            dbContext.UserManages.Update(send_acc);
+                            dbContext.UserManages.Update(receive_acc);
+                            dbContext.SaveChanges();
+
+                            return true;
+
+                        }
+                        return false;
+
                     }
-                    return false;
                 }
                 return false;
             }
@@ -84,15 +99,15 @@ namespace Repository.Repositories
             {
                 if (STK != string.Empty)
                 {
-                    var row = dbContext.Recipients.Where(x => x.Stk == STK).Select(x=> new RecipientOutput { Id = x.Id, Name = x.Name, STK = x.Stk}).FirstOrDefault();
+                    var row = dbContext.Recipients.Where(x => x.Stk == STK).Select(x => new RecipientOutput { Id = x.Id, Name = x.Name, STK = x.Stk }).FirstOrDefault();
                     var row1 = dbContext.UserManages.Where(x => x.Stk == STK).Select(x => new RecipientOutput { Id = x.Id, Name = x.Name, STK = x.Stk }).FirstOrDefault();
                     if (row != null)
-                    { 
+                    {
                         return row;
                     }
                     else
                     {
-                        if(row1 != null)
+                        if (row1 != null)
                         {
                             return row1;
                         }
@@ -122,7 +137,8 @@ namespace Repository.Repositories
             {
                 if (UserID > 0)
                 {
-                    var row = dbContext.UserManages.Where(x => x.Id == UserID).Select(x => new UserViewModel {
+                    var row = dbContext.UserManages.Where(x => x.Id == UserID).Select(x => new UserViewModel
+                    {
                         Name = x.Name,
                         Cmnd = x.Cmnd,
                         Address = x.Address,
@@ -152,17 +168,17 @@ namespace Repository.Repositories
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool InternalTransfer(InternalTransfer model)
+        public int InternalTransfer(InternalTransfer model)
         {
             using var _trans = dbContext.Database.BeginTransaction();
             try
             {
                 _trans.CreateSavepoint("BeforeTransfer");
-                if(model.Send_UserID > 0 && model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_STK != String.Empty)
+                if (model.Send_UserID > 0 && model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_STK != String.Empty)
                 {
                     var send_acc = dbContext.UserManages.Where(x => x.Id == model.Send_UserID && x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
                     var receive_acc = dbContext.UserManages.Where(x => x.Stk == model.Receive_STK).FirstOrDefault();
-                    if(send_acc != null && receive_acc != null)
+                    if (send_acc != null && receive_acc != null)
                     {
                         var transaction = new TransactionBanking
                         {
@@ -174,25 +190,28 @@ namespace Repository.Repositories
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             BankReferenceId = model.BankReferenceId,
                             IsDebtRemind = model.isDebtRemind,
-                            CreatedDate = DateTime.Now
+                            CreatedDate = DateTime.Now,
+                            IsDeleted = true,
                         };
+
                         dbContext.TransactionBankings.Add(transaction);
-                        send_acc.SoDu = send_acc.SoDu - model.Send_Money;
-                        receive_acc.SoDu = receive_acc.SoDu + model.Send_Money;
-                        dbContext.UserManages.Update(send_acc);
-                        dbContext.UserManages.Update(receive_acc);
+                        //send_acc.SoDu = send_acc.SoDu - model.Send_Money;
+                        //receive_acc.SoDu = receive_acc.SoDu + model.Send_Money;
+                        //dbContext.UserManages.Update(send_acc);
+                        //dbContext.UserManages.Update(receive_acc);
                         dbContext.SaveChanges();
                         _trans.Commit();
-                        return true;
-                    } 
-                    return false;
+
+                        return transaction.Id;
+                    }
+                    return 0;
                 }
-                return false;
+                return 0;
             }
             catch (Exception e)
             {
                 _trans.RollbackToSavepoint("BeforeTransfer");
-                return false;
+                return 0;
             }
         }
 
@@ -208,10 +227,10 @@ namespace Repository.Repositories
             try
             {
                 _trans.CreateSavepoint("BeforeTransfer");
-                if ( model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
+                if (model.Send_STK != string.Empty && model.Send_Money > 0 && model.Receive_BankID > 0 && model.Receive_STK != String.Empty)
                 {
                     var send_acc = dbContext.UserManages.Where(x => x.Stk == model.Send_STK && x.SoDu > model.Send_Money).FirstOrDefault();
-                    
+
                     if (send_acc != null)
                     {
                         var transaction = new TransactionBanking
@@ -236,7 +255,7 @@ namespace Repository.Repositories
                             sendPayAccount = model.Send_STK,
                             sendAccountName = "Nhóm 1",
                             receiverPayAccount = model.Receive_STK,
-                            typeFee = model.PaymentFeeTypeID == 1 ? "sender": "receiver ",
+                            typeFee = model.PaymentFeeTypeID == 1 ? "sender" : "receiver ",
                             amountOwed = model.Send_Money,
                             bankReferenceId = "bank1",
                             description = model.Content
@@ -333,8 +352,8 @@ namespace Repository.Repositories
                 if (typeTransaction < 0 || typeTransaction > 2)
                     return null;
 
-                return dbContext.TransactionBankings.Where(typeTransaction == 0 ? (trans => trans.Stksend == accountNumber) : (typeTransaction == 1 ? (trans => trans.Stkreceive == accountNumber) : (trans => trans.Stksend == accountNumber && trans.IsDebtRemind == true)))
-                            .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId, TransactionTypeName = d2.Name, TransDate = d1.UpdatedDate, IsDebtRemind = d1.IsDebtRemind })
+                return dbContext.TransactionBankings.Where(typeTransaction == 0 ? (trans => trans.Stksend == accountNumber) : (typeTransaction == 1 ? (trans => trans.Stkreceive == accountNumber) : (trans => trans.Stksend == accountNumber && trans.IsDebtRemind == true))).Where(x=> x.IsDeleted != true)
+                            .Join(dbContext.TransactionTypes, d1 => d1.TransactionTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.PaymentFeeTypeId, d1.BankReferenceId, TransactionTypeName = d2.Name, TransDate = d1.CreatedDate, IsDebtRemind = d1.IsDebtRemind })
                             .Join(dbContext.PaymentFeeTypes, d1 => d1.PaymentFeeTypeId, d2 => d2.Id, (d1, d2) => new { d1.Id, d1.Stkreceive, d1.Stksend, d1.Content, d1.Money, d1.TransactionTypeName, PaymentFeeTypeName = d2.Name, d1.BankReferenceId, d1.TransDate, d1.IsDebtRemind })
                             .Join(dbContext.BankReferences, d1 => d1.BankReferenceId, d2 => d2.Id,
                             (d1, d2) => new TransactionVM()
@@ -349,7 +368,7 @@ namespace Repository.Repositories
                                 BankReference = d2.Name,
                                 TransDate = d1.TransDate,
                                 IsDebtRemind = d1.IsDebtRemind
-                            }).OrderByDescending(trans=>trans.TransDate).ToList();
+                            }).OrderByDescending(trans => trans.TransDate).ToList();
             }
             catch (Exception ex)
             {

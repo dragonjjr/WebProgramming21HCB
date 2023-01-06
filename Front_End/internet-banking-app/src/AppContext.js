@@ -1,6 +1,15 @@
-import { createContext } from "react";
+import React, { createContext, useState } from "react";
 
-const defaultValue = {};
-const appContext = createContext(defaultValue);
+export const StoreContext = createContext(null);
 
-export default appContext;
+export default ({ children }) => {
+  const [transactionId, setTransactionId] = useState(null);
+
+  const store = {
+    transaction: [transactionId, setTransactionId],
+  };
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
+};

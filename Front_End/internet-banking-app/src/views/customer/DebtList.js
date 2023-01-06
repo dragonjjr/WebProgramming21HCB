@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { List, message, Button, Row, Modal, Form, Input } from "antd";
 import {
-  List,
-  message,
-  Button,
-  Row,
-  Modal,
-  Form,
-  Input,
-  Popconfirm,
-  Select,
-  Avatar,
-} from "antd";
-import {
-  UserOutlined,
   DeleteTwoTone,
   EditTwoTone,
   PlusSquareTwoTone,
@@ -28,12 +16,14 @@ const formItemLayout = {
   },
 };
 
-const ListRecipient = (props) => {
+const DebtList = ({ isSelf, parentCallback, cantEdit }) => {
+  const [stk, setSTK] = useState();
+
   const [data, setData] = useState([]);
 
-  const [bankReference, setBankReference] = useState();
+  const [userId] = useState(parseJwt(localStorage.App_AccessToken).userId);
 
-  const [modelEditRecipient, setModelEditRecipient] = useState(false);
+  const [modelCancelRecipient, setModelCancelRecipient] = useState(false);
 
   const [modelAddRecipient, setModelAddRecipient] = useState(false);
 
@@ -41,67 +31,51 @@ const ListRecipient = (props) => {
 
   const [itemSelected, setItemSelected] = useState();
 
-  const [formEdit] = Form.useForm();
+  const [formDelete] = Form.useForm();
 
   const [formAdd] = Form.useForm();
 
-  const [userId, setUserId] = useState(
-    parseJwt(localStorage.App_AccessToken).userId
-  );
+  const getSTK = async () => {
+    const resUserSTK = await instance.get(
+      `Customer/GetUserBalance/${userId}`,
+      {}
+    );
 
-  useEffect(
-    () => async () => {
-      const resBankReference = await instance.get(
-        `Customer/GetListBankReference`
-      );
-      if (resBankReference.data.status === 200) {
-        setBankReference(
-          resBankReference.data.data.map((item) => ({
-            value: item.id,
-            label: item.name,
-          }))
-        );
-      }
-    },
-    []
-  );
+    if (resUserSTK.data.status === 200) {
+      setSTK(resUserSTK.data.data.stk);
+    }
+  };
 
   const appendData = async () => {
-    const res = await instance.get(`Customer/${userId}`, {});
+    const res = await instance.get(
+      `DebtReminder/viewInfoDebtReminds/${stk}?isSelf=${isSelf}&status=0`,
+      {}
+    );
     if (res.data.status === 200) {
       setData(res.data.data);
     }
   };
 
   useEffect(() => {
-    appendData();
-  }, []);
+    getSTK();
+    if (stk !== undefined) {
+      appendData();
+    }
+  }, [stk]);
 
   useEffect(() => {
     if (!modelAddRecipient) {
       formAdd.resetFields();
     }
-    if (!modelEditRecipient) {
-      formEdit.resetFields();
+    if (!modelCancelRecipient) {
+      formDelete.resetFields();
     }
   });
-
-  const confirmDelete = async (id) => {
-    const res = await instance.delete(`Customer/Recipient/${id}`, {});
-    if (res.data.status === 200) {
-      success("Delete recipient", res.data.message);
-    } else {
-      error("Delete recipient", res.data.message);
-    }
-
-    appendData();
-  };
 
   const confirmUpdate = async (id, paramsUpdate) => {
     const res = await instance.patch(`Customer/Recipient/${id}`, {
       stk: paramsUpdate.stkEdit,
       name: paramsUpdate.nameEdit,
-      bankID: paramsUpdate.bankEdit,
     });
     if (res.data.status === 200) {
       success("Update recipient", res.data.message);
@@ -112,54 +86,38 @@ const ListRecipient = (props) => {
     appendData();
   };
 
-  const confirmAdd = async (userId, paramsAdd) => {
-    if (typeof paramsAdd.nameAdd === "undefined") {
-      if (paramsAdd.bankAdd !== 1) {
-        const nameUser = await instance.get(`External/GetInforFromPartner`, {
-          params: {
-            STK: paramsAdd.stkAdd,
-          },
-        });
-
-        if (nameUser.data.success === true) {
-          paramsAdd.nameAdd = nameUser.data.data.name;
-
-          const res = await instance.post(`Customer/Recipient/AddRecipient`, {
-            stk: paramsAdd.stkAdd,
-            name: paramsAdd.nameAdd,
-            userID: userId,
-            bankID: paramsAdd.bankAdd,
-          });
-          if (res.data.status === 200) {
-            success("Add recipient", res.data.message);
-          } else {
-            error("Add recipient", res.data.message);
-          }
-        } else {
-        }
-      } else {
-        const res = await instance.post(`Customer/Recipient/AddRecipient`, {
-          stk: paramsAdd.stkAdd,
-          name: paramsAdd.nameAdd,
-          userID: userId,
-          bankID: paramsAdd.bankAdd,
-        });
-        if (res.data.status === 200) {
-          success("Add recipient", res.data.message);
-        } else {
-          error("Add recipient", res.data.message);
-        }
-      }
+  const confirmDelete = async (id) => {
+    const res = await instance.patch(`DebtReminder/CancelDebtRemind/${id}`, {});
+    if (res.data.status === 200) {
+      success("Cancel debt", res.data.message);
+    } else {
+      error("Cancel debt", res.data.message);
     }
 
     appendData();
   };
 
-  const onFillFormEdit = (item) => {
-    formEdit.setFieldsValue({
-      stkEdit: `${item.stk}`,
-      nameEdit: `${item.name}`,
-      bankEdit: item.bank.id,
+  const CreateDebt = async (paramsAdd) => {
+    const res = await instance.post(`DebtReminder/CreateDebtRemind/`, {
+      stkSend: stk,
+      stkReceive: paramsAdd.stkAdd,
+      money: paramsAdd.AmountAdd,
+      content: paramsAdd.contentAdd,
+    });
+    if (res.data.status === 200) {
+      success("Create a debt", res.data.message);
+    } else {
+      error("Create a debt", res.data.message);
+    }
+
+    appendData();
+  };
+
+  const onFillFormCancel = (item) => {
+    formDelete.setFieldsValue({
+      stkCancel: item.stk,
+      amountCancel: item.money,
+      contentCancel: item.content,
     });
   };
 
@@ -178,9 +136,7 @@ const ListRecipient = (props) => {
   };
 
   const sendData = (item) => {
-    if (props.parentCallback) {
-      props.parentCallback(item);
-    }
+    parentCallback(item);
   };
 
   return (
@@ -188,7 +144,7 @@ const ListRecipient = (props) => {
       <Modal
         title={
           <div style={{ textAlign: "center" }}>
-            <h2>Add Recipient</h2>
+            <h2>Add Debt</h2>
           </div>
         }
         centered
@@ -199,10 +155,10 @@ const ListRecipient = (props) => {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="primary"
-              style={{ minWidth: 70, width: 80 }}
+              style={{ minWidth: 70, width: "auto" }}
               onClick={() => formAdd.submit()}
             >
-              Add
+              Send debt
             </Button>
             <Button
               onClick={() => {
@@ -218,14 +174,14 @@ const ListRecipient = (props) => {
         <Form
           form={formAdd}
           onFinish={(value) => {
-            confirmAdd(userId, value);
+            CreateDebt(value);
             formAdd.resetFields();
           }}
         >
           <Form.Item
             {...formItemLayout}
             name="stkAdd"
-            label="Account number"
+            label="To"
             rules={[
               {
                 required: true,
@@ -234,48 +190,53 @@ const ListRecipient = (props) => {
             ]}
           >
             <Input
-              placeholder="Please input your name"
+              placeholder="Please input account number debt"
               name="nameAdd"
               style={{ minWidth: 200 }}
             />
           </Form.Item>
-          <Form.Item {...formItemLayout} name="nameAdd" label="Nickname">
+          <Form.Item {...formItemLayout} name="AmountAdd" label="Amount">
             <Input
-              placeholder="Please inputs nick name"
+              placeholder="Please inputs amount"
               name="nameAdd"
               style={{ minWidth: 200 }}
             />
           </Form.Item>
-          <Form.Item {...formItemLayout} name="bankAdd" label="Bank">
-            <Select style={{ minWidth: 200 }} options={bankReference} />
+          <Form.Item {...formItemLayout} name="contentAdd" label="Content">
+            <Input
+              placeholder="Please inputs content"
+              name="nameAdd"
+              style={{ minWidth: 200 }}
+            />
           </Form.Item>
         </Form>
       </Modal>
-
       <Modal
         title={
           <div style={{ textAlign: "center" }}>
-            <h2>Edit Recipient</h2>
+            <h2>Confirm Cancel Debt</h2>
           </div>
         }
         centered
-        open={modelEditRecipient}
+        open={modelCancelRecipient}
         forceRender
-        onCancel={() => setModelEditRecipient(false)}
+        onCancel={() => setModelCancelRecipient(false)}
         footer={
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="primary"
+              danger
               style={{ minWidth: 70, width: 80 }}
               onClick={() => {
-                formEdit.submit();
+                formDelete.submit();
+                confirmDelete(recpientEdit);
               }}
             >
-              Update
+              Delete
             </Button>
             <Button
               onClick={() => {
-                setModelEditRecipient(false);
+                setModelCancelRecipient(false);
               }}
               style={{ minWidth: 70, width: 80 }}
             >
@@ -284,16 +245,11 @@ const ListRecipient = (props) => {
           </div>
         }
       >
-        <Form
-          form={formEdit}
-          onFinish={(value) => {
-            confirmUpdate(recpientEdit, value);
-          }}
-        >
+        <Form form={formDelete}>
           <Form.Item
             {...formItemLayout}
-            name="stkEdit"
-            label="Account number"
+            name="stkCancel"
+            label="To"
             rules={[
               {
                 required: true,
@@ -303,25 +259,26 @@ const ListRecipient = (props) => {
           >
             <Input
               placeholder="Please input your name"
-              name="stkEdit"
               style={{ minWidth: 200 }}
             />
           </Form.Item>
-          <Form.Item {...formItemLayout} name="nameEdit" label="Nickname">
+          <Form.Item {...formItemLayout} name="amountCancel" label="Amount">
             <Input
               placeholder="Please inputs nick name"
-              name="nameEdit"
               style={{ minWidth: 200 }}
             />
           </Form.Item>
-          <Form.Item {...formItemLayout} name="bankEdit" label="Bank">
-            <Select style={{ minWidth: 200 }} options={bankReference} />
+          <Form.Item {...formItemLayout} name="contentCancel" label="Content">
+            <Input
+              placeholder="Please inputs nick name"
+              style={{ minWidth: 200 }}
+            />
           </Form.Item>
         </Form>
       </Modal>
       <div>
-        {props.isSelect === false && (
-          <div style={{ textAlign: "right", marginBottom: 20 }}>
+        {cantEdit && (
+          <div style={{ textAlign: "right", margin: 20 }}>
             <Button
               icon={<PlusSquareTwoTone size="large" twoToneColor="#52c41a" />}
               type="primary"
@@ -331,7 +288,7 @@ const ListRecipient = (props) => {
                 setModelAddRecipient(true);
               }}
             >
-              Add Recipient
+              Add Debt
             </Button>
           </div>
         )}
@@ -348,58 +305,85 @@ const ListRecipient = (props) => {
           <List
             dataSource={data}
             bordered
-            itemLayout="horizontal"
             renderItem={(item) => (
               <List.Item
                 key={item.id}
                 onClick={() => {
                   setItemSelected(item.id);
-                  sendData(item);
-                  //console.log(item.id);
+                  if (parentCallback) {
+                    sendData(item);
+                  }
                 }}
                 style={(() =>
                   item.id === itemSelected
                     ? { background: "#32CD32" }
                     : { background: "#F8F8FF" })()}
               >
-                <List.Item.Meta
-                  avatar={
-                    <Avatar size={"large"} style={{ marginTop: 5 }}>
-                      <UserOutlined />
-                    </Avatar>
-                  }
-                  title={
-                    <div style={{ marginTop: -22, display: "flow" }}>
-                      <div>{item.name}</div>
-                      <div>{item.stk}</div>
+                {item.status === 1 ? (
+                  <div
+                    style={{
+                      position: "sticky",
+                      top: 0,
+                      left: 0,
+                      background: "blue",
+                      borderRadius: 2,
+                      width: 70,
+                      textAlign: "center",
+                    }}
+                  >
+                    <strong>Paid</strong>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      position: "sticky",
+                      top: 0,
+                      left: 0,
+                      background: "red",
+                      width: 70,
+                      borderRadius: 2,
+                      textAlign: "center",
+                    }}
+                  >
+                    <strong>Unpaid</strong>
+                  </div>
+                )}
+                <div>
+                  {isSelf ? (
+                    <div>
+                      <strong>To: </strong>
+                      {item.stk}
                     </div>
-                  }
-                  description={item.bank.name}
-                />
-                {props.isSelect === false && (
+                  ) : (
+                    <div>
+                      <strong>From: </strong>
+                      {item.stk}
+                    </div>
+                  )}
                   <div>
+                    <strong>Content: </strong>
+                    {item.content}
+                  </div>
+                  <div>
+                    {" "}
+                    <strong>Amount: </strong>
+                    {item.money}
+                  </div>
+                </div>
+                <div>
+                  {cantEdit && (
                     <Button
-                      icon={<EditTwoTone />}
+                      icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                       type="ghost"
                       size="large"
                       onClick={() => {
-                        setModelEditRecipient(true);
-                        onFillFormEdit(item);
+                        setModelCancelRecipient(true);
+                        onFillFormCancel(item);
                         setRecipientEdit(item.id);
                       }}
                     ></Button>
-                    <Popconfirm
-                      title={`Are you sure you want to remove  ${item.name} ?`}
-                      onConfirm={() => confirmDelete(item.id)}
-                    >
-                      <Button
-                        icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
-                        type="ghost"
-                        size="large"
-                      ></Button>
-                    </Popconfirm>
-                  </div>
-                )}
+                  )}
+                </div>
               </List.Item>
             )}
           />
@@ -408,4 +392,4 @@ const ListRecipient = (props) => {
     </Row>
   );
 };
-export default ListRecipient;
+export default DebtList;

@@ -125,9 +125,9 @@ namespace Repository.Repositories
                         isDebtRemind = true,
                     };
 
-                    bool isSuccess = IinternalRepository.InternalTransfer(infoTrans);
+                    int isSuccess = IinternalRepository.InternalTransfer(infoTrans);
 
-                    if (isSuccess)
+                    if (isSuccess > 0)
                     {
                         debtRemindInfo.Status = 1; // paid
                         debtRemindInfo.UpdatedDate = DateTime.Now;
@@ -180,24 +180,26 @@ namespace Repository.Repositories
                     if (isSelf)
                     {
 
-                        var records = dbContext.DebtReminders.Where(x => x.Stksend == STK && x.IsDeleted == false && (status == 0 ? x.Status == 0 : (status == 1 ? x.Status == 1 : true))).Select(debtRemind => new DebtRemindInfo
+                        var records = dbContext.DebtReminders.Where(x => x.Stksend == STK && x.IsDeleted == false ).Select(debtRemind => new DebtRemindInfo
                         {
                             Id = debtRemind.Id,
                             STK = debtRemind.Stkreceive,
                             Content = debtRemind.NoiDung,
-                            Money = debtRemind.SoTien
+                            Money = debtRemind.SoTien,
+                            Status = debtRemind.Status,
                         }).ToList();
 
                         return records;
                     }
                     else
                     {
-                        var records = dbContext.DebtReminders.Where(x => x.Stkreceive == STK && x.IsDeleted == false && (status == 0 ? x.Status == 0 : (status == 1 ? x.Status == 1 : true))).Select(debtRemind => new DebtRemindInfo
+                        var records = dbContext.DebtReminders.Where(x => x.Stkreceive == STK && x.IsDeleted == false).Select(debtRemind => new DebtRemindInfo
                         {
                             Id = debtRemind.Id,
                             STK = debtRemind.Stksend,
                             Content = debtRemind.NoiDung,
-                            Money = debtRemind.SoTien
+                            Money = debtRemind.SoTien,
+                            Status = debtRemind.Status,
                         }).ToList();
 
                         return records;

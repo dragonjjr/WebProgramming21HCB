@@ -99,6 +99,13 @@ namespace Common
         public string STK { get; set; }
         public string Name { get; set; }
         public int UserID { get; set; }
+        public int? BankID { get; set; }
+    }
+
+    public class BankReferenceVM
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class RecipientOutput
@@ -106,12 +113,14 @@ namespace Common
         public int Id { get; set; }
         public string STK { get; set; }
         public string Name { get; set; }
+        public BankReferenceVM Bank { get; set; }
     }
 
     public class RecipientEdit
     {
         public string STK { get; set; }
         public string Name { get; set; }
+        public int? BankID { get; set; }
     }
 
     public class UserBalance
@@ -212,6 +221,7 @@ namespace Common
         public string STK { get; set; }
         public decimal Money { get; set; }
         public string Content { get; set; }
+        public int Status { get; set; }
     }
 
     public class NotificationInfo

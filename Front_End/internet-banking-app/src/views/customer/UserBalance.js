@@ -14,9 +14,7 @@ const formItemLayout = {
 const UserBalance = () => {
   const [data, setData] = useState([]);
 
-  const [userId, setUserId] = useState(
-    parseJwt(localStorage.App_AccessToken).userId
-  );
+  const [userId] = useState(parseJwt(localStorage.App_AccessToken).userId);
 
   const appendData = async () => {
     const res = await instance.get(`Customer/GetUserBalance/${userId}`, {});
@@ -31,7 +29,7 @@ const UserBalance = () => {
 
   return (
     <Row type="flex" justify="center" align="middle">
-      <Card title="User Balance" headStyle={{ textAlign: "center" }}>
+      <Card>
         <Form>
           <Form.Item
             {...formItemLayout}

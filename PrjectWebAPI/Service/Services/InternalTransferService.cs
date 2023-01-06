@@ -38,7 +38,7 @@ namespace Service.Services
             return _IinternalRepository.GetListAccount(UserID);
         }
 
-        public bool InternalTransfer(InternalTransfer model)
+        public int InternalTransfer(InternalTransfer model)
         {
             return _IinternalRepository.InternalTransfer(model);
         }

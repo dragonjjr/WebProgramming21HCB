@@ -42,5 +42,10 @@ namespace Service.Services
         {
             return _IcustomerRepository.UpdateRecipient(id, recipientEdit);
         }
+
+        public List<BankReferenceVM> GetBankReferences()
+        {
+            return _IcustomerRepository.GetBankReferences();
+        }
     }
 }

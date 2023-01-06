@@ -44,7 +44,7 @@ namespace Repository.Repositories
         {
             try
             {
-                var existRecipient = dbContext.Recipients.Where(x => x.Stk == recipientInput.STK && x.UserId == recipientInput.UserID).FirstOrDefault();
+                var existRecipient = dbContext.Recipients.Where(x => x.Stk == recipientInput.STK && x.UserId == recipientInput.UserID && x.IsDeleted != true).FirstOrDefault();
                 if (existRecipient != null)
                 {
                     return true;
@@ -67,6 +67,13 @@ namespace Repository.Repositories
             try
             {
                 bool existRecipient = FindRecipientByStkAndUserId(recipientInput);
+
+                
+                if (String.IsNullOrEmpty(recipientInput.Name))
+                {
+                    var userExist = dbContext.UserManages.Where(x => x.Stk == recipientInput.STK).Select(x=>x.Name).FirstOrDefault();
+                    recipientInput.Name = userExist;
+                }
                 if (existRecipient == false)
                 {
 
@@ -74,7 +81,9 @@ namespace Repository.Repositories
                     recipient.Stk = recipientInput.STK;
                     recipient.Name = recipientInput.Name;
                     recipient.UserId = recipientInput.UserID;
-                    //recipient.BankId = recipientInput.UserID;
+                    recipient.BankId = recipientInput.BankID;
+                    recipient.CreatedDate = DateTime.Now;
+                    recipient.UpdatedDate = DateTime.Now;
 
                     dbContext.Recipients.Add(recipient);
                     dbContext.SaveChanges();
@@ -101,6 +110,8 @@ namespace Repository.Repositories
                 if (recipient != null)
                 {
                     recipient.IsDeleted = true;
+                    recipient.UpdatedDate = DateTime.Now;
+
                     dbContext.Recipients.Update(recipient);
                     dbContext.SaveChanges();
                     return true;
@@ -150,7 +161,8 @@ namespace Repository.Repositories
                 var existUser = FindUserById(id);
                 if (existUser != null)
                 {
-                    return dbContext.Recipients.Where(x => x.UserId == id && x.IsDeleted != true).Select(x => new RecipientOutput() { Id = x.Id, Name = x.Name, STK = x.Stk }).ToList();
+                    return dbContext.Recipients.Where(x => x.UserId == id && x.IsDeleted != true).Select(x => new{ Id = x.Id, Name = x.Name, STK = x.Stk,  BankID = x.BankId }).ToList()
+                        .Join(dbContext.BankReferences,d1=> d1.BankID,d2 => d2.Id, (d1,d2) => new RecipientOutput() { Id = d1.Id, Name = d1.Name, STK = d1.STK, Bank = new BankReferenceVM() { Id = d2.Id, Name = d2.Name} }).ToList();
                 }
                 return null;
             }
@@ -174,6 +186,9 @@ namespace Repository.Repositories
                 {
                     existRecipient.Stk = recipientEdit.STK;
                     existRecipient.Name = recipientEdit.Name;
+                    existRecipient.BankId = recipientEdit.BankID;
+                    existRecipient.UpdatedDate = DateTime.Now;
+                    
                     dbContext.SaveChanges();
                     return true;
                 }
@@ -183,6 +198,22 @@ namespace Repository.Repositories
             {
                 throw ex;
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Lấy danh sách ngân hàng liên kết
+        /// </summary>
+        /// <returns></returns>
+        public List<BankReferenceVM> GetBankReferences()
+        {
+            try
+            {
+                return dbContext.BankReferences.Select(x=> new BankReferenceVM() { Id = x.Id, Name = x.Name}).ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
         }
     }

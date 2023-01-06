@@ -16,9 +16,11 @@ namespace PrjectWebAPI.Controllers
     public class InternalTransferController : ControllerBase
     {
         private readonly IInternalTransferService _internalTransferService;
-        public InternalTransferController(IInternalTransferService internalTransferService)
+        private readonly IEmailService _emailService;
+        public InternalTransferController(IInternalTransferService internalTransferService, IEmailService emailService)
         {
             _internalTransferService = internalTransferService;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -148,10 +150,14 @@ namespace PrjectWebAPI.Controllers
         {
             ResponeseMessage rs = new ResponeseMessage();
             var Is_Success = _internalTransferService.InternalTransfer(model);
-            if (Is_Success)
+           
+            if (Is_Success > 0)
             {
+                var sent = _emailService.SendMailForTransaction(model.Send_UserID,Is_Success);
+
                 rs.Status = 200;
                 rs.Message = "Transfer successfull!";
+                rs.Data = Is_Success;
             }
             else
             {

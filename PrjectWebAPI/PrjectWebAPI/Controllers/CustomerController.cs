@@ -140,5 +140,30 @@ namespace PrjectWebAPI.Controllers
             return rs;
 
         }
+
+        /// <summary>
+        /// Lấy danh sách ngân hàng liên kết
+        /// </summary>
+        /// <param></param>
+        /// <returns></returns>
+        [HttpGet("GetListBankReference")]
+        public ResponeseMessage GetListBankReference()
+        {
+            ResponeseMessage rs = new ResponeseMessage();
+            var model = _customerService.GetBankReferences();
+            if (model != null)
+            {
+                rs.Status = 200;
+                rs.Message = "Get list bank reference successfully!";
+                rs.Data = model;
+            }
+            else
+            {
+                rs.Status = 0;
+                rs.Message = "Get list  bank reference failed!";
+            }
+            return rs;
+
+        }
     }
 }
