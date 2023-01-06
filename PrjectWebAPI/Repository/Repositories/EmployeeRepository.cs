@@ -45,8 +45,8 @@ namespace Repository.Repositories
         {
             try
             {
-                var stk = dbContext.UserManages.Select(x => x.Stk.Max()).FirstOrDefault().ToString();
-                var stk_new = int.Parse(stk) < 1000000 ? 1000000 : int.Parse(stk.ToString()) + 1;
+                var stk = dbContext.UserManages.Select(x => x.Stk).Max();
+                var stk_new = int.Parse(stk.ToString()) < 1000000 ? 1000000 : int.Parse(stk.ToString()) + 1;
                 UserManage userManage = new UserManage();
                 userManage.Name = accountViewModel.Infor.Name;
                 userManage.Cmnd = accountViewModel.Infor.Cmnd;
