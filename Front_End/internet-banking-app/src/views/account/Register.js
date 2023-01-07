@@ -139,12 +139,7 @@ function Register(props) {
             name="address"
             rules={[{ required: true, message: "Please input your address!" }]}
           >
-            <TextArea
-              prefix={<PhoneOutlined className="site-form-item-icon" />}
-              rows={4}
-              placeholder="Address"
-              maxLength={6}
-            />
+            <TextArea rows={4} placeholder="Address" />
           </Form.Item>
           <Form.Item>
             <Spin spinning={loading}>
