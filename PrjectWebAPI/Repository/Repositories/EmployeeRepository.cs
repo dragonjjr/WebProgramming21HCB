@@ -50,12 +50,13 @@ namespace Repository.Repositories
                 UserManage userManage = new UserManage();
                 userManage.Name = accountViewModel.Infor.Name;
                 userManage.Cmnd = accountViewModel.Infor.Cmnd;
-                userManage.Address = accountViewModel.Infor.Address;
-                userManage.BankKind = accountViewModel.Infor.BankKind;
+                userManage.Address = accountViewModel.Infor.Address==null?"": accountViewModel.Infor.Address;
+                userManage.BankKind = "bankind";
                 userManage.Stk = stk_new.ToString();
                 userManage.Phone = accountViewModel.Infor.Phone;
                 userManage.Email = accountViewModel.Infor.Email;
                 userManage.CreatedDate = DateTime.Now;
+                userManage.SoDu = 0;
 
                 dbContext.UserManages.Add(userManage);
                 dbContext.SaveChanges();

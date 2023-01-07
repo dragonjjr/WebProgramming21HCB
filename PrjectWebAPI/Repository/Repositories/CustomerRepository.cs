@@ -32,7 +32,7 @@ namespace Repository.Repositories
         /// <returns></returns>
         public UserManage FindUserById(int id)
         {
-            return dbContext.UserManages.Find(id);
+            return dbContext.UserManages.Where(u=>u.Id==id && u.IsDeleted==false).Single();
         }
 
 
