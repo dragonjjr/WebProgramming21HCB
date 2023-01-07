@@ -36,7 +36,7 @@ function DashBoard() {
         content: row.content,
         paymentFeeType: row.paymentFeeType,
         bankReference: row.bankReference,
-        transDate: moment(row.transDate).format("HH:mm:ss DD-MM-YYYY"),
+        transDate: row.transDate,
       }));
 
       setDataSource(result);
@@ -130,7 +130,7 @@ function DashBoard() {
                 const startDate = moment(dateStrings[0], "DD-MM-YYYY");
                 const endDate = moment(dateStrings[1], "DD-MM-YYYY");
 
-                return currentDate.isBetween(startDate - 1, endDate + 1);
+                return currentDate.isBetween(startDate.add(-1), endDate.add(1));
               });
 
               setDataSource(filteredData);

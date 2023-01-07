@@ -12,6 +12,7 @@ import {
   Spin,
   Result,
   Modal,
+  InputNumber,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { instance, parseJwt } from "../../utils.js";
@@ -100,6 +101,7 @@ const Tranfer = ({ nextCurrent }) => {
       send_STK: inforBalance.stk,
       paymentFeeTypeID: inforPaymentFeeTypeID,
       receive_STK: inforRecipient,
+      send_Money: 0,
     });
   }, [inforBalance, inforPaymentFeeTypeID, inforRecipient]);
 
@@ -166,7 +168,14 @@ const Tranfer = ({ nextCurrent }) => {
         </Card>
         <Card type="inner" title="Transaction Information">
           <Form.Item name="send_Money">
-            <Input placeholder="Amount"></Input>
+            <InputNumber
+              placeholder="Amount"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              style={{ minWidth: 200, width: 350 }}
+            />
           </Form.Item>
           <Form.Item name="paymentFeeTypeID">
             <Select
@@ -347,10 +356,11 @@ const ResultTransaction = () => {
     if (res.data.success === true) {
       setRecipientInfor(res.data.data);
 
+      console.log(res.data.data);
       formEdit.setFieldsValue({
         stkEdit: result.stkReceive,
         nameEdit: res.data.data.name,
-        bankEdit: 1,
+        bankEdit: 2,
       });
     }
   };
