@@ -4,6 +4,7 @@ import { instance } from "../../utils.js";
 import "../../Assets/CSS/Account.css";
 import dayjs from "dayjs";
 import moment from "moment";
+import momentParser from "moment/moment.js";
 import _ from "lodash";
 
 const { RangePicker, MonthPicker } = DatePicker;
@@ -35,7 +36,7 @@ function DashBoard() {
         content: row.content,
         paymentFeeType: row.paymentFeeType,
         bankReference: row.bankReference,
-        transDate: row.transDate,
+        transDate: moment(row.transDate).format("HH:mm:ss DD-MM-YYYY"),
       }));
 
       setDataSource(result);
