@@ -376,5 +376,23 @@ namespace Repository.Repositories
                 //return false;
             }
         }
+
+        /// <summary>
+        /// Xem thông tin của giao dịch
+        /// </summary>
+        /// <param name="transactionId">Id transaction</param>
+        /// <returns></returns>
+        public TransactionVM GetInforTransaction(int transactionId)
+        {
+            try
+            {
+                return dbContext.TransactionBankings.Where(x => x.Id == transactionId).Join(dbContext.UserManages, d1 => d1.Stksend, d2 => d2.Stk,
+                    (d1, d2) => new TransactionVM() { Content = d1.Content, Money = d1.Money, STKReceive = d1.Stkreceive, STKSend = d1.Stksend, TransactionType = d2.Name, TransDate = d1.CreatedDate }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -57,5 +57,10 @@ namespace Service.Services
         {
             return _IinternalRepository.GetListTransactionByAcount(accountNumber, typeTransaction);
         }
+
+        public TransactionVM GetInforTransaction(int transactionId)
+        {
+            return _IinternalRepository.GetInforTransaction(transactionId);
+        }
     }
 }

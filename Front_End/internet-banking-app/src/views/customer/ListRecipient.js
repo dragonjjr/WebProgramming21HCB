@@ -112,43 +112,16 @@ const ListRecipient = (props) => {
   };
 
   const confirmAdd = async (userId, paramsAdd) => {
-    if (typeof paramsAdd.nameAdd === "undefined") {
-      if (paramsAdd.bankAdd !== 1) {
-        const nameUser = await instance.get(`External/GetInforFromPartner`, {
-          params: {
-            STK: paramsAdd.stkAdd,
-          },
-        });
-
-        if (nameUser.data.success === true) {
-          paramsAdd.nameAdd = nameUser.data.data.name;
-
-          const res = await instance.post(`Customer/Recipient/AddRecipient`, {
-            stk: paramsAdd.stkAdd,
-            name: paramsAdd.nameAdd,
-            userID: userId,
-            bankID: paramsAdd.bankAdd,
-          });
-          if (res.data.status === 200) {
-            success("Add recipient", res.data.message);
-          } else {
-            error("Add recipient", res.data.message);
-          }
-        } else {
-        }
-      } else {
-        const res = await instance.post(`Customer/Recipient/AddRecipient`, {
-          stk: paramsAdd.stkAdd,
-          name: paramsAdd.nameAdd,
-          userID: userId,
-          bankID: paramsAdd.bankAdd,
-        });
-        if (res.data.status === 200) {
-          success("Add recipient", res.data.message);
-        } else {
-          error("Add recipient", res.data.message);
-        }
-      }
+    const res = await instance.post(`Customer/Recipient/AddRecipient`, {
+      stk: paramsAdd.stkAdd,
+      name: paramsAdd.nameAdd,
+      userID: userId,
+      bankID: paramsAdd.bankAdd,
+    });
+    if (res.data.status === 200) {
+      success("Add recipient", res.data.message);
+    } else {
+      error("Add recipient", res.data.message);
     }
 
     appendData();

@@ -11,13 +11,22 @@ import {
   Steps,
   Spin,
   Result,
-  Col,
+  Modal,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { instance, parseJwt } from "../../utils.js";
 import ListRecipient from "./ListRecipient.js";
 import { StoreContext } from "../../AppContext.js";
 import { useNavigate } from "react-router-dom";
+
+const formItemLayout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 12,
+  },
+};
 
 const Tranfer = ({ nextCurrent }) => {
   const { transaction } = useContext(StoreContext);
@@ -262,8 +271,62 @@ const ResultTransaction = () => {
 
   const [result, setResult] = useState();
 
+  const [formEdit] = Form.useForm();
+
+  const [modelEditRecipient, setModelEditRecipient] = useState(false);
+
+  const [bankReference, setBankReference] = useState();
+
+  const [userId] = useState(parseJwt(localStorage.App_AccessToken).userId);
+
+  const [recipientInfo, setRecipientInfor] = useState();
+
+  const success = (title, content) => {
+    Modal.success({
+      title: title,
+      content: content,
+    });
+  };
+
+  const error = (title, content) => {
+    Modal.error({
+      title: title,
+      content: content,
+    });
+  };
+
+  useEffect(
+    () => async () => {
+      const resBankReference = await instance.get(
+        `Customer/GetListBankReference`
+      );
+      if (resBankReference.data.status === 200) {
+        setBankReference(
+          resBankReference.data.data.map((item) => ({
+            value: item.id,
+            label: item.name,
+          }))
+        );
+      }
+    },
+    []
+  );
+  const confirmAdd = async (userId, paramsAdd) => {
+    console.log(paramsAdd);
+    const res = await instance.post(`Customer/Recipient/AddRecipient`, {
+      stk: paramsAdd.stkEdit,
+      name: paramsAdd.nameEdit,
+      userID: userId,
+      bankID: paramsAdd.bankEdit,
+    });
+    if (res.data.status === 200) {
+      success("Add recipient", res.data.message);
+    } else {
+      error("Add recipient", res.data.message);
+    }
+  };
+
   const getData = async () => {
-    console.log("DSADSA");
     const res = await instance.get(
       `InternalTransfer/GetInforTransaction?transactionId=${transaction[0]}`
     );
@@ -272,12 +335,98 @@ const ResultTransaction = () => {
       console.log(res.data.data);
     }
   };
+
+  const getInforRecipient = async () => {
+    const res = await instance.get(
+      `InternalTransfer/ViewRecipientBySTK?STK=${result.stkReceive}`
+    );
+    if (res.data.status === 200) {
+      setRecipientInfor(res.data.data);
+      console.log(res.data.data);
+    }
+  };
   useEffect(() => {
     getData();
+    getInforRecipient();
   }, []);
+
+  const onFillModalAdd = () => {
+    formEdit.setFieldsValue({
+      stkEdit: result.stkReceive,
+      nameEdit: recipientInfo.name,
+      bankEdit: 1,
+    });
+  };
 
   return (
     <>
+      <Modal
+        title={
+          <div style={{ textAlign: "center" }}>
+            <h2>Add Recipient</h2>
+          </div>
+        }
+        centered
+        open={modelEditRecipient}
+        forceRender
+        onCancel={() => setModelEditRecipient(false)}
+        footer={
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              type="primary"
+              style={{ minWidth: 70, width: 80 }}
+              onClick={() => {
+                formEdit.submit();
+              }}
+            >
+              Add
+            </Button>
+            <Button
+              onClick={() => {
+                setModelEditRecipient(false);
+              }}
+              style={{ minWidth: 70, width: 80 }}
+            >
+              Cancel
+            </Button>
+          </div>
+        }
+      >
+        <Form
+          form={formEdit}
+          onFinish={(value) => {
+            confirmAdd(userId, value);
+          }}
+        >
+          <Form.Item
+            {...formItemLayout}
+            name="stkEdit"
+            label="Account number"
+            rules={[
+              {
+                required: true,
+                message: "Please input account number",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Please input your name"
+              name="stkEdit"
+              style={{ minWidth: 200 }}
+            />
+          </Form.Item>
+          <Form.Item {...formItemLayout} name="nameEdit" label="Nickname">
+            <Input
+              placeholder="Please inputs nick name"
+              name="nameEdit"
+              style={{ minWidth: 200 }}
+            />
+          </Form.Item>
+          <Form.Item {...formItemLayout} name="bankEdit" label="Bank">
+            <Select style={{ minWidth: 200 }} options={bankReference} />
+          </Form.Item>
+        </Form>
+      </Modal>
       <Result
         status="success"
         title="Successfully Transaction"
@@ -327,7 +476,15 @@ const ResultTransaction = () => {
           >
             Transaction History
           </Button>,
-          <Button key="saverecipient">Save Recipient</Button>,
+          <Button
+            key="saverecipient"
+            onClick={() => {
+              setModelEditRecipient(true);
+              onFillModalAdd();
+            }}
+          >
+            Save Recipient
+          </Button>,
         ]}
       />
     </>

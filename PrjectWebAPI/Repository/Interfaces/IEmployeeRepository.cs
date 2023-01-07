@@ -10,8 +10,8 @@ namespace Repository.Interfaces
 {
     public interface IEmployeeRepository
     {
-        bool RegisterAccount(AccountViewModel accountViewModel);
-        bool Recharge(RechargeInput rechargeInput);
+        string RegisterAccount(AccountViewModel accountViewModel);
+        decimal Recharge(RechargeInput rechargeInput);
         AccountViewModel GetAccountInfor(AccountInforInput infor);
     }
 }

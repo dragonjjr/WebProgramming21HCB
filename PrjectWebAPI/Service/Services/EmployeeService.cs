@@ -18,12 +18,12 @@ namespace Service.Services
         {
             _IemployeeRepository = IemployeeRepository;
         }
-        public bool RegisterAccount(AccountViewModel accountViewModel)
+        public string RegisterAccount(AccountViewModel accountViewModel)
         {
             return _IemployeeRepository.RegisterAccount(accountViewModel);
         }
 
-        public bool Recharge(RechargeInput rechargeInput)
+        public decimal Recharge(RechargeInput rechargeInput)
         {
             return _IemployeeRepository.Recharge(rechargeInput);
         }
