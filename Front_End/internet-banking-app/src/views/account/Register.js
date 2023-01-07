@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import "../../Assets/CSS/Register.css";
 import { instance } from "../../utils";
+const { TextArea } = Input;
 
 function Register(props) {
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ function Register(props) {
           cmnd: values.cmnd,
           email: values.email,
           phone: values.phone,
+          address: values.address,
           isStaff: false,
         },
       });
@@ -65,7 +67,7 @@ function Register(props) {
         <div>
           <Form.Item
             name="fullname"
-            rules={[{ required: true, message: "Please input your Username!" }]}
+            rules={[{ required: true, message: "Please input your FullName!" }]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
@@ -76,7 +78,7 @@ function Register(props) {
           </Form.Item>
           <Form.Item
             name="cmnd"
-            rules={[{ required: true, message: "Please input your Username!" }]}
+            rules={[{ required: true, message: "Please input your ID Card!" }]}
           >
             <Input
               prefix={<IdcardOutlined className="site-form-item-icon" />}
@@ -132,6 +134,17 @@ function Register(props) {
               size="large"
               autoComplete="off"
             ></Input>
+          </Form.Item>
+          <Form.Item
+            name="address"
+            rules={[{ required: true, message: "Please input your address!" }]}
+          >
+            <TextArea
+              prefix={<PhoneOutlined className="site-form-item-icon" />}
+              rows={4}
+              placeholder="Address"
+              maxLength={6}
+            />
           </Form.Item>
           <Form.Item>
             <Spin spinning={loading}>
