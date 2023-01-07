@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Alert, Spin, Row } from "antd";
+import { Button, Form, Input, Alert, Spin, notification, Row } from "antd";
 import {
   LockOutlined,
   UserOutlined,
@@ -14,6 +14,23 @@ import { instance } from "../../utils";
 import { useEffect } from "react";
 
 function Register(props) {
+  //openNotificationWithIcon
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotificationWithIcon = (type) => {
+    if (type === "Success") {
+      api.success({
+        message: "Register account",
+        description: "You have successfully register account.",
+      });
+    } else {
+      api.error({
+        message: "Register account",
+        description: "You have failed to register account !!!",
+      });
+    }
+  };
+
   const [loading, setLoading] = useState(false);
 
   const loadData = async function (values) {
@@ -31,16 +48,21 @@ function Register(props) {
       });
 
       if (res.data.status === 200) {
+        openNotificationWithIcon("Success");
         console.log("ASDS");
+      } else {
+        openNotificationWithIcon("Fail");
       }
       setLoading(false);
     } catch (err) {
       console.log(err);
+      openNotificationWithIcon("Fail");
     }
   };
 
   return (
     <Row type="flex" justify="center" align="middle">
+      {contextHolder}
       <Form
         name="register"
         className="register-form"

@@ -47,11 +47,17 @@ function Recharge() {
   const [api, contextHolder] = notification.useNotification();
 
   const openNotificationWithIcon = (type) => {
-    api[type]({
-      message: "Notification Title",
-      description:
-        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-    });
+    if (type === "Success") {
+      api.success({
+        message: "Recharge",
+        description: "You have successfully recharged.",
+      });
+    } else {
+      api.error({
+        message: "Recharge",
+        description: "You have failed to recharge !!!",
+      });
+    }
   };
 
   // Loading...
@@ -70,7 +76,8 @@ function Recharge() {
     });
     if (res.data.status === 200) {
       openNotificationWithIcon("Success");
-      setLoading(false);
+    } else {
+      openNotificationWithIcon("Fail");
     }
     setLoading(false);
     onReset();
@@ -114,7 +121,6 @@ function Recharge() {
             ]}
           >
             <InputNumber
-              defaultValue={0}
               formatter={(value) =>
                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               }
