@@ -91,11 +91,11 @@ namespace External.Controllers
             {
                 Send_STK = input.sendPayAccount,
                 Send_Money = input.amountOwed,
-                Receive_BankID = 1,
+                Receive_BankID = 2,
                 Receive_STK = input.receiverPayAccount,
                 Content = input.description,
                 PaymentFeeTypeID = paymentfee,
-                TransactionTypeID = 1,
+                TransactionTypeID = 2,
                 BankReferenceId = 2,
                 RSA = signature,
             };

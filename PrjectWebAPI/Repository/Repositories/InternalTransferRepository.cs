@@ -316,7 +316,7 @@ namespace Repository.Repositories
                             BankReferenceId = model.Receive_BankID,
                             Content = model.Content,
                             Money = model.Send_Money,
-                            TransactionTypeId = model.TransactionTypeID,
+                            TransactionTypeId = 2,
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             CreatedDate = DateTime.Now,
                             IsDebtRemind = false,
