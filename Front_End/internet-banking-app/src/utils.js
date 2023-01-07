@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const instance = axios.create({
   baseURL: "https://localhost:44329/api/",
-  timeout: 10000,
+  timeout: 20000,
   headers: { Authorization: `Bearer ${localStorage.App_AccessToken}` },
   // headers: { 'X-Custom-Header': 'foobar' }
 });
