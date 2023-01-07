@@ -28,9 +28,11 @@ namespace External.Controllers
     public class ExternalController : ControllerBase
     {
         private readonly IInternalTransferService _internalTransferService;
-        public ExternalController(IInternalTransferService internalTransferService)
+        private readonly IEmailService _emailService;
+        public ExternalController(IInternalTransferService internalTransferService, IEmailService emailService)
         {
             _internalTransferService = internalTransferService;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace External.Controllers
         /// description: Mô tả chuyển tiền</param>
         /// <returns></returns>
         [HttpPost("SendMoney")]
-        public async Task<ResponeseMessage> SendMoney(SendMoneyRequest input)
+        public ResponeseMessage SendMoney(SendMoneyRequest input)
         {
             var result = new ResponeseMessage();
             var signature = Helpers.EncryptionPartner(Helpers.Signature);
@@ -99,11 +101,18 @@ namespace External.Controllers
                 BankReferenceId = 2,
                 RSA = signature,
             };
-            var rs = await _internalTransferService.ExternalTransfer(model);
-            if (rs)
+            var rs =  _internalTransferService.ExternalTransfer(model);
+            if (rs > 0)
             {
+                var sent = _emailService.SendMailForTransaction(model.Send_STK, rs);
                 result.Status = 200;
                 result.Message = "Send Money successfull";
+                result.Data = rs;
+            }
+            else
+            {
+                result.Status = 0;
+                result.Message = "Send Money failed";
             }
             return result;
         }
@@ -172,6 +181,7 @@ namespace External.Controllers
                 {
                     rs.Status = 200;
                     rs.Message = "Transfer successfull!";
+                    rs.Data = Is_Success;
                 }
                 else
                 {

@@ -30,6 +30,10 @@ namespace Repository.Repositories
         {
             return dbContext.UserManages.Where(x => x.Id == id).Select(x => x.Email).FirstOrDefault();
         }
+        public string FindEmailBySTK(string stk)
+        {
+            return dbContext.UserManages.Where(x => x.Stk == stk).Select(x => x.Email).FirstOrDefault();
+        }
 
         public bool SendMail(EmailDTO emailDTO)
         {
@@ -95,12 +99,12 @@ namespace Repository.Repositories
 
 
         /// <summary>
-        ///  Gửi mail dựa vào id của user và id transaction_banking
+        ///  Gửi mail dựa vào stk của user và id transaction_banking
         /// </summary>
         /// <returns></returns>
-        public bool SendMailById(int id, int transactionId)
+        public bool SendMailBySTK(string stk, int transactionId)
         {
-            string email = FindEmailById(id);
+            string email = FindEmailBySTK(stk);
             if (email != null)
             {
                 OtpTable otp = new OtpTable();

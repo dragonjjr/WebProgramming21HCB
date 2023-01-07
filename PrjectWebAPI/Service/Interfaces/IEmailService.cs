@@ -11,6 +11,6 @@ namespace Service.Interfaces
     public interface IEmailService
     {
         bool SendMailForAccount(string email);
-        bool SendMailForTransaction(int id, int transactionId);
+        bool SendMailForTransaction(string stk, int transactionId);
     }
 }

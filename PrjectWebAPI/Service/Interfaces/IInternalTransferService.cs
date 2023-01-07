@@ -10,12 +10,12 @@ namespace Service.Interfaces
     public interface IInternalTransferService
     {
         List<PaymentFeeTypeVM> GetPaymentFeeType();
-        bool CheckOTPTransaction(CheckOTPTransaction model);
+        Task<bool> CheckOTPTransaction(CheckOTPTransaction model, bool isInternalTranfer);
         RecipientOutput ViewRecipientBySTK(string STK);
 
         UserViewModel GetListAccount(int UserID);
         int InternalTransfer(InternalTransfer model);
-        Task<bool> ExternalTransfer(ExternalTransfer model);
+        int ExternalTransfer(ExternalTransfer model);
         bool ReceiveExternalTransfer(ExternalTransfer model);
         List<TransactionVM> GetListTransactionByAcount(string accountNumber, int typeTransaction);
         TransactionVM GetInforTransaction(int transactionId);

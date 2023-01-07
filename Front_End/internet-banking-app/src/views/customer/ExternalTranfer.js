@@ -11,11 +11,22 @@ import {
   Steps,
   Spin,
   Result,
+  Modal,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { instance, parseJwt } from "../../utils.js";
 import ListRecipient from "./ListRecipient.js";
 import { StoreContext } from "../../AppContext.js";
+import { useNavigate } from "react-router-dom";
+
+const formItemLayout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 12,
+  },
+};
 
 const Tranfer = ({ nextCurrent }) => {
   const { transaction } = useContext(StoreContext);
@@ -38,17 +49,16 @@ const Tranfer = ({ nextCurrent }) => {
   const [userId] = useState(parseJwt(localStorage.App_AccessToken).userId);
 
   const onTranfer = async (values) => {
+    console.log(values);
     setLoadingTranfer(true);
-    const res = await instance.post(`ExternalTransfer/ExternalTranfer`, {
-      send_UserID: userId,
-      send_STK: values.send_STK,
-      send_Money: values.send_Money,
-      receive_STK: values.receive_STK,
-      content: values.content,
-      paymentFeeTypeID: values.paymentFeeTypeID,
-      transactionTypeID: 1,
-      bankReferenceId: 1,
-      isDebtRemind: false,
+    const res = await instance.post(`External/SendMoney`, {
+      sendPayAccount: values.send_STK,
+      sendAccountName: values.send_STK,
+      receiverPayAccount: values.receive_STK,
+      typeFee: values.paymentFeeTypeID === 1 ? "sender" : "receiver",
+      amountOwed: values.send_Money,
+      bankReferenceId: "bank1",
+      description: values.content,
     });
     if (res.data.status === 200) {
       setLoadingTranfer(false);
@@ -197,14 +207,24 @@ const VerifyOTP = ({ nextCurrent }) => {
 
   const [form] = Form.useForm();
 
+  const [loadingVerifyOTP, setLoadingVerifyOTP] = useState(false);
+
   const onCheckOTP = async (otp) => {
-    const res = await instance.post(`ExternalTransfer/CheckOTPTransaction/`, {
-      transactionID: transaction[0],
-      otp: otp.otp,
-    });
+    const res = await instance.post(
+      `InternalTransfer/CheckOTPTransaction/false`,
+      {
+        transactionID: transaction[0],
+        otp: otp.otp,
+      }
+    );
     if (res.data.status === 200) {
+      setLoadingVerifyOTP(false);
       nextCurrent();
     }
+
+    setTimeout(() => {
+      setLoadingVerifyOTP(false);
+    }, 6000);
   };
 
   return (
@@ -228,14 +248,17 @@ const VerifyOTP = ({ nextCurrent }) => {
           </Form.Item>
 
           <Form.Item style={{ textAlign: "center", marginTop: 15 }}>
-            <Button
-              type="primary"
-              onClick={() => {
-                form.submit();
-              }}
-            >
-              Submit
-            </Button>
+            <Spin spinning={loadingVerifyOTP}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  form.submit();
+                  setLoadingVerifyOTP(true);
+                }}
+              >
+                Submit
+              </Button>
+            </Spin>
           </Form.Item>
         </Card>
       </Form>
@@ -243,9 +266,230 @@ const VerifyOTP = ({ nextCurrent }) => {
   );
 };
 
-const ExternalTranfer = () => {
+const ResultTransaction = () => {
+  const navigate = useNavigate();
+
   const { transaction } = useContext(StoreContext);
 
+  const [result, setResult] = useState();
+
+  const [formEdit] = Form.useForm();
+
+  const [modelEditRecipient, setModelEditRecipient] = useState(false);
+
+  const [bankReference, setBankReference] = useState();
+
+  const [userId] = useState(parseJwt(localStorage.App_AccessToken).userId);
+
+  const [recipientInfo, setRecipientInfor] = useState();
+
+  const success = (title, content) => {
+    Modal.success({
+      title: title,
+      content: content,
+    });
+  };
+
+  const error = (title, content) => {
+    Modal.error({
+      title: title,
+      content: content,
+    });
+  };
+
+  useEffect(
+    () => async () => {
+      const resBankReference = await instance.get(
+        `Customer/GetListBankReference`
+      );
+      if (resBankReference.data.status === 200) {
+        setBankReference(
+          resBankReference.data.data.map((item) => ({
+            value: item.id,
+            label: item.name,
+          }))
+        );
+      }
+    },
+    []
+  );
+  const confirmAdd = async (userId, paramsAdd) => {
+    const res = await instance.post(`Customer/Recipient/AddRecipient`, {
+      stk: paramsAdd.stkEdit,
+      name: paramsAdd.nameEdit,
+      userID: userId,
+      bankID: paramsAdd.bankEdit,
+    });
+    if (res.data.status === 200) {
+      success("Add recipient", res.data.message);
+    } else {
+      error("Add recipient", res.data.message);
+    }
+  };
+
+  const getData = async () => {
+    const res = await instance.get(
+      `InternalTransfer/GetInforTransaction?transactionId=${transaction[0]}`
+    );
+    if (res.data.status === 200) {
+      setResult(res.data.data);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const onFillModalAdd = async () => {
+    const res = await instance.get(
+      `External/GetInforFromPartner?STK=${result.stkReceive}`
+    );
+    if (res.data.success === true) {
+      setRecipientInfor(res.data.data);
+
+      formEdit.setFieldsValue({
+        stkEdit: result.stkReceive,
+        nameEdit: res.data.data.name,
+        bankEdit: 1,
+      });
+    }
+  };
+
+  return (
+    <>
+      <Modal
+        title={
+          <div style={{ textAlign: "center" }}>
+            <h2>Add Recipient</h2>
+          </div>
+        }
+        centered
+        open={modelEditRecipient}
+        forceRender
+        onCancel={() => setModelEditRecipient(false)}
+        footer={
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              type="primary"
+              style={{ minWidth: 70, width: 80 }}
+              onClick={() => {
+                formEdit.submit();
+              }}
+            >
+              Add
+            </Button>
+            <Button
+              onClick={() => {
+                setModelEditRecipient(false);
+              }}
+              style={{ minWidth: 70, width: 80 }}
+            >
+              Cancel
+            </Button>
+          </div>
+        }
+      >
+        <Form
+          form={formEdit}
+          onFinish={(value) => {
+            confirmAdd(userId, value);
+          }}
+        >
+          <Form.Item
+            {...formItemLayout}
+            name="stkEdit"
+            label="Account number"
+            rules={[
+              {
+                required: true,
+                message: "Please input account number",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Please input your name"
+              name="stkEdit"
+              style={{ minWidth: 200 }}
+            />
+          </Form.Item>
+          <Form.Item {...formItemLayout} name="nameEdit" label="Nickname">
+            <Input
+              placeholder="Please inputs nick name"
+              name="nameEdit"
+              style={{ minWidth: 200 }}
+            />
+          </Form.Item>
+          <Form.Item {...formItemLayout} name="bankEdit" label="Bank">
+            <Select style={{ minWidth: 200 }} options={bankReference} />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Result
+        status="success"
+        title="Successfully Transaction"
+        subTitle={
+          result && (
+            <div>
+              <h1 style={{ padding: 0, margin: 0 }}>{result.money}</h1>
+              <p></p>
+              <div style={{ padding: 0, margin: 0 }}>
+                <h3>{result.transDate}</h3>
+              </div>
+
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  Name: {result.transactionType}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  From: {result.stkSend}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  To: {result.stkReceive}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  Transaction ID: {transaction[0]}
+                </h4>
+              </Row>
+              <Row>
+                <h4 style={{ padding: 0, margin: 0 }}>
+                  Content: {result.content}
+                </h4>
+              </Row>
+            </div>
+          )
+        }
+        extra={[
+          <Button type="primary" key="home" onClick={() => navigate("/")}>
+            Home
+          </Button>,
+          <Button
+            key="transactionhistory"
+            onClick={() => navigate("/transactionhistory")}
+          >
+            Transaction History
+          </Button>,
+          <Button
+            key="saverecipient"
+            onClick={() => {
+              setModelEditRecipient(true);
+              onFillModalAdd();
+            }}
+          >
+            Save Recipient
+          </Button>,
+        ]}
+      />
+    </>
+  );
+};
+
+const ExternalTranfer = () => {
   const [current, setCurrent] = useState(0);
 
   const next = () => {
@@ -262,19 +506,7 @@ const ExternalTranfer = () => {
     },
     {
       title: "Last",
-      content: (
-        <Result
-          status="success"
-          title="Successfully Transaction"
-          subTitle={`Order number: ${transaction[0]} Cloud server configuration takes 1-5 minutes, please wait.`}
-          extra={[
-            <Button type="primary" key="console">
-              Back Home
-            </Button>,
-            <Button key="buy">Buy Again</Button>,
-          ]}
-        />
-      ),
+      content: <ResultTransaction />,
     },
   ];
 
@@ -293,19 +525,6 @@ const ExternalTranfer = () => {
             size="small"
           />
           <div className="steps-content">{steps[current].content}</div>
-          <div
-            className="steps-action"
-            style={{ marginTop: 15, textAlign: "center" }}
-          >
-            {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
-              >
-                Done
-              </Button>
-            )}
-          </div>
         </Card>
       </Row>
     </>

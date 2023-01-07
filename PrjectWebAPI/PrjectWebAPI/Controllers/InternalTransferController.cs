@@ -50,12 +50,13 @@ namespace PrjectWebAPI.Controllers
         /// Kiểm tra OTP có hợp lệ
         /// </summary>
         /// <param name="model">TransactionID: Id của giao dịch; OTP: mã code xác thực</param>
+        /// <param name="isInternalTranfer">isInternalTranfer: true là kiểm tra otp giao dịch nội bộ, ngược lại là kiểm tra của giao dịch liên ngân hàng</param>
         /// <returns></returns>
-        [HttpPost("CheckOTPTransaction")]
-        public ResponeseMessage CheckOTPTransaction(CheckOTPTransaction model)
+        [HttpPost("CheckOTPTransaction/{isInternalTranfer}")]
+        public async Task<ResponeseMessage> CheckOTPTransactionAsync(CheckOTPTransaction model, bool isInternalTranfer)
         {
             ResponeseMessage rs = new ResponeseMessage();
-            var isvalid = _internalTransferService.CheckOTPTransaction(model);
+            var isvalid = await _internalTransferService.CheckOTPTransaction(model, isInternalTranfer);
             if (isvalid)
             {
                 rs.Status = 200;
@@ -153,7 +154,7 @@ namespace PrjectWebAPI.Controllers
            
             if (Is_Success > 0)
             {
-                var sent = _emailService.SendMailForTransaction(model.Send_UserID,Is_Success);
+                var sent = _emailService.SendMailForTransaction(model.Send_STK,Is_Success);
 
                 rs.Status = 200;
                 rs.Message = "Transfer successfull!";

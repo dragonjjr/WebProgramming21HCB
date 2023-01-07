@@ -211,10 +211,13 @@ const VerifyOTP = ({ nextCurrent }) => {
   const [loadingVerifyOTP, setLoadingVerifyOTP] = useState(false);
 
   const onCheckOTP = async (otp) => {
-    const res = await instance.post(`InternalTransfer/CheckOTPTransaction/`, {
-      transactionID: transaction[0],
-      otp: otp.otp,
-    });
+    const res = await instance.post(
+      `InternalTransfer/CheckOTPTransaction/true`,
+      {
+        transactionID: transaction[0],
+        otp: otp.otp,
+      }
+    );
     if (res.data.status === 200) {
       setLoadingVerifyOTP(false);
       nextCurrent();
@@ -312,7 +315,6 @@ const ResultTransaction = () => {
     []
   );
   const confirmAdd = async (userId, paramsAdd) => {
-    console.log(paramsAdd);
     const res = await instance.post(`Customer/Recipient/AddRecipient`, {
       stk: paramsAdd.stkEdit,
       name: paramsAdd.nameEdit,
@@ -336,26 +338,23 @@ const ResultTransaction = () => {
     }
   };
 
-  const getInforRecipient = async () => {
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const onFillModalAdd = async () => {
     const res = await instance.get(
       `InternalTransfer/ViewRecipientBySTK?STK=${result.stkReceive}`
     );
     if (res.data.status === 200) {
       setRecipientInfor(res.data.data);
-      console.log(res.data.data);
-    }
-  };
-  useEffect(() => {
-    getData();
-    getInforRecipient();
-  }, []);
 
-  const onFillModalAdd = () => {
-    formEdit.setFieldsValue({
-      stkEdit: result.stkReceive,
-      nameEdit: recipientInfo.name,
-      bankEdit: 1,
-    });
+      formEdit.setFieldsValue({
+        stkEdit: result.stkReceive,
+        nameEdit: res.data.data.name,
+        bankEdit: 1,
+      });
+    }
   };
 
   return (
@@ -434,9 +433,10 @@ const ResultTransaction = () => {
           result && (
             <div>
               <h1 style={{ padding: 0, margin: 0 }}>{result.money}</h1>
-              <p>
-                <h3 style={{ padding: 0, margin: 0 }}>{result.transDate}</h3>
-              </p>
+              <p></p>
+              <div style={{ padding: 0, margin: 0 }}>
+                <h3>{result.transDate}</h3>
+              </div>
 
               <Row>
                 <h4 style={{ padding: 0, margin: 0 }}>

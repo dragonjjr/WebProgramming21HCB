@@ -23,9 +23,9 @@ namespace Service.Services
             return _emailRepository.SendMailByEmail(email);
         }
 
-        public bool SendMailForTransaction(int id, int transactionId)
+        public bool SendMailForTransaction(string stk, int transactionId)
         {
-            return _emailRepository.SendMailById(id, transactionId);
+            return _emailRepository.SendMailBySTK(stk, transactionId);
         }
     }
 }

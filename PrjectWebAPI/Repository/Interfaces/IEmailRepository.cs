@@ -11,9 +11,10 @@ namespace Repository.Interfaces
     public interface IEmailRepository
     {
         string FindEmailById(int id);
+        string FindEmailBySTK(string stk);
         int CheckEmailExits(string email);
         bool SendMail(EmailDTO emailDTO);
-        bool SendMailById(int id, int transactionId);
+        bool SendMailBySTK(string stk, int transactionId);
         bool SendMailByEmail(string email);
     }
 }

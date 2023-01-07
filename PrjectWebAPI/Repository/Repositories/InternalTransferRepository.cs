@@ -48,8 +48,9 @@ namespace Repository.Repositories
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool CheckOTPTransaction(CheckOTPTransaction model)
+        public async Task<bool> CheckOTPTransaction(CheckOTPTransaction model, bool isInternalTranfer)
         {
+            using var _trans = dbContext.Database.BeginTransaction();
             try
             {
                 if (model.TransactionID > 0 && model.OTP != string.Empty)
@@ -57,26 +58,82 @@ namespace Repository.Repositories
                     var transactioninput = dbContext.TransactionBankings.Where(x => x.Id == model.TransactionID).FirstOrDefault();
                     if (transactioninput != null)
                     {
-                        var send_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stksend && x.SoDu > transactioninput.Money).FirstOrDefault();
-                        var receive_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stkreceive).FirstOrDefault();
 
-                        var row = dbContext.OtpTables.Where(x => x.TransactionId == model.TransactionID && x.Otp == model.OTP  && DateTime.Now <= x.ExpiredDate).FirstOrDefault();
-
-                        if (row != null)
+                        // nếu là xác minh otp chuyển khoản nội bộ
+                        if (isInternalTranfer)
                         {
-                            transactioninput.IsDeleted = false;
-                            send_acc.SoDu = send_acc.SoDu - transactioninput.Money;
-                            receive_acc.SoDu = receive_acc.SoDu + transactioninput.Money;
+                            var send_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stksend && x.SoDu > transactioninput.Money).FirstOrDefault();
+                            var receive_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stkreceive).FirstOrDefault();
 
-                            dbContext.TransactionBankings.Update(transactioninput);
-                            dbContext.UserManages.Update(send_acc);
-                            dbContext.UserManages.Update(receive_acc);
-                            dbContext.SaveChanges();
+                            var row = dbContext.OtpTables.Where(x => x.TransactionId == model.TransactionID && x.Otp == model.OTP && DateTime.Now <= x.ExpiredDate).FirstOrDefault();
 
-                            return true;
+                            if (row != null)
+                            {
+                                transactioninput.IsDeleted = false;
+                                send_acc.SoDu = send_acc.SoDu - transactioninput.Money;
+                                receive_acc.SoDu = receive_acc.SoDu + transactioninput.Money;
+
+                                dbContext.TransactionBankings.Update(transactioninput);
+                                dbContext.UserManages.Update(send_acc);
+                                dbContext.UserManages.Update(receive_acc);
+                                dbContext.SaveChanges();
+
+                                return true;
+
+                            }
+                            return false;
+                        }
+                        // nếu là xác minh otp chuyển khoản liên ngân hàng
+                        else
+                        {
+                            _trans.CreateSavepoint("BeforeTransfer");
+                            var send_acc = dbContext.UserManages.Where(x => x.Stk == transactioninput.Stksend && x.SoDu > transactioninput.Money).FirstOrDefault();
+
+                            var row = dbContext.OtpTables.Where(x => x.TransactionId == model.TransactionID && x.Otp == model.OTP && DateTime.Now <= x.ExpiredDate).FirstOrDefault();
+                            if (row != null)
+                            {
+                                transactioninput.IsDeleted = false;
+                                send_acc.SoDu = send_acc.SoDu - transactioninput.Money;
+                                dbContext.UserManages.Update(send_acc);
+                                dbContext.SaveChanges();
+
+                                SendMoneyRequest data = new SendMoneyRequest
+                                {
+                                    sendPayAccount = transactioninput.Stksend,
+                                    sendAccountName = "Nhóm 1",
+                                    receiverPayAccount = transactioninput.Stkreceive,
+                                    typeFee = transactioninput.PaymentFeeTypeId == 1 ? "sender" : "receiver",
+                                    amountOwed = transactioninput.Money,
+                                    bankReferenceId = "bank1",
+                                    description = transactioninput.Content
+                                };
+                                HttpClient httpClient = new HttpClient();
+                                HttpRequestMessage request = new HttpRequestMessage();
+                                var httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                                DateTime datetime = DateTime.Now;
+                                long time = ((DateTimeOffset)datetime).ToUnixTimeSeconds();
+                                var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney" + data.sendPayAccount + data.sendAccountName + data.receiverPayAccount + data.typeFee + data.amountOwed + data.bankReferenceId + time.ToString();
+                                var token = Helpers.GetTokenOfPartner(hashtring);
+                                request.RequestUri = new Uri(Helpers.url_Partner + $"api/transaction/addmoney");
+                                request.Content = httpContent;
+                                request.Method = HttpMethod.Post;
+                                request.Headers.Add("signature", transactioninput.Rsa);
+                                request.Headers.Add("token", token);
+                                request.Headers.Add("time", time.ToString());
+
+                                HttpResponseMessage response = await httpClient.SendAsync(request);
+                                if (response.StatusCode == HttpStatusCode.OK)
+                                {
+                                    _trans.Commit();
+                                    return true;
+                                }
+
+                                return false;
+
+                            }
+                            return false;
 
                         }
-                        return false;
 
                     }
                 }
@@ -84,6 +141,7 @@ namespace Repository.Repositories
             }
             catch (Exception)
             {
+                _trans.RollbackToSavepoint("BeforeTransfer");
                 return false;
             }
         }
@@ -221,7 +279,7 @@ namespace Repository.Repositories
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> ExternalTransfer(ExternalTransfer model)
+        public int ExternalTransfer(ExternalTransfer model)
         {
             using var _trans = dbContext.Database.BeginTransaction();
             try
@@ -244,51 +302,56 @@ namespace Repository.Repositories
                             PaymentFeeTypeId = model.PaymentFeeTypeID,
                             CreatedDate = DateTime.Now,
                             IsDebtRemind = false,
-                            Rsa = model.RSA
+                            Rsa = model.RSA,
+                            IsDeleted = true
                         };
                         dbContext.TransactionBankings.Add(transaction);
-                        send_acc.SoDu = send_acc.SoDu - model.Send_Money;
-                        dbContext.UserManages.Update(send_acc);
+                        //send_acc.SoDu = send_acc.SoDu - model.Send_Money;
+                       // dbContext.UserManages.Update(send_acc);
                         dbContext.SaveChanges();
-                        SendMoneyRequest data = new SendMoneyRequest
-                        {
-                            sendPayAccount = model.Send_STK,
-                            sendAccountName = "Nhóm 1",
-                            receiverPayAccount = model.Receive_STK,
-                            typeFee = model.PaymentFeeTypeID == 1 ? "sender" : "receiver ",
-                            amountOwed = model.Send_Money,
-                            bankReferenceId = "bank1",
-                            description = model.Content
-                        };
-                        HttpClient httpClient = new HttpClient();
-                        HttpRequestMessage request = new HttpRequestMessage();
-                        var httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-                        DateTime datetime = DateTime.Now;
-                        long time = ((DateTimeOffset)datetime).ToUnixTimeSeconds();
-                        var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney" + data.sendPayAccount + data.sendAccountName + data.receiverPayAccount + data.typeFee + data.amountOwed + data.bankReferenceId + time.ToString();
-                        var token = Helpers.GetTokenOfPartner(hashtring);
-                        request.RequestUri = new Uri(Helpers.url_Partner + $"api/transaction/addmoney");
-                        request.Content = httpContent;
-                        request.Method = HttpMethod.Post;
-                        request.Headers.Add("signature", model.RSA);
-                        request.Headers.Add("token", token);
-                        request.Headers.Add("time", time.ToString());
+                        _trans.Commit();
 
-                        HttpResponseMessage response = await httpClient.SendAsync(request);
-                        if (response.StatusCode == HttpStatusCode.OK)
-                        {
-                            _trans.Commit();
-                            return true;
-                        }
+
+                        //SendMoneyRequest data = new SendMoneyRequest
+                        //{
+                        //    sendPayAccount = model.Send_STK,
+                        //    sendAccountName = "Nhóm 1",
+                        //    receiverPayAccount = model.Receive_STK,
+                        //    typeFee = model.PaymentFeeTypeID == 1 ? "sender" : "receiver ",
+                        //    amountOwed = model.Send_Money,
+                        //    bankReferenceId = "bank1",
+                        //    description = model.Content
+                        //};
+                        //HttpClient httpClient = new HttpClient();
+                        //HttpRequestMessage request = new HttpRequestMessage();
+                        //var httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                        //DateTime datetime = DateTime.Now;
+                        //long time = ((DateTimeOffset)datetime).ToUnixTimeSeconds();
+                        //var hashtring = Helpers.SecretKey_Partner + $"/api/transaction/addmoney" + data.sendPayAccount + data.sendAccountName + data.receiverPayAccount + data.typeFee + data.amountOwed + data.bankReferenceId + time.ToString();
+                        //var token = Helpers.GetTokenOfPartner(hashtring);
+                        //request.RequestUri = new Uri(Helpers.url_Partner + $"api/transaction/addmoney");
+                        //request.Content = httpContent;
+                        //request.Method = HttpMethod.Post;
+                        //request.Headers.Add("signature", model.RSA);
+                        //request.Headers.Add("token", token);
+                        //request.Headers.Add("time", time.ToString());
+
+                        //HttpResponseMessage response = await httpClient.SendAsync(request);
+                        //if (response.StatusCode == HttpStatusCode.OK)
+                        //{
+                        //    _trans.Commit();
+                        //    return true;
+                        //}
+                        return transaction.Id;
                     }
-                    return false;
+                    return 0;
                 }
-                return false;
+                return 0;
             }
             catch (Exception)
             {
                 _trans.RollbackToSavepoint("BeforeTransfer");
-                return false;
+                return 0;
             }
         }
 

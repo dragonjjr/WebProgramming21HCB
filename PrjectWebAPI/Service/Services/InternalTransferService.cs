@@ -23,9 +23,9 @@ namespace Service.Services
             return _IinternalRepository.GetPaymentFeeType();
         }
 
-        public bool CheckOTPTransaction(CheckOTPTransaction model)
+        public async Task<bool> CheckOTPTransaction(CheckOTPTransaction model, bool isInternalTranfer)
         {
-            return _IinternalRepository.CheckOTPTransaction(model);
+            return await _IinternalRepository.CheckOTPTransaction(model, isInternalTranfer);
         }
 
         public RecipientOutput ViewRecipientBySTK(string STK)
@@ -43,7 +43,7 @@ namespace Service.Services
             return _IinternalRepository.InternalTransfer(model);
         }
 
-        public Task<bool> ExternalTransfer(ExternalTransfer model)
+        public int ExternalTransfer(ExternalTransfer model)
         {
             return _IinternalRepository.ExternalTransfer(model);
         }
