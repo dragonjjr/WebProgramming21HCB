@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { LogoutOutlined, HomeOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,7 +8,9 @@ const menuItems = [
     key: "Home",
     icon: (
       <div>
-        <Link to="/">Home</Link>
+        <Link to="/">
+          <HomeOutlined /> Home
+        </Link>
       </div>
     ),
   },
@@ -22,7 +20,9 @@ const menuItems = [
 
     icon: (
       <div>
-        <Link to="/logout">Logout</Link>
+        <Link to="/logout">
+          <LogoutOutlined /> Logout
+        </Link>
       </div>
     ),
   },

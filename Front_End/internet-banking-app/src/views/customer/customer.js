@@ -1,17 +1,7 @@
 import React from "react";
 import UserBalance from "./UserBalance";
-import {
-  List,
-  message,
-  Button,
-  Row,
-  Modal,
-  Form,
-  Input,
-  Card,
-  Col,
-} from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Row, Card, Col } from "antd";
+import { useNavigate } from "react-router-dom";
 import Menu from "../../components/Menu";
 
 function Customer(props) {
