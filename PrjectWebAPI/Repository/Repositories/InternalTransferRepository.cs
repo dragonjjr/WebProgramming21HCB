@@ -77,7 +77,7 @@ namespace Repository.Repositories
                                 dbContext.UserManages.Update(send_acc);
                                 dbContext.UserManages.Update(receive_acc);
                                 dbContext.SaveChanges();
-
+                                _trans.Commit();
                                 return true;
 
                             }
